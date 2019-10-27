@@ -6,7 +6,7 @@ module.exports = {
   ///////////////////////////////
   //// based off of this sketch: https://observablehq.com/@justingosses/well-log-in-d3-js-v5
   ///////////////////////////////
-	fromJSONofWEllGetThingsForPlotting:function(jsonWell){
+  fromJSONofWEllGetThingsForPlotting:function(jsonWell){
     let curve_names = Object.keys(jsonWell["CURVES"])
     let uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
     let well_log_curves_reformatted_for_d3 = convertWellJSONToObj(jsonWell,curve_names,uwi)
