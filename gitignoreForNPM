@@ -1,0 +1,18 @@
+css/
+demo/
+assets/
+js/
+index.html
+index.js
+node_modules/
+
+for github
+
+gitignoreforNPM
+.gitignoreForNPM
+demo/
+node_modules/
+wellio_obj.js
+wellio-0.1.2.tgz
+*.tgz
+package-lock.json

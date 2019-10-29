@@ -1,0 +1,54 @@
+{
+    "name": "wellio",
+    "version": "0.1.5",
+    "description": "Provides functionality to load a LAS 2.0 formatted well log file and convert it to a json file and then return different information about the well log",
+    "main": "dist/index.js",
+    "unpkg": "dist/index.js",
+    "scripts": {
+      "test": "dist/test/test.js"
+    },
+    "files": [
+      "dist/test/test.js",
+      "dist/test/test.LAS",
+      "dist/index.js"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/JustinGOSSES/wellio.js.git"
+    },
+    "keywords": [
+      "LAS",
+      "LAS2.0",
+      "Well",
+      "Well-log",
+      "log",
+      "geology",
+      "stratigraphy",
+      "geoscience",
+      "IO",
+      "well",
+      "welllog",
+      "Log",
+      "geology",
+      "welly",
+      "lasio"
+    ],
+    "author": "Justin Gosses",
+    "license": "MIT",
+    "dependencies":{
+        "wellio.js":"^0.0.1"
+    }
+    "devDependencies": {
+      "eslint-config-google": "^0.9.1",
+      "eslint-config-standard": "^11.0.0",
+      "eslint-plugin-import": "^2.9.0",
+      "eslint-plugin-node": "^6.0.1",
+      "eslint-plugin-promise": "^3.7.0",
+      "eslint-plugin-standard": "^3.0.1",
+      "tape": "~4.9.0"
+    },
+    "bugs": {
+      "url": "https://github.com/JustinGOSSES/wellio.js/issues"
+    },
+    "homepage": "https://github.com/JustinGOSSES/wellio.js#readme"
+  }
