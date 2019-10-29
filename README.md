@@ -1,6 +1,16 @@
 # wellio_Viz.js
 d3.js v5 visualization companion for wellio.js
 
+## A Brainstorm from this proof of concept:
+https://observablehq.com/@justingosses/well-log-in-d3-js-v5
+
+#### Builds on previous work in <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a>
+#### Could be used in Jupyter notebook running Python via ipywidgets and traillets...
+## Benefits vs. matplotlib approach:
+- D3.js enables more interactivity
+- exportable to working webpages if wellio.js & wellio_viz.js used together. Could even be generic webpage. Visualize all your las files in a folder you point it at.
+- Could be bare-bones free GUI for picking tops.
+
 ## Visualization Components
 #### Single Well Curvebox
 #### Multiple Well Curvebox
