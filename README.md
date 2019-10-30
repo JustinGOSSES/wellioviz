@@ -1,7 +1,7 @@
 # wellio_Viz.js
 d3.js v5 visualization companion for wellio.js
 
-## This repo is basically a brainstorm about how to build upon this proof of concept on Observable:
+## At this time, this repo is basically a brainstorm about how to build upon this proof of concept on Observable:
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
 
 #### Builds on previous work in <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a>
