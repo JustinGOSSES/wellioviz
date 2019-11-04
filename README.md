@@ -4,6 +4,8 @@ d3.js v5 visualization companion for wellio.js
 ## At this time, this repo is basically a brainstorm about how to build upon this proof of concept on Observable:
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
 
+<iframe src="https://observablehq.com/@justingosses/well-log-in-d3-js-v5" style="width:600px;height:400px"></iframe>
+
 #### Builds on previous work in <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a>
 #### Could be used in Jupyter notebook running Python via ipywidgets and traillets...
 ## Benefits vs. matplotlib approach:
