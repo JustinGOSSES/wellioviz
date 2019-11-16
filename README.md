@@ -25,35 +25,54 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 2. <b>GUIs for well correlation.</b> This could be web-based or built with web tools but running locally. Currently, there really isn't a free open-source application for well log correlation, at least to the best of my knowledge. This means if you don't have Enterprise scale money, (academics, non-profits, hobbyest, students, people in between jobs, etc.) you're often limited to correlating a handfull of wells at most using paper and pencil. 
 3. <b>Interactive plotting for visualization within notebook environment.</b> Matplotlib is very limited in terms of true interactivity. JavaScript visualizations running in a Jupyter notebook otherwise runnning Python offer more flexibility and power for interactive visualizations than many Python visualizations libraries that are often just wrappers for a portion of a JavaScript library. <i>Keplergl is my favorite example of this. It can take in pandas dataframe enabling quick Python data processing and transformation but also has great styling defaults via well chosen CSS defaults and the ability to change how data is encoded and displayed via well designed baked-in GUI functionality. Additionally, the final result can be exported to a full web page wile retaining the ability to give the end-user GUI functionality over the visualization encoding and styling.</i>
 
+## Possible Use-Cases
+- Webpage (JavaScript)
+- Jupyter Notebook (Python with some JavaScript)
+- ObservableHQ notebook (JavaScript)
+- Full Locally running application (html, css, JavaScript with local server)
+- Full Locally running application (packaged as Electron app)
+- Full Locally running application (packaged as Python package that starts up local webpage)
 
-## Visualization Components
-#### Single Well Curvebox
-#### Multiple Well Curvebox
-#### Multiple Single Well Curve Boxes
+## Possible Visualization Pieces
+- Axis
+- Title
+- Axis titles
+- Curves
+- Curve fill based on under or over a curve 
+- Curve fill multiple fill colors based on cutoffs & under or over a curve value
+- Curve fill based on overlap of two curves
+- Curve fill based on SVG pattern
+- Curve fill like property but visualized as curve line color
+- Curve fill like property but visualized as colored rectangle within well box or curve box.
+- Top lines
+- Top lines between well boxes
+- Top titles
 
-## Visualization Features
-### Standard Expected Features of Visualization Compontents
-#### curve
-#### multiple curves in same curve box
-#### horizontal lines
-#### Diagonal lines that connect horizontal lines across curve boxes
-#### Solid fill
-#### Patterned fill
-#### Color scale fill
-#### Color fill based on value curve with cut-offs
-#### Color fill based on curve overlap
-#### Color fill based on some other curve-like property that isn't the curve shown but along same axis.
+## Visualization Boxes
+- Curvebox: Single Curve (single well)
+- Curvebox: Multiple Curves (single well)
+- CurveboxHolder: Single Well (single or multiple curve per box all from single well)
+- CurveboxHolder: Multiple Well (single or multiple curve per box all from multiple well) AKA Cross-Section
 
-### Less Standard Expected Features of Visualization Compontents
-#### Ability to overlap curves and see heatmap of some sort for large number of wells.
-#### Ability to select curve segments and see closest matches in X number of wells based on some criteria for how many and which ones to check
-
-## Other Features
-#### Ability to call in Jupyter notebook that is mostly Python
-#### Ability to interact with notebook via HTML/CSS/JS for some functions that python isn't good at like:
+## Other User-Interface Possibilities
 - Selecting wells via map by polygon or line
 - Selecting wells from well list by clicking
 - Export to working webpage with map of some well variable, cross-section, example wells, etc. 
 - Export table of possible well selections based on potential required curves and tops
 
+## Nice Ability / Problems to Solve
+#### When making cross-section:
+- If top & distance above and below top to plot specified but one or more selected wells don't have that top, how will it decide what parts of the well to plot? 
+- How will the scaling remain the same if wells have different lengths to plot due to not well wells having given distance below the top to plot?
+- User should have the ability to provide a list of curve names to plot if available in order of choice. For example, [GR, GR1, GRBest, Gamma Ray, GammaRay]. Ideally this sort of list could be provided as defaults, so a user could reply GR and it would be smart enough to use GR1 if it existed with the user having to specify that. 
+- Ability to zoom in on different parts of a well without having to click button(s) a lot or at all. 
+- Ability to click to creat a new top. 
+- Ability to use drag or some other input to create a probabilistic distribution of potential position of a top. 
+- Visualization of well log curve & top availability and missing distribution. 
+- Ability to do rapid search for similar log shape or find max difference between log shapes within 2 tops. 
+
+
+## Non-standard Visualization Features Brainstorm
+- Ability to overlap curves and see heatmap of some sort for large number of wells.
+- Ability to select curve segments and see closest matches in X number of wells based on some criteria for how many and which ones to check
 
