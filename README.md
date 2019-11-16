@@ -69,12 +69,15 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 #### When making cross-section:
 - If top & distance above and below top to plot specified but one or more selected wells don't have that top, how will it decide what parts of the well to plot? 
 - How will the scaling remain the same if wells have different lengths to plot due to not well wells having given distance below the top to plot?
+#### Smart well curve name selection if an exact match not found
 - User should have the ability to provide a list of curve names to plot if available in order of choice. For example, [GR, GR1, GRBest, Gamma Ray, GammaRay]. Ideally this sort of list could be provided as defaults, so a user could reply GR and it would be smart enough to use GR1 if it existed with the user having to specify that. 
+#### Well Selection
 - Ability to zoom in on different parts of a well without having to click button(s) a lot or at all. 
-- Ability to click to creat a new top. 
-- Ability to use drag or some other input to create a probabilistic distribution of potential position of a top. 
 - Visualization of well log curve & top availability and missing distribution. 
 - Ability to do rapid search for similar log shape or find max difference between log shapes within 2 tops. 
+#### Top Creation / Changing
+- Ability to click to creat a new top. 
+- Ability to use drag or some other input to create a probabilistic distribution of potential position of a top. 
 
 
 ## Non-standard Visualization Features Brainstorm
