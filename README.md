@@ -30,13 +30,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 2. <b>GUIs for well correlation.</b> This could be web-based or built with web tools but running locally. Currently, there really isn't a free open-source application for well log correlation, at least to the best of my knowledge. This means if you don't have Enterprise scale money, (academics, non-profits, hobbyest, students, people in between jobs, etc.) you're often limited to correlating a handfull of wells at most using paper and pencil. 
 3. <b>Interactive plotting for visualization within notebook environment.</b> Matplotlib is very limited in terms of true interactivity. JavaScript visualizations running in a Jupyter notebook otherwise runnning Python offer more flexibility and power for interactive visualizations than many Python visualizations libraries that are often just wrappers for a portion of a JavaScript library. <i>Keplergl is my favorite example of this. It can take in pandas dataframe enabling quick Python data processing and transformation but also has great styling defaults via well chosen CSS defaults and the ability to change how data is encoded and displayed via well designed baked-in GUI functionality. Additionally, the final result can be exported to a full web page wile retaining the ability to give the end-user GUI functionality over the visualization encoding and styling.</i>
 
-## Possible Use-Cases
-- Webpage (JavaScript)
-- Jupyter Notebook (Python with some JavaScript)
-- ObservableHQ notebook (JavaScript)
-- Full Locally running application (html, css, JavaScript with local server)
-- Full Locally running application (packaged as Electron app)
-- Full Locally running application (packaged as Python package that starts up local webpage)
+
 
 ## Possible Visualization Pieces
 - Axis
@@ -80,7 +74,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Ability to use drag or some other input to create a probabilistic distribution of potential position of a top. 
 
 
-## Non-standard Visualization Features Brainstorm
+## Crazy Ideas / Non-standard Visualization Features Brainstorm
 - Ability to overlap curves and see heatmap of some sort for large number of wells.
 - Ability to select curve segments and see closest matches in X number of wells based on some criteria for how many and which ones to check
 
@@ -89,4 +83,25 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Each curvebox is built from JSON template. This enables default values to be used most of the time and new values to be easiely substituted via template.key = something calls. This will supply data, text, and styling choices for each curve box. instead of calling d3.js code directly, inputs will be supplied via the template. 
 - There are multiple options for combining curveboxes. At this time, it looks like the most flexible will be to intiate a html div with an given ID, then append SVGs to that div. Each curvebox is created and appended separately as a separate div. 
 - Curvebox template will cover everything except: multi-curvebox title, top lines between curve boxes, [width, height, padding, margins, etc] or div that the SVGs get appended to. 
+- Initial template is used with good defaults. 
+  -- For single curve single well, only thing that must be changed is well-name, curveName, curve data. 
+  -- For multiple curve + single well + single curvebox all that needs to be changed is the same as before but two curve names and maybe fill parameter if fill is wanted.
+  -- For single curve multiple wells, an array of curveNames acceptable in order or preference, multiple wellio JSON datas objects is all that is required at minimum. 
+  -- If tops are wanted in the above option for a cross-section, then an object with top name and array of top depths for each well name or `None` must be given which will be used to plot tops. Multiple such objects can be provided. 
+  
+  
+
+## Theoretical Development Plan
+- Play around with it could be on Observable. 
+- Build it into a vanilla front-end and node.js package when it is clear how API should work.
+- Deploy to npm. 
+- Build into production use-cases in a couple of different ways
+
+## Possible Long-term Use-Cases
+- Webpage (JavaScript)
+- Jupyter Notebook (Python with some JavaScript)
+- ObservableHQ notebook (JavaScript)
+- Full Locally running application (html, css, JavaScript with local server)
+- Full Locally running application (packaged as Electron app)
+- Full Locally running application (packaged as Python package that starts up local webpage)
 
