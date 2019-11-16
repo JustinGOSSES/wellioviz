@@ -3,10 +3,15 @@ d3.js v5 visualization companion for wellio.js
 
 ## At this time, this repo is basically a brainstorm about how to build upon this proof of concept on Observable:
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
+
 &
+
 https://observablehq.com/@justingosses/overly-simplified-stratigraphic-modeling
+
 &
+
 https://observablehq.com/@justingosses/well-log-curve-cross-sections
+
 
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5"><img src="well_log_screenshot.png"></a>
 
