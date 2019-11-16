@@ -105,3 +105,8 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Full Locally running application (packaged as Electron app)
 - Full Locally running application (packaged as Python package that starts up local webpage)
 
+## Wellio work tie-in
+There are several long-standing wellio.js improvements that would help make the visualization work here more robust. 
+- <a href="https://github.com/JustinGOSSES/wellio.js/issues/12">Change</a> how wellio handles new lines so wrapped lines in LAS files are okay. 
+- <a href="https://github.com/JustinGOSSES/wellio.js/issues/6">Write data transformation for welly dataframe</a> <=> wellio JSON, so users in a Python Jupyter notebook can transform or access their well logs in LAS format with the familiar welly python package and then easily shoot them into wello_viz for visualization. 
+- <a href="https://github.com/JustinGOSSES/wellio.js/issues/7">Write data transformation for LASIO Dict <=> wellio JSON</a>, so users in a Python Jupyter notebook can transform or access their well logs in LAS format with the familiar LASIO python package and then easily shoot them into wello_viz for visualization. 
