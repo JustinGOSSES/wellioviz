@@ -40,7 +40,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 
 ## Possible Visualization Pieces
 - Axis
-- Title
+- Curvebox Title
 - Axis titles
 - Curves
 - Curve fill based on under or over a curve 
@@ -83,4 +83,10 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 ## Non-standard Visualization Features Brainstorm
 - Ability to overlap curves and see heatmap of some sort for large number of wells.
 - Ability to select curve segments and see closest matches in X number of wells based on some criteria for how many and which ones to check
+
+## Potential API organization brainstorm:
+- Central point of organizatin for API is curvebox.
+- Each curvebox is built from JSON template. This enables default values to be used most of the time and new values to be easiely substituted via template.key = something calls. This will supply data, text, and styling choices for each curve box. instead of calling d3.js code directly, inputs will be supplied via the template. 
+- There are multiple options for combining curveboxes. At this time, it looks like the most flexible will be to intiate a html div with an given ID, then append SVGs to that div. Each curvebox is created and appended separately as a separate div. 
+- Curvebox template will cover everything except: multi-curvebox title, top lines between curve boxes, [width, height, padding, margins, etc] or div that the SVGs get appended to. 
 
