@@ -96,7 +96,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Deploy to npm. 
 - Build into production use-cases in a couple of different ways
 
-## Wellio work tie-in
+## Wellio work tie-in (and other library/packages)
 There are several long-standing wellio.js improvements that would help make the visualization work here more robust. 
 - <a href="https://github.com/JustinGOSSES/wellio.js/issues/12">Change</a> how wellio handles new lines so wrapped lines in LAS files are okay. 
 - <a href="https://github.com/JustinGOSSES/wellio.js/issues/5">Slight changes in parsing to more closely match LAS 2.0 format and enable some flexibility in how that format is interpreted when people create LAS files.
