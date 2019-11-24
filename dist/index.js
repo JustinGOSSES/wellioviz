@@ -39,6 +39,13 @@ module.exports = {
     return array_of_obj
   },
   ///////////
+ fromJSONofWEllGetThingsForPlotting: function(jsonWell){
+    let curve_names = Object.keys(jsonWell["CURVES"])
+    let uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
+    let well_log_curves_reformatted_for_d3 = convertWellJSONToObj(jsonWell,curve_names,uwi)
+    return {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
+  }
+  ///////////
   CurveBox:function (well_curve_config_template){
     //// Getting the variables out of the input json template
     well_curve_config_template = well_curve_config_template[0]
