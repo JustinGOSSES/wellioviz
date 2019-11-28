@@ -34,9 +34,8 @@
     "lasio",
     "visualization",
     "plotting",
-    "web"
-    "d3.js"
-  ],
+    "web",
+    "d3.js"],
   "author": "Justin Gosses",
   "license": "MIT",
   "dependencies": {

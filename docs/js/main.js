@@ -194,3 +194,15 @@ function download_test(){
   download(temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"]+".json", JSON.stringify(temp_json));
 }
 
+//// Function that takes a filename string and a string (you might have to stringify a json object) 
+//// and writes into an actual JSON file to be downloaded into your browsers specified download folder.
+function download (filename, text) {
+    var element = document.createElement('a')
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+    element.setAttribute('download', filename)
+    element.style.display = 'none'
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+  
