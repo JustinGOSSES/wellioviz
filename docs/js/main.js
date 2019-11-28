@@ -61,7 +61,7 @@ function readInLASFromASSETS(){
             success : function (data) {
               all_files = [data,""]
               document.getElementById("upload-success").innerHTML = "upload success";
-              console.log("successfully loaded ./assets/00-01-01-073-05W5-0.LAS")
+              console.log("successfully loaded .draw_curve_from_data/assets/00-01-01-073-05W5-0.LAS")
             },
             error : function (XMLHttpRequest, textStatus, errorThrown) {
               document.getElementById("upload-success").innerHTML = "upload failure";
