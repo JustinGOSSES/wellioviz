@@ -1,6 +1,11 @@
 # wellio_Viz.js
 d3.js v5 visualization sister repo for wellio.js
 
+## Building basic demo here: 
+https://justingosses.github.io/wellioviz/
+
+This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes one....
+
 ## At this time, this repo is basically a brainstorm about how to build upon this proof of concept on Observable:
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
 
