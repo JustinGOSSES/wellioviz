@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>LAS Loading Script Test</title>
+		
+		<!-- BOOTSTRAP CSS GENERIC STYLESHEET & HELPERS   .  .  .-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+		<!-- USED TO HELP LOAD FILES -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
+		<!-- switched to non-slim version so I could use ajax to load las files without person clicking. -->
+		<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
+
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+			
+		<!-- SCRIPT TO HELP BOOTSTRAP CSS -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+		<!-- SCRIPT FOR D3.JS A VISUALIZATION LIBRARY USED BY G3.JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script> -->
+
+		<!-- SCRIPT FOR PRINTING JSON INTO A DOM ELEMENT SO IT LOOKS NICE ON A WEBPAGE -->
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+		<!-- SCRIPT FOR ADDING SPACES TO JSON SO IT LOOKS NICE ON A WEBPAGE -->
+		<script src="./js/vkbeautify.js"></script>
+
+		<!-- MAIN WEBPAGE STYLESHEET -->
+		<link rel="stylesheet" href="./css/main.css"> 
+
+		<!-- GEOLOGY DATA SPECIFIC VISUALIZATIONS BUILT ON TOP OF D3.JS -->
+        <!-- <script src="./js/g3.js"></script> -->
+        <script src="../dist/index.js"></script>
+		<!-- PLOTTING FUNCTIONS THAT CALL G3.JS FROM MAIN.JS -->
+		<script src="./js/call_plots.js"></script>
+		<!-- REST OF THE WEBPAGE FUNCTIONS -->
+		<script src="./js/main.js"></script>
+		<!-- LAS TO JSON JAVASCRIPT FUNCTIONS -->
+		<script src="./js/wellio.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js.map"></script>
+	</head>
+	<body>			
+		<div>
+			<h1>Barebones Demo Page for <a href="https://github.com/JustinGOSSES/wellio.js">Wellio.js</a></h1>
+		</div>
+		<div class="step">
+			<h4>Upload local LAS files using a file loader & turn them into json using wellio.js.</h4>
+		</div>
+		<div class="step">
+			<p><b>First</b>: use either of these buttons to load a LAS files.</p>
+			<div style="position:relative;">
+        		<a class='btn btn-primary' href='javascript:;'>
+            	from your computer
+            	<input type="file" id="files" name="files[]" multiple style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());readInFilesFunction()'>
+        		</a>
+        		&nbsp;
+        		<span class='label label-info' id="upload-file-info"></span>
+        		<button onclick="readInLASFromASSETS()" class='btn btn-primary'>from Assets folder of this webpage</button><span class='label label-info' id="upload-success"></span>
+			</div>
+			<output id="list"></output>
+		</div>
+		
+		<div class="step">
+			<p><b>Second</b>: convert .las text into JSON. If you selected more than one las, the first will be used.</p>
+			<button onclick="convert_and_startHelpers()" class='btn btn-primary'>convert</button>
+			<i><p id="which_well">no well selection</p></i>
+		</div>
+		<div class="step">
+			<h4>Display Results as original text (A), converted JSON (B), or visual curves using g3.js (C)</h4>
+		</div>
+		<div class="step">
+			<span>
+			<p><b>A.</b> Display of .las files as text</p>
+			<button onclick="displayFileFunction() " class='btn btn-secondary'>display text</button>
+			<button onclick="removeTextLAS()" class='btn btn-secondary'>remove text</button>
+			</span>
+		</div>
+
+		<div class="step">
+				<p><b>B.</b>Buttons to draw each curve in the select well will appear below after the <b>CONVERT</b> step</p>
+				
+				<div id="curveButtons_holder"></div>
+				<span>
+					<p>Remove all curves</p><button onclick="remove_DOM_children()" class='btn btn-secondary'>remove</button>
+				</span>
+		</div>
+		<div style="float:left;width:100%" class="step">
+    	<span>
+    		<p><b>C.</b> Print well in wellio.js JSON format</p>
+    		<button onclick="print_well()" class='btn btn-secondary'>print json</button>
+			<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-secondary'>remove json</button>
+    	</span>
+    	</div>
+	</br>
+		<div id="fileContents"></div>
+		<div class="plot_holder">
+    		<div id="log_plot_div" class="log_plot_div box"></div>
+    		<div class="log_plot_div2 box"></div>
+    	</div>
+    </div>
+</br>
+	<div style="float:left"></div>
+	</br>
+    </div> -->
+</br>
+	<div style="float:left;width:100%">
+	    <pre id="well_json_prettyprint" class="prettyprint">
+		</pre>
+	</div>
+</br>	
+	<div style="float:left">
+		<div class="step">
+		<h3>Download well as JSON file</h3>
+		<button id="download_button" onclick="download_test()" class='btn btn-secondary'>download</button>
+	</div>
+</br>
+</body>
+</html>

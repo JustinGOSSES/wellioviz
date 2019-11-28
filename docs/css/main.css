@@ -1,0 +1,28 @@
+.plot_holder{
+	margin-top: 10px;
+	float:left;
+}
+
+.log_plot{
+	margin-top:10px;
+}
+
+div.step{
+	margin-top:40px;
+}
+
+.thumb {
+		    height: 75px;
+		    border: 1px solid #000;
+		    margin: 10px 5px 0 0;
+		  }
+
+body{
+	margin-left:3%;
+	padding-bottom: 50px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
