@@ -35,7 +35,9 @@
   ],
   "author": "Justin Gosses",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "wellio": "^0.1.5"
+  },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^11.0.0",
