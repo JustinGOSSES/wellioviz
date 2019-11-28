@@ -1,7 +1,7 @@
 {
   "name": "wellioviz",
   "version": "0.1.5",
-  "description": "Provides functionality to load a LAS 2.0 formatted well log file and convert it to a json file and then return different information about the well log",
+  "description": "Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.",
   "main": "dist/index.js",
   "unpkg": "dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JustinGOSSES/wellio.js.git"
+    "url": "git+https://github.com/JustinGOSSES/wellioviz.git"
   },
   "keywords": [
     "LAS",
@@ -31,7 +31,11 @@
     "Log",
     "geology",
     "welly",
-    "lasio"
+    "lasio",
+    "visualization",
+    "plotting",
+    "web"
+    "d3.js"
   ],
   "author": "Justin Gosses",
   "license": "MIT",
@@ -48,7 +52,7 @@
     "tape": "~4.9.0"
   },
   "bugs": {
-    "url": "https://github.com/JustinGOSSES/wellio.js/issues"
+    "url": "https://github.com/JustinGOSSES/wellioviz/issues"
   },
-  "homepage": "https://github.com/JustinGOSSES/wellio.js#readme"
+  "homepage": "https://github.com/JustinGOSSES/wellioviz"
 }
