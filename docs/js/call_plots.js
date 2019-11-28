@@ -49,7 +49,7 @@ function reformatJSONforPlotting(temp_json,curve,div){
         "curveNames":[curve],
          "curveColors":["black","pink"],
          "fill":[
-            {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,65,75,89],"fillColors":["lightgreen","green","red","pink"],"curve2":""},
+            {"curveName":curve,"fill":"yes","fillDirection":"left","cutoffs":[0,65,75,89],"fillColors":["lightgreen","green","red","pink"],"curve2":""},
            {"curveName":"PHID","fill":"yes","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
          ],
          "data":"data_goes_here_once_formatted",
