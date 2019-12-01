@@ -8,3 +8,8 @@
 - In node environment run, `wellioviz = require("dist/index.js")`
 - Now you should have both wellio and wellioviz as objects with functions you can call. 
 - 
+
+
+
+http://kazuar.github.io/jupyter-widget-tutorial/
+
