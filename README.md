@@ -93,7 +93,16 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - 1. For single curve single well, only thing that must be changed is well-name, curveName, curve data. 
 - 2. For multiple curve + single well + single curvebox all that needs to be changed is the same as before but two curve names and maybe fill parameter if fill is wanted.
 - 3. For single curve multiple wells, an array of curveNames acceptable in order or preference, multiple wellio JSON datas objects is all that is required at minimum. 
-- 4. If tops are wanted in the above option for a cross-section, then an object with top name and array of top depths for each well name or `None` must be given which will be used to plot tops. Multiple such objects can be provided. 
+- 4. If tops are wanted in the above option for a cross-section, then an object with top name and array of top depths for each well name or `None` must be given which will be used to plot tops. Multiple such objects can be provided.
+
+
+- How to handle multiple JSON formatS? 
+- 1. Not everyone will want to use wellio.js style JSON. Some might only want to supply the data being plotting and how to plot it in order to minimize the amount of data sent over the internet. *HOW DO WE TRANSFORM DIFFERENT DATA ORGANIZATIONS INTO ONE WE CAN WORK WITH*
+- 2. An examples of things that are calculated from the full well log information in wellio JSON that might be explicitly given in abbreviated form in another JSON format. 
+- 2. A. Depth curve might be supplied via a step, top, and bottom instead of a curve. 
+- 2. B. Max plotting values might be given instead of calculated. This is especially true if the max or min is a bad value. 
+- 2. C Depth curve for one curve in one well might be different than depth curve for another curve in the same well. If we try to plot both curves in the same curve box, how do we make sure the right depth curve is used and not the wrong one? The default behavior is a single depth curve. 
+
 
 ## Theoretical Development Plan
 - Play around with it could be on Observable. 
