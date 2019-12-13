@@ -103,6 +103,22 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - 2. B. Max plotting values might be given instead of calculated. This is especially true if the max or min is a bad value. 
 - 2. C Depth curve for one curve in one well might be different than depth curve for another curve in the same well. If we try to plot both curves in the same curve box, how do we make sure the right depth curve is used and not the wrong one? The default behavior is a single depth curve. 
 
+An Example of a different way to format data as input:
+data2 = [{
+"api_no_14": "7376",
+"curve_type": "RHOB",
+"curve_values": [2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251, 2.255, 2.2526],
+"linecolor": "rgb(205,0,0,1)",
+"logscale": false,
+"max_depth": "1607.3",
+"min_depth": "1598.3",
+"null_value": -999.25,
+"step": 0.1,
+"units": "g/cc",
+"x_max": "3",
+"x_min": "2",
+}]
+
 
 ## Theoretical Development Plan
 - Play around with it could be on Observable. 
