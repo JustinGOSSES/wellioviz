@@ -41,6 +41,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Axis
 - Curvebox Title
 - Axis titles
+- *Scales, and scale title with units*
 - Curves
 - Curve fill based on under or over a curve 
 - Curve fill multiple fill colors based on cutoffs & under or over a curve value
