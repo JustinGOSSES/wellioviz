@@ -31,14 +31,40 @@ module.exports = {
     //"depth_curve_name":"DEPTH"}
     //]
   ////////////
-
-
-
-
+  /** 
+   * getExampleTemplate is a function that provides an example template for what to supply to the curveBox function further down.
+   * @returns {array} returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
+  */
+  getExampleTemplate: function (){
+    return [
+      {"multipleLines":"yes",
+      "curveNames":["GR"],
+      "curveColors":["pink"],
+      "fill":[
+        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,ShaleSiltCutOff,SiltSandCutOff],"fillColors":["gray","orange","yellow"],"curve2":""},
+        {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
+      ],
+      "curveUnits":["units2","other units"],
+      "data":well_log_curves_reformatted_for_d3_2,
+      "width":200,
+      "height":400,
+      "margin":({top: 20, right: 3, bottom: 30, left: 30}),
+      "depth_curve_name":"DEPTH"}
+      ]
+  },
   ///////////////////////////////
   //// Functions for getting data from LAS files and reformatting to a wellio.js style JSON. 
   ///////////////////////////////
 
+  /** 
+   * convertWellJSONToObj is a function that takes in wellio style JSON of all LAS file well log information, 
+   * array of curves names, and a string for UWI 
+   * and returns the data array of objects that D3.js likes for data used in plotting.
+   * @param {object} well_log_json a full wellio style JSON
+   * @param {array} CurveNames array of curve names  as strings
+   * @param {string} UWI a string the represents the well name
+   * @returns {array} returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
+  */
   convertWellJSONToObj:function  (well_log_json,CurveNames,UWI){
     depth = well_log_json["CURVES"]["DEPTH"]
     curve_data = []
@@ -64,14 +90,17 @@ module.exports = {
   },
 
 
-
-
-
-
   ///////////////////////////////
   //// Functions for getting basic information out of wellio.js style JSON for plotting
   ///////////////////////////////
 
+  /** 
+   * fromJSONofWEllGetThingsForPlotting is a function that takes in wellio style JSON of all LAS file well log information, 
+   * and returns an object that contains 3 things in an object format that are used in function ___ for plotting.
+   * the data array of objects that D3.js likes for data used in plotting.
+   * @param {object} jsonWell a full wellio style JSON
+   * @returns {array} returns an object of 3 things that will eventually be used in plotting. {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
+  */
   fromJSONofWEllGetThingsForPlotting: function(jsonWell){
     curve_names = Object.keys(jsonWell["CURVES"])
     uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
