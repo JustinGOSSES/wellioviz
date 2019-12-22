@@ -15,7 +15,25 @@
 
 module.exports = {
   ///////////////////////////////
-  //// "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library."
+  /** 
+   * "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, 
+   * particularly those already converted to JSON, using the d3.js visualization library."
+   * 
+   * It is designed with a single central function curveBox, that returns SVGs. 
+   * A variety of helper functions take in differently formatted JSONs of information about the well
+   *  log curves to plot and how to plot them.
+   * 
+   * The idea is that end users can provide their own functions to reformat their data into the template that is fed into curveBox.
+   * 
+   * Some users would wnat to only send to the JavaScript the data they want to plot. Others might use wellio.js to convert a
+   *  whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it. 
+   * 
+   * Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults, 
+   * such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
+  */ 
+ define_wellioviz: function(){
+  return "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library."
+ },
   ///////////////////////////////
 
   //// Example template
