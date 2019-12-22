@@ -4,7 +4,7 @@ d3.js v5 visualization sister repo for wellio.js
 
 
 ## Building basic demo here: 
-https://justingosses.github.io/wellioviz/
+https://justingosses.github.io/wellioviz/demo.html
 
 This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... Currently using a single fill for all curveNames, Xmas themed colors.
 
