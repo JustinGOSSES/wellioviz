@@ -26,6 +26,66 @@
               
                 
                 <li><a
+                  href='#wellioviz'
+                  class="h5 bold black caps">
+                  wellioviz
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#loading'
+                  class="h5 bold black caps">
+                  loading
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#transformation'
+                  class="h5 bold black caps">
+                  Transformation
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#packaging'
+                  class="h5 bold black caps">
+                  Packaging
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#plotting'
+                  class="h5 bold black caps">
+                  Plotting
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#other'
+                  class="h5 bold black caps">
+                  Other
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#define_wellioviz'
                   class="">
                   define_wellioviz
@@ -39,6 +99,16 @@
                   href='#getexampletemplate'
                   class="">
                   getExampleTemplate
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getfakeincomingsparsedataexample'
+                  class="">
+                  getFakeIncomingSparseDataExample
                   
                 </a>
                 
@@ -64,6 +134,46 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#createdeptharray'
+                  class="">
+                  createDepthArray
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#takeinarraysandgetobjectofcurvedataforplotting'
+                  class="">
+                  takeInArraysAndGetObjectOfCurveDataForPlotting
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#curvebox2'
+                  class="">
+                  CurveBox2
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#multiplelogplot'
+                  class="">
+                  multipleLogPlot
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -72,6 +182,138 @@
         </div>
       </div>
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='wellioviz' class='mt0'>
+    wellioviz
+  </h2>
+
+  
+    <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
+<p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
+<h4>Code Organization:</h4>
+<p>  Code is organized into 4 groups of functions. <b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
+<p>  The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. </p>
+<ul>
+<li>In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.</li>
+<li>Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.</li>
+<li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.</li>
+</ul>
+<h4>Different Data Inputs</h4>
+<p>This code is written with the assumption that different users will want to bring in well log data in different formats.
+Some users would wnat to only send to the JavaScript the data they want to plot.
+Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it.
+Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.</p>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='loading' class='mt0'>
+    loading
+  </h2>
+
+  
+    <p>Functions used to get data in. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.</p>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='transformation' class='mt0'>
+    Transformation
+  </h2>
+
+  
+    <p>Data is reformatted into a form that wellioviz can used.</p>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='packaging' class='mt0'>
+    Packaging
+  </h2>
+
+  
+    <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='plotting' class='mt0'>
+    Plotting
+  </h2>
+
+  
+    <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
+
+  
+</section></div>
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='other'>
+      Other
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Othing things go here.</p>
+
+    <div class='pre p1 fill-light mt0'>Other</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -166,6 +408,88 @@ such that the end-user only has to understand what they want to change about the
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
         returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
+EXAMPLE: = [
+{"multipleLines":"yes",
+"curveNames":
+["GR"]
+,
+"curveColors":
+["pink"]
+,
+"fill":[
+{"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":
+[0,ShaleSiltCutOff,SiltSandCutOff]
+,"fillColors":
+["gray","orange","yellow"]
+,"curve2":""},
+{"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
+],
+"curveUnits":
+["units2","other units"]
+,
+"data":well_log_curves_reformatted_for_d3_2,
+"width":200,
+"height":400,
+"margin":({top: 20, right: 3, bottom: 30, left: 30}),
+"depth_curve_name":"DEPTH"}
+]
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getfakeincomingsparsedataexample'>
+      getFakeIncomingSparseDataExample
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>getFakeIncomingSparseDataExample is a function that takes nothing and returns a JSON of fake sparse incoming data. This is much less than the JSON wellio gives when it converts a LAS file into a JSON. This is one of the type examples of data input.
+It is used next by funtion _<strong><em> and </em></strong>.</p>
+
+    <div class='pre p1 fill-light mt0'>getFakeIncomingSparseDataExample(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        returns an array that contains an object. probably just a single object? Many of the things like max and min depth that are auto-calculated when the input is a wellio JSON and instead explicitly defined here. This saves data transmission from a backend as well as front-end calculation time.
 
       
     
@@ -331,6 +655,307 @@ the data array of objects that D3.js likes for data used in plotting.</p>
 
       
     
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createdeptharray'>
+      createDepthArray
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>createDepthArray is a function that takes in a min float, max float, and step float value.<br>
+and returns an array or depth values from the min to the max value going by the step value each step.
+This function is used to create a depth array for plotting when only the max, min, and depth is given explicitly in the input data. This might be done to avoid sending the depth curve from the backend to the front-end.</p>
+
+    <div class='pre p1 fill-light mt0'>createDepthArray(min: float, max: float, step: float): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>min</span> <code class='quiet'>(float)</code>
+	    a float or integer that represents the top depth of an eventual array of depth values that this function creates.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>max</span> <code class='quiet'>(float)</code>
+	    a float or integer that represents the bottom depth of an array of depth values this function creates.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>step</span> <code class='quiet'>(float)</code>
+	    a float or integer that represents the interval the depth curve increases as you go from the top to the bottom of the depth curve this function creates.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        returns an array of depth values from the min to the max by the step. AN EXAMPLE = 
+[10,10.5,11,11.5,12]
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='takeinarraysandgetobjectofcurvedataforplotting'>
+      takeInArraysAndGetObjectOfCurveDataForPlotting
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
+THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
+
+    <div class='pre p1 fill-light mt0'>takeInArraysAndGetObjectOfCurveDataForPlotting(arraysOfCurvesAndNames: any, CurveName: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arraysOfCurvesAndNames</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>CurveName</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='curvebox2'>
+      CurveBox2
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>CurveBox2 is the central function to wellioviz in a lot of ways, not least as it holds the d3.js code. It takes a JSOn template, appends the resulting SVG to a defined DIV.</p>
+
+    <div class='pre p1 fill-light mt0'>CurveBox2(well_curve_config_template: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): any</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>well_curve_config_template</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        SVG.node() But its main function is to append this SVG to a DIV given in the template that is the single parameter.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='multiplelogplot'>
+      multipleLogPlot
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This function is used to plot multiple curveboxes in a row. AKA makes a cross-section. It calls curveBox multiple times.</p>
+
+    <div class='pre p1 fill-light mt0'>multipleLogPlot(divIDstring: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, templates: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>divIDstring</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    a string that represents the div ID that the multiple curveboxes will be appended to
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>templates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    An array of CurveBox input templates
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
   
 
   

@@ -1,0 +1,45 @@
+toc:
+  - name: wellioviz
+    description: |
+      ### WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
+      Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
+
+      #### Code Organization:
+        Code is organized into 4 groups of functions. <b>Loading, Transformation, Packaging, & Plotting.</b> 
+
+        The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
+        - In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
+        - Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
+        - In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
+      
+      #### Different Data Inputs
+
+      This code is written with the assumption that different users will want to bring in well log data in different formats.
+      Some users would wnat to only send to the JavaScript the data they want to plot. 
+      Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it.
+      Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.
+
+  
+      
+    
+    
+  - name: loading
+    description: |
+      Functions used to get data in. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.
+  - name: Transformation
+    description: |
+      Data is reformatted into a form that wellioviz can used.
+  - name: Packaging
+    description: |
+      Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.
+  - name: Plotting
+    description: |
+      How the data should be plotted and what data should be plotted is turned into an SVG.
+  
+  - name : Other
+    description: |
+      Othing things go here.
+    children:
+      - ./dist/index.js/fromJSONofWEllGetThingsForPlotting
+      - convertWellJSONToOb
+  
