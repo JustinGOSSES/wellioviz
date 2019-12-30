@@ -36,9 +36,9 @@
               
                 
                 <li><a
-                  href='#loading'
+                  href='#loading-functions'
                   class="h5 bold black caps">
-                  loading
+                  loading functions
                   
                 </a>
                 
@@ -46,9 +46,9 @@
               
                 
                 <li><a
-                  href='#transformation'
+                  href='#transformation-funtions'
                   class="h5 bold black caps">
-                  Transformation
+                  Transformation funtions
                   
                 </a>
                 
@@ -56,9 +56,9 @@
               
                 
                 <li><a
-                  href='#packaging'
+                  href='#packaging-functions'
                   class="h5 bold black caps">
-                  Packaging
+                  Packaging functions
                   
                 </a>
                 
@@ -66,9 +66,9 @@
               
                 
                 <li><a
-                  href='#plotting'
+                  href='#plotting-functions'
                   class="h5 bold black caps">
-                  Plotting
+                  Plotting functions
                   
                 </a>
                 
@@ -76,9 +76,9 @@
               
                 
                 <li><a
-                  href='#other'
+                  href='#helper-functions'
                   class="h5 bold black caps">
-                  Other
+                  Helper Functions
                   
                 </a>
                 
@@ -193,19 +193,20 @@
   
     <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
 <p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
+<h4>Different Data Inputs</h4>
+<p>This code is written with the assumption that different users will want to bring in well log data in different formats.
+Some users would wnat to only send to the JavaScript the data they want to plot.
+Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it.
+Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.</p>
 <h4>Code Organization:</h4>
-<p>  Code is organized into 4 groups of functions. <b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
+<p>  Code is organized into 4 groups of functions: </p>
+<p>  <b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
 <p>  The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. </p>
 <ul>
 <li>In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.</li>
 <li>Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.</li>
 <li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.</li>
 </ul>
-<h4>Different Data Inputs</h4>
-<p>This code is written with the assumption that different users will want to bring in well log data in different formats.
-Some users would wnat to only send to the JavaScript the data they want to plot.
-Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it.
-Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.</p>
 
   
 </section></div>
@@ -214,12 +215,13 @@ Still others might want to bring in data in a format I don't know of. Ideally, i
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='loading' class='mt0'>
-    loading
+  <h2 id='loading-functions' class='mt0'>
+    loading functions
   </h2>
 
   
-    <p>Functions used to get data in. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.</p>
+    <h3>Functions used to get data in.</h3>
+<p>As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  </p>
 
   
 </section></div>
@@ -228,12 +230,22 @@ Still others might want to bring in data in a format I don't know of. Ideally, i
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='transformation' class='mt0'>
-    Transformation
+  <h2 id='transformation-funtions' class='mt0'>
+    Transformation funtions
   </h2>
 
   
     <p>Data is reformatted into a form that wellioviz can used.</p>
+<h4>Transformation functions for data that comes in as Wellio.js style JSON</h4>
+<ul>
+<li><a href="#convertwelljsontoobj">#convertwelljsontoobj</a> </li>
+<li><a href="#fromjsonofwellgetthingsforplotting">#fromjsonofwellgetthingsforplotting</a></li>
+<li><a href="#takeinarraysandgetobjectofcurvedataforplotting">#takeinarraysandgetobjectofcurvedataforplotting</a></li>
+</ul>
+<h4>Transformation functions for data that comes in as sparse style JSON</h4>
+<ul>
+<li><a href="#createdeptharray">#createdeptharray</a></li>
+</ul>
 
   
 </section></div>
@@ -242,12 +254,15 @@ Still others might want to bring in data in a format I don't know of. Ideally, i
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='packaging' class='mt0'>
-    Packaging
+  <h2 id='packaging-functions' class='mt0'>
+    Packaging functions
   </h2>
 
   
     <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
+<ul>
+<li><a href="#multiplelogplot">#multiplelogplot</a></li>
+</ul>
 
   
 </section></div>
@@ -256,63 +271,37 @@ Still others might want to bring in data in a format I don't know of. Ideally, i
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='plotting' class='mt0'>
-    Plotting
+  <h2 id='plotting-functions' class='mt0'>
+    Plotting functions
   </h2>
 
   
     <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
+<ul>
+<li><a href="#curvebox2">#curvebox2</a></li>
+</ul>
 
   
 </section></div>
           
         
           
-          <section class='p2 mb2 clearfix bg-white minishadow'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='helper-functions' class='mt0'>
+    Helper Functions
+  </h2>
 
   
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='other'>
-      Other
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Othing things go here.</p>
-
-    <div class='pre p1 fill-light mt0'>Other</div>
-  
-  
+    <p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
+<ul>
+<li><a href="#define_wellioviz">#define_wellioviz</a></li>
+<li><a href="#getexampletemplate">#getexampletemplate</a></li>
+<li><a href="#getfakeincomingsparsedataexample">#getfakeincomingsparsedataexample</a></li>
+</ul>
 
   
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
+</section></div>
           
         
           
