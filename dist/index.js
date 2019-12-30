@@ -410,6 +410,28 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
       return svg.node();
     },
     
+    /**
+     * Function for saving a SVG from the HTML DOM as a SVG file. This currently only works on front-end but might be later adapted for server-side rendering.
+     * The plan is for default behavior of curveBox to be that an SVG is appended to a div. However, this function is trying to enable saving just the SVG as an SVG file. 
+     * This might be useful if the well log visualizations could be pre-rendered on the server and then loaded to the front-end, which theoretically might save load time.
+     * @param {element} svgEl an element from the DOM. It should include the whole chart to be in the SVG.
+     * @param {string} name is the name of the resulting SVG. An example might be "testChart4.SVG"
+     */
+    saveSvg:function(svgEl, name) {
+      svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      var svgData = svgEl.outerHTML;
+      var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+      var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+      var svgUrl = URL.createObjectURL(svgBlob);
+      var downloadLink = document.createElement("a");
+      downloadLink.href = svgUrl;
+      downloadLink.download = name;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+  },
+
+
     //////////
     /**
      * This function is used to plot multiple curveboxes in a row. AKA makes a cross-section. It calls curveBox multiple times.

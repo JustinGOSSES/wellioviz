@@ -43,6 +43,8 @@ toc:
     description: |
       How the data should be plotted and what data should be plotted is turned into an SVG.
       - {@link #curvebox2}
+      - {@link #savesvg}
+      --------------------------------------------------------------------------------
   - name: Helper Functions
     description: |
       In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.
