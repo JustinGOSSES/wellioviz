@@ -242,16 +242,20 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
   ///////////////////////////////
 
   /**
-   * CurveBox2 is the central function to wellioviz in a lot of ways, not least as it holds the d3.js code. It takes a JSOn template, appends the resulting SVG to a defined DIV.
+   * CurveBox is the central function to wellioviz in a lot of ways, not least as it holds the d3.js code. It takes a JSOn template, appends the resulting SVG to a defined DIV.
    * @param {object} well_curve_config_template 
    * @returns {*} SVG.node() But its main function is to append this SVG to a DIV given in the template that is the single parameter.
    */
-  CurveBox2:function (well_curve_config_template){
+  CurveBox:function (well_curve_config_template){
    
-      //// These parts of the function establish variables from the config JSON in shorter variable names
+ //// These parts of the function establish variables from the config JSON in shorter variable names
       //// If there is a greater change that the template might not include them & they are necessary,
       //// then a default or blank value is used
       well_curve_config_template = well_curve_config_template[0]
+      
+      //// Determine if title exists for the curveBox.
+      let title = ""
+      if(well_curve_config_template["title"]){title=well_curve_config_template["title"]["text"]}
       
       let multipleLines = well_curve_config_template["multipleLines"]
       
@@ -319,7 +323,17 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
           .call(yAxis);
       //// throw away code for single curve to plot that will be deleted soon  
       //// was here:
-      //// Code that assumes multiple curves are plotted in same curvebox   
+      //// Code that assumes multiple curves are plotted in same curvebox  
+      let distanceFromTop = -15
+      if(title !== ""){
+        svg.append("text") // 
+            .attr("x", (margin.left/3+(width/2)))            
+            .attr("y", 0 + (- distanceFromTop))
+            .attr("text-anchor", "middle")  
+            .style("font-size", "18px")  
+            .text(title);
+        //distanceFromTop = -20
+       }
     for (let k = 0; k < curveNames.length; k++) {
     //// code that creates a line for each Curve in order provided and applies 
     //// the color in the color array in order provided
@@ -335,24 +349,26 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
           .attr("stroke-linecap", "round")
           .attr("d", another_line);
           
-        let distanceFromTop = -10
+        
         if(k > 0){distanceFromTop = -30}
         svg.append("text")
-          .attr("x", (width -40))             
+          .attr("x", (width-margin.right-width/4))             
           .attr("y", 0 + (margin.top + distanceFromTop))
           .attr("text-anchor", "middle")  
-          .style("font-size", "16px") 
+          .style("font-size", "14px") 
           .style("text-decoration", "underline")  
           .text(curveUnit);
       
         
         svg.append("text")
-          .attr("x", 40)             
+          .attr("x", margin.left+width/4)             
           .attr("y", 0 + (margin.top + distanceFromTop))
           .attr("text-anchor", "middle")  
-          .style("font-size", "16px") 
+          .style("font-size", "14px") 
           .style("text-decoration", "underline")  
           .text(curveNames[k]);
+      
+        
         }
         
       // define the area filled under the curve
@@ -449,7 +465,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
         // template[0]["data"] = new_data
         templates[i]["divID"] = divIDstring
         new_templates.push(templates[i])
-        result = this.CurveBox2(new_templates[i])
+        result = this.CurveBox(new_templates[i])
       }
       return result
     }
