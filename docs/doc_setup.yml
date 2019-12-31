@@ -42,7 +42,7 @@ toc:
   - name: Plotting functions
     description: |
       How the data should be plotted and what data should be plotted is turned into an SVG.
-      - {@link #curvebox2}
+      - {@link #curvebox}
       - {@link #savesvg}
       --------------------------------------------------------------------------------
   - name: Helper Functions
