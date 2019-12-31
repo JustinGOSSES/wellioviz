@@ -71,17 +71,18 @@ module.exports = {
   getExampleTemplate: function (){
     return [
       {"multipleLines":"yes",
-      "curveNames":["GR"],
-      "curveColors":["pink"],
+      "curveNames":["GR","RESD"],
+      "curveColors":["Green","pink"],
       "fill":[
-        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,ShaleSiltCutOff,SiltSandCutOff],"fillColors":["gray","orange","yellow"],"curve2":""},
+        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,0.3,0.8],"fillColors":["gray","orange","yellow"],"curve2":""},
         {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
       ],
-      "curveUnits":["units2","other units"],
-      "data":well_log_curves_reformatted_for_d3_2,
+      "curveUnits":["",""],
+      "data"::"d3 style array of data objects goes here",
       "width":200,
-      "height":400,
-      "margin":({top: 20, right: 3, bottom: 30, left: 30}),
+      "height":500,
+      "margin":({top: 50, right: 3, bottom: 30, left: 30}),
+      "title":{"text":"","title_font_size":"10px"},
       "depth_curve_name":"DEPTH"}
       ]
   },
