@@ -248,7 +248,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
    */
   CurveBox:function (well_curve_config_template){
    
- //// These parts of the function establish variables from the config JSON in shorter variable names
+       //// These parts of the function establish variables from the config JSON in shorter variable names
       //// If there is a greater change that the template might not include them & they are necessary,
       //// then a default or blank value is used
       well_curve_config_template = well_curve_config_template[0]
@@ -330,7 +330,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
             .attr("x", (margin.left/3+(width/2)))            
             .attr("y", 0 + (- distanceFromTop))
             .attr("text-anchor", "middle")  
-            .style("font-size", "18px")  
+            .style("font-size", well_curve_config_template["title"]["title_font_size"])  
             .text(title);
         //distanceFromTop = -20
        }
