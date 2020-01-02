@@ -1,19 +1,21 @@
 # wellio_Viz.js
-d3.js v5 visualization sister repo for wellio.js
+
+WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
 
 ## IN PROGRESS.....
 
 ### Docs will be here: https://justingosses.github.io/wellioviz/
 
-### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
-
-### Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html
-
-This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... Currently using a single fill for all curveNames, Xmas themed colors.
-
 ### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
 
-##### Other older Observable notebooks from earlier brainstorms are:
+#### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
+
+##### Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html
+
+This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... uses an older version of index.js than in this repo...will update to current eventually... in progress
+
+
+##### Other older Observable notebooks that use older versions of wellioviz code are:
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
 
 &
@@ -37,30 +39,30 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 
 <i>Point of Caution: The last two are going to be pretty hard to build well and are out of scope of this project.</i>
 
+## Visualization Organization
+- Curvebox: The central unit of visualization. Can contain either a single Curve or multiple curves, typically from one well.
+- CurveboxHolder aka a Cross-section: Made up of multiple curveboxes. Each curvebox can represent a different well or different curves (one per box) from the same well. Typically no plotting between curveboxes but there may be for tops in cross-sections. 
 
-
-## Visualization Boxes
-- Curvebox: Single Curve (single well)
-- Curvebox: Multiple Curves (single well)
-- CurveboxHolder: Single Well (single or multiple curve per box all from single well)
-- CurveboxHolder: Multiple Well (single or multiple curve per box all from multiple well) AKA Cross-Section
-
-## Possible Visualization Pieces
-- Axis
+### Curvebox Visualization Components
+- Axis (for example ticks and integers to represent depth) (x and y)
+- Axis titles (x and y)
 - Curvebox Title
-- Axis titles
-- *Scales, and scale title with units*
-- Curves
+- Curve lines (color, stroke size, stroke style)
 - Curve fill based on under or over a curve 
 - Curve fill multiple fill colors based on cutoffs & under or over a curve value
 - Curve fill based on overlap of two curves
 - Curve fill based on SVG pattern
 - Curve fill like property but visualized as curve line color
 - Curve fill like property but visualized as colored rectangle within well box or curve box.
+- Curve units
+- Curve min & max
+- Curve Name
 - Top lines
-- Top lines between well boxes
 - Top titles
-
+- Boxes with transparency to represent core location, formations, etc.
+- Box titles
+- X & Y values on hover
+- Clickable curvebox with coordinates returned to other functions via click
 
 ## Potential API organization brainstorm:
 - Central point of organizatin for API is curvebox.
@@ -82,3 +84,6 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Build it into a vanilla front-end and node.js package when it is clear how API should work.
 - Deploy to npm. 
 - Build into production use-cases in a couple of different ways
+
+#### Further Brainstorms on project goals/plan/development:
+https://github.com/JustinGOSSES/wellioviz/blob/master/BRAINSTORMS.md
