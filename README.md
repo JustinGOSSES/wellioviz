@@ -73,6 +73,8 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - 3. For single curve multiple wells, an array of curveNames acceptable in order or preference, multiple wellio JSON datas objects is all that is required at minimum. 
 - 4. If tops are wanted in the above option for a cross-section, then an object with top name and array of top depths for each well name or `None` must be given which will be used to plot tops. Multiple such objects can be provided.
 
+### Architecture Sketch
+<a href="images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png"></a>
 
 ## Theoretical Development Plan
 - Play around with it could be on Observable. 
