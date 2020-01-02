@@ -54,18 +54,21 @@ module.exports = {
    * @returns {array} returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
    * EXAMPLE: = [
       {"multipleLines":"yes",
-      "curveNames":["GR"],
-      "curveColors":["pink"],
+      "curveNames":["GR","RESD"],
+      "curveColors":["Green","pink"],
       "fill":[
-        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,ShaleSiltCutOff,SiltSandCutOff],"fillColors":["gray","orange","yellow"],"curve2":""},
+        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,0.3,0.8],"fillColors":["gray","orange","yellow"],"curve2":""},
         {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
       ],
-      "curveUnits":["units2","other units"],
-      "data":well_log_curves_reformatted_for_d3_2,
+      "depthLimits":{"min":0,"max":100000},
+      "curveLimits":[{"curveName":"","min":0,"max":100}],
+      "curveUnits":["",""],
+      "data":[{"depth": "1599.600", "GR": 100},{"depth": "1599.600", "GR": 52.2322},{"depth": "1599.600", "GR": 29.23},{"depth": "1599.600", "GR": 56.2322}],
       "width":200,
-      "height":400,
-      "margin":({top: 20, right: 3, bottom: 30, left: 30}),
-      "depth_curve_name":"DEPTH"}
+      "height":500,
+      "margin":({top: 50, right: 3, bottom: 30, left: 30}),
+      "title":{"text":"","title_font_size":"10px"},
+      "depth_curve_name":"depth"}
       ]
   */
   getExampleTemplate: function (){
@@ -77,8 +80,10 @@ module.exports = {
         {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,0.3,0.8],"fillColors":["gray","orange","yellow"],"curve2":""},
         {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
       ],
+      "depthLimits":{"min":"autocalculate","max":"autocalculate"},
+      "curveLimits":[{"curveName":"","min":0,"max":100}],
       "curveUnits":["",""],
-      "data"::"d3 style array of data objects goes here",
+      "data":[{"depth": "1599.600", "GR": 100},{"depth": "1599.600", "GR": 52.2322},{"depth": "1599.600", "GR": 29.23},{"depth": "1599.600", "GR": 56.2322}],
       "width":200,
       "height":500,
       "margin":({top: 50, right: 3, bottom: 30, left: 30}),
@@ -249,7 +254,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
    */
   CurveBox:function (well_curve_config_template){
    
-       //// These parts of the function establish variables from the config JSON in shorter variable names
+      //// These parts of the function establish variables from the config JSON in shorter variable names
       //// If there is a greater change that the template might not include them & they are necessary,
       //// then a default or blank value is used
       well_curve_config_template = well_curve_config_template[0]
@@ -275,12 +280,29 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
       let height = well_curve_config_template["height"]
       let margin = well_curve_config_template["margin"]
       let depth_curve_name = well_curve_config_template["depth_curve_name"]
-      //// Calculate depth min and max
-      let depth_min
-      if(!depth_min){depth_min = d3.min(data, function(d) { return +d[depth_curve_name];});}
-      let depth_max
-      if(!depth_max){depth_max = d3.max(data, function(d) { return +d[depth_curve_name];});}
       
+      //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
+      let depth_min
+      let depth_max
+     if(!well_curve_config_template["depthLimits"] || well_curve_config_template["depthLimits"]["min"] == "autocalculate")
+        {depth_min = d3.min(data, function(d) { return +d[depth_curve_name];})}
+      else
+        {depth_min = well_curve_config_template["depthLimits"]["min"]}
+      //// max depth
+      if(!well_curve_config_template["depthLimits"] || well_curve_config_template["depthLimits"]["max"] == "autocalculate")
+        {depth_max = d3.max(data, function(d) { return +d[depth_curve_name];})}
+      else
+        {depth_max = well_curve_config_template["depthLimits"]["max"]}
+
+      //// Apply depth min and max to incoming well log data
+      //// To save time, we'll first check if the first object in the array had as depth that is smaller than min
+      //// and check if the last object in the array has a depth that is larger than the max, if not. we do nothing.
+      if(data[0][depth_curve_name] > depth_min && data[-1][depth_curve_name] < depth_max){}
+      else{data = data.filter(function(objects){
+  return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
+})}
+  
+  
       // Calculate x domain extent for one or more than one curve
       let mins = []
       let maxes = []

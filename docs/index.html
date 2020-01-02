@@ -156,9 +156,9 @@
               
                 
                 <li><a
-                  href='#curvebox2'
+                  href='#curvebox'
                   class="">
-                  CurveBox2
+                  CurveBox
                   
                 </a>
                 
@@ -204,10 +204,20 @@
     <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
 <p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
 <h4>Different Data Inputs</h4>
-<p>This code is written with the assumption that different users will want to bring in well log data in different formats.
-Some users would wnat to only send to the JavaScript the data they want to plot.
-Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it.
-Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.</p>
+<p>This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.</p>
+<p>Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. </p>
+<p>Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.</p>
+<p>Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.</p>
+<h4>Plotting Organization Ideas</h4>
+<ul>
+<li>Central unit is the CurveBox. A rectangular 2D representation of a well bore with depth on y axis and curve values on x axis. </li>
+<li>Multiple log curves can go in a single curve box.</li>
+<li>Multiple curve boxes can be combined horizontally into a cross-section.</li>
+<li>Typically only one well will usually be in a single curve box. </li>
+<li>One well can be spread across multiple curve boxes with a different well log curve or curves in each curvebox.</li>
+<li>Curves can optionally have fills whose color and presence can be based on thresholds related to one curve or multiple curves in that curve box.</li>
+<li>Curveboxes can have lines and boxes with or without transparency that represent things like tops and formations.</li>
+</ul>
 <h4>Code Organization:</h4>
 <p>  Code is organized into 4 groups of functions: </p>
 <p>  <b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
@@ -215,7 +225,8 @@ Still others might want to bring in data in a format I don't know of. Ideally, i
 <ul>
 <li>In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.</li>
 <li>Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.</li>
-<li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.</li>
+<li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
+</li>
 </ul>
 
   
@@ -412,27 +423,34 @@ such that the end-user only has to understand what they want to change about the
 EXAMPLE: = [
 {"multipleLines":"yes",
 "curveNames":
-["GR"]
+["GR","RESD"]
 ,
 "curveColors":
-["pink"]
+["Green","pink"]
 ,
 "fill":[
 {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":
-[0,ShaleSiltCutOff,SiltSandCutOff]
+[0,0.3,0.8]
 ,"fillColors":
 ["gray","orange","yellow"]
 ,"curve2":""},
 {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
 ],
-"curveUnits":
-["units2","other units"]
+"depthLimits":{"min":0,"max":100000},
+"curveLimits":
+[{"curveName":"","min":0,"max":100}]
 ,
-"data":well_log_curves_reformatted_for_d3_2,
+"curveUnits":
+["",""]
+,
+"data":
+[{"depth": "1599.600", "GR": 100},{"depth": "1599.600", "GR": 52.2322},{"depth": "1599.600", "GR": 29.23},{"depth": "1599.600", "GR": 56.2322}]
+,
 "width":200,
-"height":400,
-"margin":({top: 20, right: 3, bottom: 30, left: 30}),
-"depth_curve_name":"DEPTH"}
+"height":500,
+"margin":({top: 50, right: 3, bottom: 30, left: 30}),
+"title":{"text":"","title_font_size":"10px"},
+"depth_curve_name":"depth"}
 ]
 
       
@@ -840,17 +858,17 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='curvebox2'>
-      CurveBox2
+    <h3 class='fl m0' id='curvebox'>
+      CurveBox
     </h3>
     
     
   </div>
   
 
-  <p>CurveBox2 is the central function to wellioviz in a lot of ways, not least as it holds the d3.js code. It takes a JSOn template, appends the resulting SVG to a defined DIV.</p>
+  <p>CurveBox is the central function to wellioviz in a lot of ways, not least as it holds the d3.js code. It takes a JSOn template, appends the resulting SVG to a defined DIV.</p>
 
-    <div class='pre p1 fill-light mt0'>CurveBox2(well_curve_config_template: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): any</div>
+    <div class='pre p1 fill-light mt0'>CurveBox(well_curve_config_template: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): any</div>
   
   
 

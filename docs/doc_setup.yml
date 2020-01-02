@@ -6,10 +6,22 @@ toc:
 
       #### Different Data Inputs
 
-      This code is written with the assumption that different users will want to bring in well log data in different formats. 
-      Some users would wnat to only send to the JavaScript the data they want to plot. 
-      Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it.
+      This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.
+
+      Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. 
+      
+      Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.
+      
       Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.
+      
+      #### Plotting Organization Ideas
+      - Central unit is the CurveBox. A rectangular 2D representation of a well bore with depth on y axis and curve values on x axis. 
+      - Multiple log curves can go in a single curve box.
+      - Multiple curve boxes can be combined horizontally into a cross-section.
+      - Typically only one well will usually be in a single curve box. 
+      - One well can be spread across multiple curve boxes with a different well log curve or curves in each curvebox.
+      - Curves can optionally have fills whose color and presence can be based on thresholds related to one curve or multiple curves in that curve box.
+      - Curveboxes can have lines and boxes with or without transparency that represent things like tops and formations.
 
       #### Code Organization:
         Code is organized into 4 groups of functions: 
@@ -20,8 +32,7 @@ toc:
         - In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
         - Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
         - In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
-      
-      
+            
   - name: loading functions
     description: |
       ### Functions used to get data in. 
