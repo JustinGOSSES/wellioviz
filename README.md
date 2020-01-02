@@ -80,3 +80,6 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 - Build it into a vanilla front-end and node.js package when it is clear how API should work.
 - Deploy to npm. 
 - Build into production use-cases in a couple of different ways
+
+#### Further Brainstorms on project goals/plan/development:
+https://github.com/JustinGOSSES/wellioviz/blob/master/BRAINSTORMS.md
