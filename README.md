@@ -6,15 +6,16 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 
 ### Docs will be here: https://justingosses.github.io/wellioviz/
 
+### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
+
 #### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
 
 ##### Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html
 
-This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... Currently using a single fill for all curveNames... in progress
+This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... uses an older version of index.js than in this repo...will update to current eventually... in progress
 
-### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
 
-##### Other older Observable notebooks from earlier brainstorms are:
+##### Other older Observable notebooks that use older versions of wellioviz code are:
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
 
 &
