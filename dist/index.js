@@ -220,6 +220,166 @@ module.exports = {
   return depth
 },
 
+/**
+ * curveBoxTemplateExamples gives an example of the template giving to the plotting functions and definitions of the fields.
+ * A string of either "help" "example" or "definitions" is given as function argument and either a string or Object is returned depending on string provided as input parameter. 
+ * This is used to help construct the JSON object that is given to the curveBox plotting function.
+ * Someone might run this function with "example" as the parameter, give back the JSON template, replace a few pieces with their own data or format choices and then pass it as the argument into the curveBox function.
+ * @param {string} string_of_either__help_example_definitions_mandatories A string of either "help" "example" or "definitions" 
+ */
+curveBoxTemplateExamples: function (string_of_either__help_example_definitions_mandatories){
+  let request_string = string_of_either__help_example_definitions_mandatories
+  if(request_string=="help"){
+    return "The curveBoxTemplateExamples function returns example templates based on an input argument. Possible argument values are 'example' 'defintions' or 'mandatories'" 
+  }
+  if(request_string=="example"){
+    return [{
+  "curve_box":{
+    "show_well_name":"yes", /// not built yet
+    "show_depth_type":"no", /// not built yet
+    "show_curve_units":"yes", /// not built yet
+    "curve_box_depth_min":-999, /// not built yet
+    "curve_box_depth_max":-999, /// not built yet
+    "take_out_null_or_visualize":"no", /// not built yet
+    "show_title":"no", 
+    "width": 260, 
+    "height": 500, 
+    "margin": {"top": 50, "right": 10, "bottom": 30, "left": 60}, 
+    "title": {"text": "", "title_font_size": "10px"}, /// not built yet
+    "div_id": "well_holder_3", /// Should be skip-able // default=random str? What happens if div doesn't exist?
+    "order_of_component":["curves","rectanges","lines"], /// not built yet
+    "lines_connected_across_curveboxes":"no" /// not built yet
+},
+ "components":[{
+   "curves":[
+    { "data_type":"curve", 
+      "curve_names":["RHOB"],
+      "curve_colors":["black"],
+      "fill":[
+                {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
+              ],
+       "curve_units":["g/cm3"],
+       "depth_limits":[{"min":"autocalculate","max":"autocalculate"}],
+       "curve_limits":[{"curve_name":"","min":2,"max":3}],
+        "data":[{"depth":1598.3,"RHOB":2.2322},{"depth":1598.4,"RHOB":2.0513},{"depth":1598.5,"RHOB":2.2548},{"depth":1598.6,"RHOB":2.9445},{"depth":1598.7,"RHOB":2.2223},{"depth":1598.8,"RHOB":2.447},{"depth":1598.9,"RHOB":2.598},{"depth":1599,"RHOB":2.8088},{"depth":1599.1,"RHOB":2.2248},{"depth":1599.2,"RHOB":2.2399},{"depth":1599.3,"RHOB":2.251},{"depth":1599.4,"RHOB":2.255},{"depth":1599.5,"RHOB":2.2526},{"depth":1599.6,"RHOB":2.2322},{"depth":1599.7,"RHOB":2.2513},{"depth":1599.8,"RHOB":2.2548},{"depth":1599.9,"RHOB":2.2445},{"depth":1600,"RHOB":2.2223},{"depth":1600.1,"RHOB":2.2047},{"depth":1600.2,"RHOB":2.198}], /// not built yet
+       "depth_curve_name":"DEPT",/// not built yet
+      //////
+     "data_id":["firstID","secondIDFor2curve",], /// not built yet
+     "well_names":[""], /// not built yet
+     "log_scale": [false],  /// not built yet
+     "line_color": ["red"], /// not built yet
+     "max_depth": 1589.3, /// not built yet
+     "min_depth": 1607.3, /// not built yet
+     "depth_type_string":["MD"], /// not built yet
+     "null_value": [""], /// not built yet
+    }
+ ],
+  "lines":[
+    {
+     "data_type":"line",  /// not built yet
+      "label":"example",  /// not built yet
+     "depth":-999, /// not built yet
+     "color":"red", /// not built yet
+     "stroke_width":"1px", /// not built yet
+     "stroke_style":"solid", /// not built yet
+     "transparency":1.0 /// not built yet
+    }
+  ],
+    "rectangles":[
+       {
+     "data_type":"rectangle", 
+     "depth_top":0,  
+     "x_starting_upper_left_corner":0,
+     "width":100, 
+     "height":100,
+     "stroke-width":"2px",
+     "fill":"red",
+     "opacity":0.5,
+     "label":"Core Example", // not built into plotting template yet
+     "label_orientation":"horizontal", // not built into plotting template yet
+     "lable_position":"right" // not built into plotting template yet
+    }
+   ]
+ }]
+}]
+  }
+  else if(request_string=="defintions"){
+    return [{
+  "curve_box":{
+    "show_well_name":"yes or no. If '' is no", // not built yet
+    "show_depth_type":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
+    "show_curve_units":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
+    "curve_box_depth_min":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet 
+    "curve_box_depth_max":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet
+    "take_out_null_or_visualize":"yes or no. If '' is no", // not built yet 
+    "show_title":"yes or no. If '' is no", // not built yet 
+    "width": "number, if blank default is 250", 
+    "height": "number, if blank default is 500", 
+    "margin": ' should be an object like {"top": 50, "right": 10, "bottom": 30, "left": 60} if missing will default to these values', 
+    "title": 'object like:{"text": "", "title_font_size": "10px"} if default, an empty string, "" will skill', 
+    "div_id": "should be a string that equals a div id like: 'well_holder' Do not include the #",  ///What happens if div doesn't exist?
+    "order_of_component":'Should be an array of strings that correlate to component types like:["curves","rectangles","lines"]', // not built yet
+    "lines_connected_across_curveboxes":"yes or no. If '' is no" // not built yet
+},
+ "components":[{
+   "curves":[
+    { "data_type":"requires one of possible strings: curve, line, rectangle if not one of acceptable string it just skips it.", // not built yet
+      "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
+      "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
+      "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
+       "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
+       "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
+       "curve_limits":'An array of objects that hold the min and max curve values allow to cut off spurious value spikes, like: [{"curve_name":"GR","min":0,"max":100},{"curve_name":"PDF","min":0,"max":100}]',
+        "data":'Should be an array of objects where the keys in key:value pairs in each object are curve_names or UWI like: [{"UWI":"111aa","DEPTH":4140.5,"GR":0},{"UWI":"111aa","DEPTH":4141,"GR":0}] for the entire depth of the well being showin the curve_box', 
+       "depth_curve_name":"A string of the curve that is the depth being plotted, like: 'DEPT'. Should be the same name as the depth curve in the array of objects in the data key above.",
+      //////
+      "data_id":["array of strings whose length must equal curve_units, curve_names, etc."], // not built yet
+      "well_names":"An array of strings that represent well names if multiple curves shown in same curve_box. If only one well name, only one is required.", // not built yet /// 
+     "log_scale": "An array of either True or False not in string form but as a primative. If true, plotting will be on log scale for the curve that is in that position of the arrays",  // not built yet 
+     ////// Plotting things but need to be next to curve data or will be too confusing.
+     "line_color": "An array of strings that establish the color of the line of the curve. RGB or common color name, like 'red'. If absent, default is black", 
+     "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
+     "min_depth": "Any array of numbers where each represents the min depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the min depth is autocalculated from the min depth of the input data in the data field. This is default behavior.", 
+     "depth_type_string":"All the curves should be calculated and populated vs. this curve. Takes a string, like: 'DEPT'",
+     "null_value": "An array of null values used for each curve. Default is no null values considered, but could be something like: ['-999.25','-999.25','-999.25','NA']"
+    }
+ ],
+  "lines":[
+    {
+     "data_type":'must be string, will be ignored if not "line", "curve", or "rectangle"', 
+     "label":"The label for horiztonal line in string form",
+     "depth":"number for the depth at which the line is placed", 
+     "color":"string for the color of the line in common color name or RGB format. If '' then black will be used.", 
+     "stroke_width":"A string with of px value for stroke width, like: '1px'. Default if absent is '1px'.", 
+     "stroke_style":'Should be string, if not or doesnt exist will be treated as "solid"',
+     "transparency":'Should be float between 0.0 and 1.0. Otherwise default is 1.0.'
+    }
+  ],
+    "rectangles":[
+       {
+     "data_type":"rectangle", 
+     "depth_top":"A number for the depth of the upper left corner of the rectangle", // 
+     "x_starting_upper_left_corner":"A number for the x axis value of the upper left corner of the rectangle",
+     "width":"Width of rectangle as number", 
+     "height":"Height of rectangle as number",
+     "stroke-width":"Stroke width of line that makes rectangle as a strike, like '2px'.",
+     "fill":"String that represents the color of the rectangle fill in either common color name or RGB like, 'red'",
+     "opacity":"Float between 0 and 1 that represents the opacity of the fill, default is 0.5",
+     "label":"String that appears on end of line and likely represents a top name, like: 'Top Jurassic Final Final Final'", // not built into plotting template yet
+     "label_orientation":"A string that is either 'horizontal' or 'vertical'. If other values, will treat as horizontal label orientation", // not built into plotting template yet
+     "lable_position":"Exceptable strings are top, center, right, left, bottom. Default right." // not built into plotting template yet
+    }
+   ]
+ }]
+}]
+  }
+  else if(request_string=="mandatories"){
+    return [
+      "This is not yet populated!!!!"
+    ]
+  }
+},
+
 /** 
  * takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
 * THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!
@@ -241,6 +401,122 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
   return curveObj
 },
 
+/**
+ * This function is used to put the incoming sparse style JSON information into the plotting tempalte JSON that is given to curveBox which then handles the plotting.
+ * @param {object} incoming_sparse This is a JSON object of incoming sparse style data & plotting instructions.
+ * @param {object} template This is a JSON example template of the type typically given to the curveBox function. The user will use if for defaults and replace the data and formatting options they want to change.
+ */
+putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
+  if (incoming_sparse[0]["single_curve_box_or_cross_section"] == "multiple"){
+    console.log("THERE WAS A PROBLEM IN THE FUNCTION putIncomingSparse_into_PlottingTemplate. THE CODE TO HANDLE CROSS SECTIONS HAS NOT BEEN WRITTEN YET!!!! BUT IT WOULD GO HERE ")
+    return "THE CODE TO HANDLE CROSS SECTIONS HAS NOT BEEN WRITTEN YET!!!! BUT IT WOULD GO HERE"
+  }
+  else{
+    let curve_box_obj = incoming_sparse[0]["curve_boxes"][0]
+    let curve_box_overall = incoming_sparse[0]["curve_boxes"][0]["curve_box"]
+    let curve_box_components = incoming_sparse[0]["curve_boxes"][0]["components"]
+    template[0]['curve_box'] = curve_box_overall
+    template[0]['components'][0]['lines'] = curve_box_components[0]['lines']
+    template[0]['components'][0]['rectangles'] = curve_box_components[0]['rectangles']
+    
+    ///// Establish template with empty arrays except for value taht are shared for all curves
+    template[0]['components'][0]['curves'][0]["data_type"] = "curve"
+    template[0]['components'][0]['curves'][0]["depth_type_string"]= curve_box_components[0]['curves'][0]['depth_type_string']
+    template[0]['components'][0]['curves'][0]["depth_curve_name"] = curve_box_components[0]['curves'][0]['depth_curve_name']
+    
+    template[0]['components'][0]['curves'][0]["curve_names"] = []
+    template[0]['components'][0]['curves'][0]["curve_colors"] = []
+    template[0]['components'][0]['curves'][0]["fill"] = []
+    template[0]['components'][0]['curves'][0]["data_id"] = []
+    template[0]['components'][0]['curves'][0]["well_names"] = []
+    template[0]['components'][0]['curves'][0]["log_scale"] = []
+    template[0]['components'][0]['curves'][0]["line_color"] = []
+    template[0]['components'][0]['curves'][0]["max_depth"] = []
+    template[0]['components'][0]['curves'][0]["min_depth"] = []
+    template[0]['components'][0]['curves'][0]["null_value"] = []
+    
+    template[0]['components'][0]['curves'][0]["data"] = []
+    
+    ///// For each curve object in incoming data:      
+    let array_individual_curves_and_depth_objects = []
+    let all_depths_list = []
+    let all_depths_set = []
+    
+    for (let i = 0; i < curve_box_components[0]['curves'].length; i++) {
+      
+      let curve = curve_box_components[0]['curves'][i]
+      template[0]['components'][0]['curves'][0]["curve_names"].push(curve["curve_type"])
+      template[0]['components'][0]['curves'][0]["curve_colors"].push(curve["line_color"])
+      template[0]['components'][0]['curves'][0]["fill"].push(curve["fill"])
+      template[0]['components'][0]['curves'][0]["data_id"].push(curve["data_id"])
+      template[0]['components'][0]['curves'][0]["well_names"].push(curve["well_name"])
+      template[0]['components'][0]['curves'][0]["log_scale"].push(curve["log_scale"])
+      template[0]['components'][0]['curves'][0]["line_color"].push(curve["line_color"])
+      template[0]['components'][0]['curves'][0]["max_depth"].push(curve["max_depth"])
+      template[0]['components'][0]['curves'][0]["min_depth"].push(curve["min_depth"]) 
+      template[0]['components'][0]['curves'][0]["null_value"].push(curve["null_value"]) 
+      ////
+      let depth_array = createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
+      let curve_array = curve["curve_values"]
+      let curve_name = curve["curve_type"]
+      let depth_curve_name = curve["depth_curve_name"]
+      //// the function below is off...someting undefined
+      let obj_starter = [{[depth_curve_name]:depth_array,[curve_name]:curve_array}]
+      
+      let reformatted_for_wellioviz_curve_data = takeInArraysAndGetObjectOfCurveDataForPlotting(obj_starter,curve_name,depth_curve_name)
+      ////
+      array_individual_curves_and_depth_objects.push(reformatted_for_wellioviz_curve_data)
+      ////
+
+      all_depths_list = all_depths_list.concat(depth_array)
+    }
+
+    /// Get array of unique depth values from all curves by calling set on an array of depth values
+    all_depths_set = [...new Set(all_depths_list)]; 
+     
+    let objects_helper = {}
+    
+    for (let j = 0; j < all_depths_set.length; j++) {
+      /// create array of objects like [{"depthvalue":{"depth_curve_name":depthvalue},,,,}]
+      objects_helper[all_depths_set[j]] = {[template[0]['components'][0]['curves'][0]["depth_curve_name"]]:all_depths_set[j]}
+    }
+    
+    //// now should have something like {0:{"DEPT":234},1:{"DEPT":234.5}.....}
+    //// for each curve {"depth":value,"curve_name":value} in each curve array of objects...
+    /////// for each object, check if "depth value exists in array of depth values", if it does, add {"curve_name":value} to the object
+    for (let k = 0; k < array_individual_curves_and_depth_objects.length; k++) {
+      let this_depth_plus_curve_obj = array_individual_curves_and_depth_objects[k]
+       for (let l = 0; l < this_depth_plus_curve_obj.length; l++) {
+         let this_obj = this_depth_plus_curve_obj[l]
+         
+         let curve_name = curve_box_components[0]['curves'][k]["curve_type"]
+         let depth_name = curve_box_components[0]['curves'][k]['depth_curve_name']
+         
+         /// add curve value as key/value pair to right object based on depth key
+         
+         objects_helper[this_obj[depth_name]][curve_name] = this_depth_plus_curve_obj[l][curve_name]
+         
+       } 
+    }
+   
+    /// get rid of depth key and just have the objects..put in array if not returned as array
+    //// return only the keys...which should be [{},{"depth":23,"GR":40,"RESD":0}]
+    let data = Object.keys(objects_helper).map(function(key){return objects_helper[key];});
+    
+    let depth_name = template[0]['components'][0]['curves'][0]["depth_curve_name"]
+    data = data.sort(function(a, b) {
+    return parseFloat(a.depth_name) - parseFloat(b.depth_name);
+});
+    // data = data.sort((a, b) => (a[depth_name] > b[depth_name]) ? 1 : -1)
+    function sortFloat(a,b) { return a - b; }
+    function sortNumber(a, b) {
+  return parseFloat(a[depth_name]) - parseFloat(b[depth_name]);
+}
+    template[0]['components'][0]['curves'][0]["data"] = data.sort(sortNumber)
+    return template
+   
+  }
+},
 
 
   ///////////////////////////////
@@ -254,200 +530,271 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
    */
   CurveBox:function (well_curve_config_template){
    
-      //// These parts of the function establish variables from the config JSON in shorter variable names
-      //// If there is a greater change that the template might not include them & they are necessary,
-      //// then a default or blank value is used
-      well_curve_config_template = well_curve_config_template[0]
-      
-      //// Determine if title exists for the curveBox.
-      let title = ""
-      if(well_curve_config_template["title"]){title=well_curve_config_template["title"]["text"]}
-      
-      let multipleLines = well_curve_config_template["multipleLines"]
-      
-      let curveNames = well_curve_config_template["curveNames"]
-      let curveColors = well_curve_config_template["curveColors"]
-      let curveName = curveNames[0]
-      let curveColor = curveColors[0]
-      
-      let curveUnits = "";
-      if(well_curve_config_template["curveUnits"]){curveUnits = well_curve_config_template["curveUnits"]}
-      let div_id = "well_holder"
-      if(well_curve_config_template["divID"]){div_id = well_curve_config_template["divID"]}
-      ////
-      let data = well_curve_config_template["data"]
-      let width = well_curve_config_template["width"]
-      let height = well_curve_config_template["height"]
-      let margin = well_curve_config_template["margin"]
-      let depth_curve_name = well_curve_config_template["depth_curve_name"]
-      
-      //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
-      let depth_min
-      let depth_max
-     if(!well_curve_config_template["depthLimits"] || well_curve_config_template["depthLimits"]["min"] == "autocalculate")
-        {depth_min = d3.min(data, function(d) { return +d[depth_curve_name];})}
-      else
-        {depth_min = well_curve_config_template["depthLimits"]["min"]}
-      //// max depth
-      if(!well_curve_config_template["depthLimits"] || well_curve_config_template["depthLimits"]["max"] == "autocalculate")
-        {depth_max = d3.max(data, function(d) { return +d[depth_curve_name];})}
-      else
-        {depth_max = well_curve_config_template["depthLimits"]["max"]}
+    //// These parts of the function establish variables from the config JSON in shorter variable names
+    //// If there is a greater change that the template might not include them & they are necessary,
+    //// then a default or blank value is used
 
-      //// Apply depth min and max to incoming well log data
-      //// To save time, we'll first check if the first object in the array had as depth that is smaller than min
-      //// and check if the last object in the array has a depth that is larger than the max, if not. we do nothing.
-      if(data[0][depth_curve_name] > depth_min && data[-1][depth_curve_name] < depth_max){}
-      else{data = data.filter(function(objects){
-  return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
-})}
-  
-  
-      // Calculate x domain extent for one or more than one curve
-      let mins = []
-      let maxes = []
-      for (let i = 0; i < curveNames.length; i++) {
-        let min_this = d3.min(data, function(d) { return +d[curveNames[i]]})
-        let max_this = d3.max(data, function(d) { return +d[curveNames[i]]})
-        mins.push(min_this)
-        maxes.push(max_this)
-      }
-      let min_all_curves = d3.min(mins)
-      let max_all_curves = d3.max(maxes)
+    //let well_curve_config_template = well_curve_config_template[0]
     
-      //// Calculate Axis & Scales
-      let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
-      let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom, margin.top])
-      let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
-      let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
-      
-      //// All variables created above now they are applied below
-      //// , some in for loops for multiple curves and areas
-      //// attempt at function for color used in .....
-      function colors(data_array){
-      let color_array = []
-      for (let i =0;i<data_array.length;i++){
-        if (data[i][curveName] > 0){
-          color_array.push =("blue")
-        } 
-        else {
-          color_array.push("green")
-        }
-      }
-      return color_array
-      }
-      const svg = d3.select("#"+div_id).append("svg")
-      svg.attr("class","first")
-      svg.attr("width",width)
-          .attr("height",height);
-      svg.append("g")
-          .call(xAxis);
-      svg.append("g")
-          .call(yAxis);
-      //// throw away code for single curve to plot that will be deleted soon  
-      //// was here:
-      //// Code that assumes multiple curves are plotted in same curvebox  
-      let distanceFromTop = -15
-      if(title !== ""){
-        svg.append("text") // 
-            .attr("x", (margin.left/3+(width/2)))            
-            .attr("y", 0 + (- distanceFromTop))
-            .attr("text-anchor", "middle")  
-            .style("font-size", well_curve_config_template["title"]["title_font_size"])  
-            .text(title);
-        //distanceFromTop = -20
-       }
-    for (let k = 0; k < curveNames.length; k++) {
-    //// code that creates a line for each Curve in order provided and applies 
-    //// the color in the color array in order provided
-      let another_line = d3.line().x(d => x(d[curveNames[k]])).y(d => y(d[depth_curve_name]));
-      let curveUnit = "";
-      if (curveUnits[k]){curveUnit = curveUnits[k]}   
-      svg.append("path")
-          .datum(data)
-          .attr("fill", "none")
-          .attr("stroke", curveColors[k])
-          .attr("stroke-width", 1.5)
-          .attr("stroke-linejoin", "round")
-          .attr("stroke-linecap", "round")
-          .attr("d", another_line);
+    let template_overall = template_for_plotting[0]["curve_box"]
+    let template_components = template_for_plotting[0]["components"]
+    let template_curves = template_components[0]["curves"][0]
+    let template_lines = template_components[0]["lines"]
+    let template_rectangles = template_components[0]["rectangles"]
+    
+    let title = ""
+    //// Determine if title exists for the curve_box.
+    if(template_overall["show_title"] != "yes"){let title = ""}
+    else{title=template_overall["title"]["text"]}
+
+    let width = template_overall["width"]
+    let height = template_overall["height"]
+    let margin = template_overall["margin"]
+    
+    let data = template_curves["data"]
+  
+
+    let curve_names = template_curves["curve_names"]
+    let curve_colors = template_curves["curve_colors"]
+    let curve_name = curve_names[0]
+    let curve_color = curve_colors[0]
+    let curve_units = template_curves["curve_units"];
+    if(template_curves["curve_units"]){curve_units = template_curves["curve_units"]}
+    let div_id = template_overall["div_id"]
+    if(template_overall["div_id"]){div_id = template_overall["div_id"]}
+
+    let depth_curve_name = template_curves["depth_curve_name"]
+    
+    
+    
+//       //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
+//       let depth_min
+//       let depth_max
+//      if(!template_curves["depth_limits"] || template_curves["depth_limits"][0]["min"] == "autocalculate")
+//         {depth_min = d3.min(data, function(d) { return +d[depth_curve_name];})}
+//       else
+//         {depth_min = template_curves["depth_limits"][0]["min"]}
+//       //// max depth
+//       if(!template_curves["depth_limits"] || template_curves["depth_limits"][0]["max"] == "autocalculate")
+//         {depth_max = d3.max(data, function(d) { return +d[depth_curve_name];})}
+//       else
+//         {depth_max = template_curves["depth_limits"][0]["max"]}
+
+
+//       // [depth_max,depth_min]
+//       //// Apply depth min and max to incoming well log data
+//       //// To save time, we'll first check if the first object in the array had as depth that is smaller than min
+//       //// and check if the last object in the array has a depth that is larger than the max, if not. we do nothing.
           
         
-        if(k > 0){distanceFromTop = -30}
-        svg.append("text")
-          .attr("x", (width-margin.right-width/4))             
-          .attr("y", 0 + (margin.top + distanceFromTop))
+
+//       if(data[0][depth_curve_name] > depth_min && data[-1][depth_curve_name] < depth_max){}
+//       else{data = data.filter(function(objects){
+//   return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
+// })}
+    
+    let depth_min = template_curves["min_depth"][0]
+     let depth_max = template_curves["max_depth"][0]
+
+    // Calculate x domain extent for one or more than one curve
+    let mins = []
+    let maxes = []
+    for (let i = 0; i < curve_names.length; i++) {
+      let min_this = d3.min(data, function(d) { return +d[curve_names[i]]})
+      let max_this = d3.max(data, function(d) { return +d[curve_names[i]]})
+      mins.push(min_this)
+      maxes.push(max_this)
+    }
+    let min_all_curves = d3.min(mins)
+    let max_all_curves = d3.max(maxes)
+    
+    
+  
+    //// Calculate Axis & Scales
+    let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
+    let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom, margin.top])
+    let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+    let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
+    
+    const svg = d3.select("#"+div_id).append("svg")
+    svg.attr("class","first")
+    svg.attr("width",width)
+        .attr("height",height);
+    svg.append("g")
+        .call(xAxis);
+    svg.append("g")
+        .call(yAxis);
+    //// throw away code for single curve to plot that will be deleted soon  
+    //// was here:
+    //// Code that assumes multiple curves are plotted in same curvebox  
+    let distance_from_top = -15
+    if(title !== ""){
+      svg.append("text") // 
+          .attr("x", (margin.left/3+(width/2)))            
+          .attr("y", 0 + (- distance_from_top))
+          .attr("text-anchor", "middle")  
+          .style("font-size", template_overall["title"]["title_font_size"])  
+          .text(title);
+      //distance_from_top = -20
+     }
+  for (let k = 0; k < curve_names.length; k++) {
+  //// code that creates a line for each Curve in order provided and applies 
+  //// the color in the color array in order provided
+    let another_line = d3.line().x(d => x(d[curve_names[k]])).y(d => y(d[depth_curve_name]));
+    let curveUnit = "";
+    if (curve_units[k]){curveUnit = curve_units[k]}   
+    let min = mins[k]
+    let max = maxes[k]
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", curve_colors[k])
+        .attr("stroke-width", 1.5)
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("d", another_line);
+      
+      if(k > 0){distance_from_top = -30}
+      
+      svg.append("text")
+        .attr("x", (width-margin.right))             
+        .attr("y", 0 + (margin.top + distance_from_top))
+        .attr("text-anchor", "end")  
+        .style("font-size", "14px") 
+        .style("text-decoration", "underline")  
+        .text(max.toFixed(1));
+      
+      svg.append("text")
+        .attr("x", (width-margin.right-width/3))             
+        .attr("y", 0 + (margin.top + distance_from_top))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "14px") 
+        .style("text-decoration", "underline")  
+        .text(curveUnit);
+      
+      svg.append("text")
+        .attr("x", margin.left+width/4)             
+        .attr("y", 0 + (margin.top + distance_from_top))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "14px") 
+        .style("text-decoration", "underline")  
+        .text(curve_names[k]);
+    
+      svg.append("text")
+          .attr("x", margin.left)             
+          .attr("y", 0 + (margin.top + distance_from_top))
           .attr("text-anchor", "middle")  
           .style("font-size", "14px") 
           .style("text-decoration", "underline")  
-          .text(curveUnit);
-      
-        
-        svg.append("text")
-          .attr("x", margin.left+width/4)             
-          .attr("y", 0 + (margin.top + distanceFromTop))
-          .attr("text-anchor", "middle")  
-          .style("font-size", "14px") 
-          .style("text-decoration", "underline")  
-          .text(curveNames[k]);
-      
-        
-        }
-        
-      // define the area filled under the curve
-        let two_curve_fill_flag = "no"
-        for (let i = 0; i < well_curve_config_template["fill"].length; i++) {
-          ////
-          if (well_curve_config_template["fill"][i]["fill"] == "yes"){        
-            let number_colors = well_curve_config_template["fill"][i]["fillColors"].length
-            let curveName1 = well_curve_config_template["fill"][i]["curveName"]
-            let threshold = -99999999
-            let fillColor = "gray"
-            //////
-            for (let j = 0; j < number_colors; j++) {
-            console.log("got to start of J loop",j)
-                let area1 = d3.area()
-                if (number_colors != 0){
-                  threshold = well_curve_config_template["fill"][i]["cutoffs"][j]
-                  fillColor = well_curve_config_template["fill"][i]["fillColors"][j]
-                  }
-                if(well_curve_config_template["fill"][i]["fillDirection"] == "left"){
-                    let startFromLeft = well_curve_config_template["margin"]["left"]
-                    area1
-                        .x1(d => x(d[curveName1]))
-                        .x0(d => startFromLeft)
-                          .defined(d => ((d[curveName1])>threshold))
-                        .y(d => y(d[depth_curve_name]));
-                }
-                if(well_curve_config_template["fill"][i]["fillDirection"] == "right"){
-                    let startFromRight = well_curve_config_template["margin"]["right"]
-                    area1
-                          .x0(d => x(d[curveName1]))
-                          .x1(d => startFromRight)
-                            .defined(d => ((d[curveName1])<threshold))
-                          .y(d => y(d[depth_curve_name]));
-                }
-                if(well_curve_config_template["fill"][i]["fillDirection"] == "between"){
-                    let between2Curve = well_curve_config_template["fill"][i]["curve2"] 
-                    area1
-                      .x1(d => x(d[curveName1]))
-                      .x0(d => x(d[between2Curve]))
-                        .defined(d => ((d[curveName1])>threshold))
-                      .y(d => y(d[depth_curve_name]));
-                }
-                svg.append("path")      
-                      .datum(data)
-                      .attr("class", "area")
-                      .attr("d", area1)
-                      .attr("stroke", "none")
-                      .attr("fill",fillColor)
-                      .attr("fill-opacity",0.8);
-                
-                }
-          }
+          .text(min.toFixed(1));
+    
       }
-      return svg.node();
-    },
+    // define the area filled under the curve
+      let two_curve_fill_flag = "no"
+      for (let i = 0; i < template_curves["fill"].length; i++) {
+        ////
+        
+        
+        // curve_name: "RHOB"
+        // fill: "yes"
+        // fill_direction: "left"
+        // cutoffs: Array(3) [0.21, 2.23, 2.24]
+        // fill_colors: Array(3) ["gray", "beige", "white"]
+        // curve2: ""
+        
+        if (template_curves["fill"][i][0]["fill"] == "yes"){        
+          let number_colors = template_curves["fill"][i][0]["fill_colors"].length
+          let curve_name1 = template_curves["fill"][i][0]["curve_name"]
+          let threshold = -99999999
+          let fill_color = "gray"
+          //////
+          for (let j = 0; j < number_colors; j++) {
+          console.log("got to start of J loop",j)
+              let area1 = d3.area()
+              if (number_colors != 0){
+                threshold = template_curves["fill"][i][0]["cutoffs"][j]
+                fill_color = template_curves["fill"][i][0]["fill_colors"][j]
+                }
+         
+              if(template_curves["fill"][i][0]["fill_direction"] == "left"){
+                  let start_from_left = template_overall["margin"]["left"]
+                  area1
+                      .x1(d => x(d[curve_name1]))
+                      .x0(d => start_from_left)
+                        .defined(d => ((d[curve_name1])>threshold))
+                      .y(d => y(d[depth_curve_name]));
+              
+              }
+              
+              if(template_curves["fill"][i][0]["fill_direction"] == "right"){
+                  let start_from_right = template_overall["margin"]["right"]
+                  area1
+                        .x0(d => x(d[curve_name1]))
+                        .x1(d => start_from_right)
+                          .defined(d => ((d[curve_name1])<threshold))
+                        .y(d => y(d[depth_curve_name]));
+              }
+              if(template_curves["fill"][i][0]["fill_direction"] == "between"){
+                  let between_2_curve = template_curves["fill"][i][0]["curve2"] 
+                  area1
+                    .x1(d => x(d[curve_name1]))
+                    .x0(d => x(d[between_2_curve]))
+                      .defined(d => ((d[curve_name1])>threshold))
+                    .y(d => y(d[depth_curve_name]));
+              }
+              svg.append("path")      
+                    .datum(data)
+                    .attr("class", "area")
+                    .attr("d", area1)
+                    .attr("stroke", "none")
+                    .attr("fill",fill_color)
+                    .attr("fill-opacity",0.8);
+              
+              }
+        }
+    }
+    
+    /////////// TRYING SOMETHING FOR LINES HERE. STILL IN PROGRESS !!!! ///////////
+    try {
+        
+        for (let i = 0; i < template_lines.length; i++) {
+           let this_line = template_lines[i]
+            svg.append("line")
+                .attr("x1", 0+margin.left) 
+                .attr("y1", y(this_line["depth"]))
+                .attr("x2", width*0.75)
+                .attr("y2", y(this_line["depth"]))
+                .style("stroke-width", this_line["stroke_width"])
+                .style("stroke", this_line["color"])
+                .style("stroke-dasharray", this_line["stroke-dasharray"])
+                .style("fill", "none");
+
+            svg.append("text")
+              .attr("x", width*0.75)             
+              .attr("y", y(this_line["depth"]))
+              .attr("text-anchor", "start")  
+              .style("font-size", "12px")  
+              .text(this_line["label"]);
+        }
+      }
+      catch{
+        console.log("could not do lines for tops in curveBox function")
+      }
+      ////// hacking in a rectange for now /////
+      svg.append('rect')
+                .attr("x", 50+margin.left) 
+                .attr("y", y(1602))
+                .attr("width", 15)
+                .attr("height",60)
+                .style("stroke-width", "2px")
+                .style("stroke", "purple")
+                .style("fill", "red")
+                .style("opacity", 0.5);
+      /////////// TRYING SOMETHING FOR LINES HERE ///////////
+    
+    return svg.node();
+  }
+,
     
     /**
      * Function for saving a SVG from the HTML DOM as a SVG file. This currently only works on front-end but might be later adapted for server-side rendering.
