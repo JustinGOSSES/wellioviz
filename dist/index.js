@@ -214,11 +214,10 @@ module.exports = {
   let number_of_points = ((max-min)/step) +1
   let temp_depth = min
   for (let i = 0; i < number_of_points; i++) {
-    temp_depth = (min+(i*step)).toFixed(3)
-    depth.push(temp_depth)
+    temp_depth = (min+(i*step)).toFixed(7)
+    depth.push(parseFloat(temp_depth))
   }
-  return depth
-},
+  return depth},
 
 /**
  * curveBoxTemplateExamples gives an example of the template giving to the plotting functions and definitions of the fields.
@@ -260,16 +259,16 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
               ],
        "curve_units":["g/cm3"],
        "depth_limits":[{"min":"autocalculate","max":"autocalculate"}],
-       "curve_limits":[{"curve_name":"","min":2,"max":3}],
+       "curve_limits":[{"curve_name":"","min":-10000000,"max":3}],
         "data":[{"depth":1598.3,"RHOB":2.2322},{"depth":1598.4,"RHOB":2.0513},{"depth":1598.5,"RHOB":2.2548},{"depth":1598.6,"RHOB":2.9445},{"depth":1598.7,"RHOB":2.2223},{"depth":1598.8,"RHOB":2.447},{"depth":1598.9,"RHOB":2.598},{"depth":1599,"RHOB":2.8088},{"depth":1599.1,"RHOB":2.2248},{"depth":1599.2,"RHOB":2.2399},{"depth":1599.3,"RHOB":2.251},{"depth":1599.4,"RHOB":2.255},{"depth":1599.5,"RHOB":2.2526},{"depth":1599.6,"RHOB":2.2322},{"depth":1599.7,"RHOB":2.2513},{"depth":1599.8,"RHOB":2.2548},{"depth":1599.9,"RHOB":2.2445},{"depth":1600,"RHOB":2.2223},{"depth":1600.1,"RHOB":2.2047},{"depth":1600.2,"RHOB":2.198}], /// not built yet
        "depth_curve_name":"DEPT",/// not built yet
       //////
-     "data_id":["firstID","secondIDFor2curve",], /// not built yet
+     "data_id":["placeholder_data_id",], /// not built yet
      "well_names":[""], /// not built yet
      "log_scale": [false],  /// not built yet
      "line_color": ["red"], /// not built yet
-     "max_depth": 1589.3, /// not built yet
-     "min_depth": 1607.3, /// not built yet
+     "max_depth": "autocalculate", /// not built yet
+     "min_depth": "autocalculate", /// not built yet
      "depth_type_string":["MD"], /// not built yet
      "null_value": [""], /// not built yet
     }
@@ -387,19 +386,57 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
 takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames,CurveName){
   //// would be run like: reformattedForWelliovizCurveData = takeInArraysAndGetObjectOfCurveDataForPlotting([{"depth":depthArray,"RHOB":data2[0].curve_values}],"RHOB")
   // [{"depth":[],"curveData":[]}]
+  // [{"depth":[],"curveData":[]}]
   let curveObj = []
   // make sure the curve data arrays are the same lenght, if not add null values
   
   // put them into object
-  let lengthOfCurve0 = arraysOfCurvesAndNames[0]["depth"].length
+  let lengthOfCurve0 = arraysOfCurvesAndNames[0][DepthName].length
   for (let i = 0; i < lengthOfCurve0; i++) {
-    let newObj = {"depth":0,"RHOB":0}
-    newObj["depth"] = arraysOfCurvesAndNames[0]["depth"][i]
-    newObj["RHOB"] = arraysOfCurvesAndNames[0][CurveName][i]
+    let newObj = {[DepthName]:0,"RHOB":0}
+    newObj[DepthName] = arraysOfCurvesAndNames[0][DepthName][i]
+    newObj[CurveName] = arraysOfCurvesAndNames[0][CurveName][i]
     curveObj.push(newObj)
   }
   return curveObj
 },
+
+/**
+ * THE FUNCTION putArrayOfLogsIntoSection NEEDS DOCUMENTATION!
+ * @param {*} logs 
+ * @param {*} div_id 
+ * @param {*} example_template 
+ * @param {*} curve_name 
+ * @param {*} curve_color 
+ * @param {*} curve_unit 
+ * @param {*} fill 
+ * @param {*} depth_name 
+ * @param {*} width 
+ * @param {*} height 
+ */
+putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
+  const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
+  let logs_in_json = turnFilesIntoTextIntoWellioJSON(logs)
+  let new_templates = []
+  for (let i = 0; i < logs_in_json.length; i++) {
+    let three_things2 = fromJSONofWEllGetThingsForPlotting(logs_in_json[i])
+    let new_data =three_things2["well_log_curves_reformatted_for_d3"]
+    let example_template_n = JSON.parse(JSON.stringify(example_template))
+    example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
+    example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
+    example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
+    example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
+    example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
+    example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
+    example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
+    example_template_n[0]["curve_box"]["div_id"] = div_id
+    example_template_n[0]["curve_box"]["width"] = width
+    example_template_n[0]["curve_box"]["height"] = height
+    new_templates.push(example_template_n)
+    curveBox(example_template_n)
+  }
+  return new_templates
+}
 
 /**
  * This function is used to put the incoming sparse style JSON information into the plotting tempalte JSON that is given to curveBox which then handles the plotting.
@@ -530,6 +567,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    */
   CurveBox:function (well_curve_config_template){
    
+   
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If there is a greater change that the template might not include them & they are necessary,
     //// then a default or blank value is used
@@ -592,9 +630,20 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 //       else{data = data.filter(function(objects){
 //   return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
 // })}
-    
-    let depth_min = template_curves["min_depth"][0]
-     let depth_max = template_curves["max_depth"][0]
+    let depth_min = -1000000
+    let depth_max = 1000000
+    if(template_curves["min_depth"][0] == "autocalculate" || template_curves["min_depth"] == "autocalculate"){
+      
+      depth_min = data[0][depth_curve_name]
+    }
+    else{depth_min = template_curves["min_depth"]}
+    if(template_curves["max_depth"][0] == "autocalculate" || template_curves["max_depth"] == "autocalculate"){
+      depth_max = data[data.length-1][depth_curve_name]
+    }
+    else{depth_max = template_curves["max_depth"]}
+
+    // let depth_min = template_curves["min_depth"][0]
+    //  let depth_max = template_curves["max_depth"][0]
 
     // Calculate x domain extent for one or more than one curve
     let mins = []
@@ -609,7 +658,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let max_all_curves = d3.max(maxes)
     
     
-  
+    
     //// Calculate Axis & Scales
     let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
     let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom, margin.top])
@@ -637,6 +686,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .text(title);
       //distance_from_top = -20
      }
+  
   for (let k = 0; k < curve_names.length; k++) {
   //// code that creates a line for each Curve in order provided and applies 
   //// the color in the color array in order provided
@@ -690,17 +740,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     
       }
     // define the area filled under the curve
+       
       let two_curve_fill_flag = "no"
       for (let i = 0; i < template_curves["fill"].length; i++) {
         ////
-        
-        
-        // curve_name: "RHOB"
-        // fill: "yes"
-        // fill_direction: "left"
-        // cutoffs: Array(3) [0.21, 2.23, 2.24]
-        // fill_colors: Array(3) ["gray", "beige", "white"]
-        // curve2: ""
         
         if (template_curves["fill"][i][0]["fill"] == "yes"){        
           let number_colors = template_curves["fill"][i][0]["fill_colors"].length
@@ -755,6 +798,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     }
     
     /////////// TRYING SOMETHING FOR LINES HERE. STILL IN PROGRESS !!!! ///////////
+    
     try {
         
         for (let i = 0; i < template_lines.length; i++) {
@@ -821,23 +865,19 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //////////
     /**
      * This function is used to plot multiple curveboxes in a row. AKA makes a cross-section. It calls curveBox multiple times.
-     * @param {string} divIDstring a string that represents the div ID that the multiple curveboxes will be appended to
+     * @param {string} div_id a string that represents the div ID that the multiple curveboxes will be appended to
      * @param {Object} templates An array of CurveBox input templates
      */
-    multipleLogPlot:function(divIDstring,templates){
-    // function multipleLogPlot(divIDstring,templates){
-      //const noSVG = d3.select("#"+divIDstring).selectAll("svg").remove()
-      //let logs_in_json = turnFilesIntoTextIntoWellioJSON([log])
+    multipleLogPlot:function(div_id,templates){
+      const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
       let new_templates = []
       for (let i = 0; i < templates.length; i++) {
-        //let three_things2 = fromJSONofWEllGetThingsForPlotting(logs_in_json[i])
-        // let new_data =three_things2["well_log_curves_reformatted_for_d3"]
-        // template[0]["data"] = new_data
-        templates[i]["divID"] = divIDstring
+        templates[i][0]["curve_box"]["div_id"] = div_id
         new_templates.push(templates[i])
-        result = this.CurveBox(new_templates[i])
+        let template = templates[i]
+        curveBox(template)
       }
-      return result
+      return new_templates
     }
 
 
