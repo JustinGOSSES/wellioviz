@@ -26,66 +26,6 @@
               
                 
                 <li><a
-                  href='#wellioviz'
-                  class="h5 bold black caps">
-                  wellioviz
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#loading-functions'
-                  class="h5 bold black caps">
-                  loading functions
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#transformation-funtions'
-                  class="h5 bold black caps">
-                  Transformation funtions
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#packaging-functions'
-                  class="h5 bold black caps">
-                  Packaging functions
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#plotting-functions'
-                  class="h5 bold black caps">
-                  Plotting functions
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#helper-functions'
-                  class="h5 bold black caps">
-                  Helper Functions
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#define_wellioviz'
                   class="">
                   define_wellioviz
@@ -146,9 +86,39 @@
               
                 
                 <li><a
+                  href='#curveboxtemplateexamples'
+                  class="">
+                  curveBoxTemplateExamples
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#takeinarraysandgetobjectofcurvedataforplotting'
                   class="">
                   takeInArraysAndGetObjectOfCurveDataForPlotting
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#putarrayoflogsintosection'
+                  class="">
+                  putArrayOfLogsIntoSection
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#putincomingsparsejsonintoplottingtemplate'
+                  class="">
+                  putIncomingSparseJsonIntoPlottingTemplate
                   
                 </a>
                 
@@ -192,140 +162,6 @@
         </div>
       </div>
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='wellioviz' class='mt0'>
-    wellioviz
-  </h2>
-
-  
-    <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
-<p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
-<h4>Different Data Inputs</h4>
-<p>This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.</p>
-<p>Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. </p>
-<p>Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.</p>
-<p>Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt. End users should be able to provide their own functions to reformat their data into the template that is fed into curveBox.</p>
-<h4>Plotting Organization Ideas</h4>
-<ul>
-<li>Central unit is the CurveBox. A rectangular 2D representation of a well bore with depth on y axis and curve values on x axis. </li>
-<li>Multiple log curves can go in a single curve box.</li>
-<li>Multiple curve boxes can be combined horizontally into a cross-section.</li>
-<li>Typically only one well will usually be in a single curve box. </li>
-<li>One well can be spread across multiple curve boxes with a different well log curve or curves in each curvebox.</li>
-<li>Curves can optionally have fills whose color and presence can be based on thresholds related to one curve or multiple curves in that curve box.</li>
-<li>Curveboxes can have lines and boxes with or without transparency that represent things like tops and formations.</li>
-</ul>
-<h4>Code Organization:</h4>
-<p>  Code is organized into 4 groups of functions: </p>
-<p>  <b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
-<p>  The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. </p>
-<ul>
-<li>In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.</li>
-<li>Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.</li>
-<li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
-</li>
-</ul>
-
-  
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='loading-functions' class='mt0'>
-    loading functions
-  </h2>
-
-  
-    <h3>Functions used to get data in.</h3>
-<p>As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  </p>
-
-  
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='transformation-funtions' class='mt0'>
-    Transformation funtions
-  </h2>
-
-  
-    <p>Data is reformatted into a form that wellioviz can used.</p>
-<h4>Transformation functions for data that comes in as Wellio.js style JSON</h4>
-<ul>
-<li><a href="#convertwelljsontoobj">#convertwelljsontoobj</a> </li>
-<li><a href="#fromjsonofwellgetthingsforplotting">#fromjsonofwellgetthingsforplotting</a></li>
-<li><a href="#takeinarraysandgetobjectofcurvedataforplotting">#takeinarraysandgetobjectofcurvedataforplotting</a></li>
-</ul>
-<h4>Transformation functions for data that comes in as sparse style JSON</h4>
-<ul>
-<li><a href="#createdeptharray">#createdeptharray</a></li>
-</ul>
-
-  
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='packaging-functions' class='mt0'>
-    Packaging functions
-  </h2>
-
-  
-    <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
-<ul>
-<li><a href="#multiplelogplot">#multiplelogplot</a></li>
-</ul>
-
-  
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='plotting-functions' class='mt0'>
-    Plotting functions
-  </h2>
-
-  
-    <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
-<ul>
-<li><a href="#curvebox">#curvebox</a></li>
-<li><a href="#savesvg">#savesvg</a></li>
-</ul>
-<hr>
-
-  
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='helper-functions' class='mt0'>
-    Helper Functions
-  </h2>
-
-  
-    <p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
-<ul>
-<li><a href="#define_wellioviz">#define_wellioviz</a></li>
-<li><a href="#getexampletemplate">#getexampletemplate</a></li>
-<li><a href="#getfakeincomingsparsedataexample">#getfakeincomingsparsedataexample</a></li>
-</ul>
-
-  
-</section></div>
-          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
@@ -788,6 +624,71 @@ This function is used to create a depth array for plotting when only the max, mi
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='curveboxtemplateexamples'>
+      curveBoxTemplateExamples
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>curveBoxTemplateExamples gives an example of the template giving to the plotting functions and definitions of the fields.
+A string of either "help" "example" or "definitions" is given as function argument and either a string or Object is returned depending on string provided as input parameter.
+This is used to help construct the JSON object that is given to the curveBox plotting function.
+Someone might run this function with "example" as the parameter, give back the JSON template, replace a few pieces with their own data or format choices and then pass it as the argument into the curveBox function.</p>
+
+    <div class='pre p1 fill-light mt0'>curveBoxTemplateExamples(string_of_either__help_example_definitions_mandatories: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>string_of_either__help_example_definitions_mandatories</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    A string of either "help" "example" or "definitions"
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='takeinarraysandgetobjectofcurvedataforplotting'>
       takeInArraysAndGetObjectOfCurveDataForPlotting
     </h3>
@@ -826,6 +727,210 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
           <div>
             <span class='code bold'>CurveName</span> <code class='quiet'>(any)</code>
 	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='putarrayoflogsintosection'>
+      putArrayOfLogsIntoSection
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>THE FUNCTION putArrayOfLogsIntoSection NEEDS DOCUMENTATION!</p>
+
+    <div class='pre p1 fill-light mt0'>putArrayOfLogsIntoSection(logs: any, div_id: any, example_template: any, curve_name: any, curve_color: any, curve_unit: any, fill: any, depth_name: any, width: any, height: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>logs</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>div_id</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>example_template</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_name</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_color</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_unit</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>fill</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>depth_name</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>width</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>height</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='putincomingsparsejsonintoplottingtemplate'>
+      putIncomingSparseJsonIntoPlottingTemplate
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This function is used to put the incoming sparse style JSON information into the plotting tempalte JSON that is given to curveBox which then handles the plotting.</p>
+
+    <div class='pre p1 fill-light mt0'>putIncomingSparseJsonIntoPlottingTemplate(incoming_sparse: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, template: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>incoming_sparse</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    This is a JSON object of incoming sparse style data &#x26; plotting instructions.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>template</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    This is a JSON example template of the type typically given to the curveBox function. The user will use if for defaults and replace the data and formatting options they want to change.
+
           </div>
           
         </div>
@@ -1010,7 +1115,7 @@ This might be useful if the well log visualizations could be pre-rendered on the
 
   <p>This function is used to plot multiple curveboxes in a row. AKA makes a cross-section. It calls curveBox multiple times.</p>
 
-    <div class='pre p1 fill-light mt0'>multipleLogPlot(divIDstring: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, templates: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+    <div class='pre p1 fill-light mt0'>multipleLogPlot(div_id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, templates: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
   
   
 
@@ -1027,7 +1132,7 @@ This might be useful if the well log visualizations could be pre-rendered on the
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>divIDstring</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>div_id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a string that represents the div ID that the multiple curveboxes will be appended to
 
           </div>
