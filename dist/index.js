@@ -254,6 +254,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     { "data_type":"curve", 
       "curve_names":["RHOB"],
       "curve_colors":["black"],
+      "curve_stroke_dasharray":["solid"],
       "fill":[
                 {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
               ],
@@ -325,6 +326,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     { "data_type":"requires one of possible strings: curve, line, rectangle if not one of acceptable string it just skips it.", // not built yet
       "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
       "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
+     "curve_stroke_dasharray":"A style for the curve line. Can be solid or a string of integers separated by commas like '5,5' or '20,10,10,5,10,10'",
       "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
        "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
        "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
@@ -456,13 +458,15 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     template[0]['components'][0]['lines'] = curve_box_components[0]['lines']
     template[0]['components'][0]['rectangles'] = curve_box_components[0]['rectangles']
     
-    ///// Establish template with empty arrays except for value taht are shared for all curves
+    ///// Establish template with empty arrays except for value that are shared for all curves
+    ///// THESE HAVE A SINGLE VALUE ACROSS ALL CURVES IN A CURVEBOX
     template[0]['components'][0]['curves'][0]["data_type"] = "curve"
     template[0]['components'][0]['curves'][0]["depth_type_string"]= curve_box_components[0]['curves'][0]['depth_type_string']
     template[0]['components'][0]['curves'][0]["depth_curve_name"] = curve_box_components[0]['curves'][0]['depth_curve_name']
-    
+    ///// THESE HAVE MULTIPLE VALUES IN A CURVEBOX ONE PER CURVE.
     template[0]['components'][0]['curves'][0]["curve_names"] = []
     template[0]['components'][0]['curves'][0]["curve_colors"] = []
+    template[0]['components'][0]['curves'][0]["curve_stroke_dasharray"] = []
     template[0]['components'][0]['curves'][0]["fill"] = []
     template[0]['components'][0]['curves'][0]["data_id"] = []
     template[0]['components'][0]['curves'][0]["well_names"] = []
@@ -484,6 +488,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       let curve = curve_box_components[0]['curves'][i]
       template[0]['components'][0]['curves'][0]["curve_names"].push(curve["curve_type"])
       template[0]['components'][0]['curves'][0]["curve_colors"].push(curve["line_color"])
+      template[0]['components'][0]['curves'][0]["curve_stroke_dasharray"].push(curve["curve_stroke_dasharray"])
       template[0]['components'][0]['curves'][0]["fill"].push(curve["fill"])
       template[0]['components'][0]['curves'][0]["data_id"].push(curve["data_id"])
       template[0]['components'][0]['curves'][0]["well_names"].push(curve["well_name"])
