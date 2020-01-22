@@ -26,6 +26,66 @@
               
                 
                 <li><a
+                  href='#wellioviz'
+                  class="h5 bold black caps">
+                  wellioviz
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#loading-functions'
+                  class="h5 bold black caps">
+                  loading functions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#transformation-funtions'
+                  class="h5 bold black caps">
+                  Transformation funtions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#packaging-functions'
+                  class="h5 bold black caps">
+                  Packaging functions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#plotting-functions'
+                  class="h5 bold black caps">
+                  Plotting functions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#helper-functions'
+                  class="h5 bold black caps">
+                  Helper Functions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#define_wellioviz'
                   class="">
                   define_wellioviz
@@ -162,6 +222,149 @@
         </div>
       </div>
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='wellioviz' class='mt0'>
+    wellioviz
+  </h2>
+
+  
+    <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
+<p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
+<h4>Different Data Inputs</h4>
+<p>This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.</p>
+<p>Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. This is referred to elsewhere in the code and documentation as the sparse incoming data approach.</p>
+<p>Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.</p>
+<p>Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt for that purpose as the plotting function takes a standard JSON. End users should be able to provide their own functions to reformat their data &#x26; style choices into the template that is fed into the curveBox function.</p>
+<h4>Code Organization:</h4>
+<p>Code is organized into 4 groups of functions: </p>
+<p><b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
+<p>The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. </p>
+<ul>
+<li>In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.</li>
+<li>Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.</li>
+<li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.</li>
+</ul>
+<h4>Plotting Organization Ideas</h4>
+<ul>
+<li>Central unit is the CurveBox. A rectangular 2D representation of a well bore with depth on y axis and curve values on x axis. </li>
+<li>Multiple log curves can go in a single curve box.</li>
+<li>Multiple curve boxes can be combined horizontally into a cross-section.</li>
+<li>Typically only one well will usually be in a single curve box, but there is nothing stopping you from putting multiple wells into a single curvebox. </li>
+<li>One well can be spread across multiple curve boxes with a different well log curve or curves in each curvebox.</li>
+<li>Curves can optionally have fills whose color and presence can be based on thresholds related to one curve or multiple curves in that curve box.</li>
+<li>Curveboxes can have lines and boxes with or without transparency that represent things like formation tops or sample locations.</li>
+<li>Curveboxes top and base can be either autocalculated based on the depth extent of the log curves, lines, and rectange supplied or set explicitly.</li>
+<li>Only one depth type, such as measured depth (MD) or total vertical depth (TVD) can be used for plotting in a curvebox. However, you can show a second depth type if you provide a mapping to the first depth type. In other words, at MD 235 meters TVD is 213 meters, at MD 236 meters TVD is 213.2 meters, etc.</li>
+</ul>
+<h4>Example Sequence of Functions for Sparse Style Incoming Data</h4>
+<ul>
+<li>get or create incoming data/instructions in Sparse JSON style: <code>input_sparse_style</code></li>
+<li>get an example plotting template: <code>example_template = curveBoxTemplateExamples("example")</code></li>
+<li>use a function to populate an example plotting template with your incoming data: <code>template_for_plotting = putIncomingSparseJsonIntoPlottingTemplate(input_sparse_style ,template_example)</code></li>
+<li>create a div in a html document and give it an ID. Add div ID to template_for_plotting:</li>
+<li>run plotting function for a single curvebox: <code>makeThisCurveBox(template_for_plotting)</code> which inside calls curveBox(template_for_plotting) after deleting any previous SVG appended to the stated div</li>
+</ul>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='loading-functions' class='mt0'>
+    loading functions
+  </h2>
+
+  
+    <h3>Functions used to get data in.</h3>
+<p>As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  </p>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='transformation-funtions' class='mt0'>
+    Transformation funtions
+  </h2>
+
+  
+    <p>Data is reformatted into a form that wellioviz can used.</p>
+<h4>Transformation functions for data that comes in as Wellio.js style JSON</h4>
+<ul>
+<li><a href="#convertwelljsontoobj">#convertwelljsontoobj</a> </li>
+<li><a href="#fromjsonofwellgetthingsforplotting">#fromjsonofwellgetthingsforplotting</a></li>
+<li><a href="#takeinarraysandgetobjectofcurvedataforplotting">#takeinarraysandgetobjectofcurvedataforplotting</a></li>
+</ul>
+<h4>Transformation functions for data that comes in as sparse style JSON</h4>
+<ul>
+<li><a href="#createdeptharray">#createdeptharray</a></li>
+</ul>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='packaging-functions' class='mt0'>
+    Packaging functions
+  </h2>
+
+  
+    <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
+<ul>
+<li><a href="#multiplelogplot">#multiplelogplot</a></li>
+</ul>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='plotting-functions' class='mt0'>
+    Plotting functions
+  </h2>
+
+  
+    <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
+<ul>
+<li><a href="#curvebox">#curvebox</a></li>
+<li><a href="#savesvg">#savesvg</a></li>
+</ul>
+<hr>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='helper-functions' class='mt0'>
+    Helper Functions
+  </h2>
+
+  
+    <p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
+<ul>
+<li><a href="#define_wellioviz">#define_wellioviz</a></li>
+<li><a href="#getexampletemplate">#getexampletemplate</a></li>
+<li><a href="#getfakeincomingsparsedataexample">#getfakeincomingsparsedataexample</a></li>
+</ul>
+
+  
+</section></div>
+          
         
           
           <section class='p2 mb2 clearfix bg-white minishadow'>
