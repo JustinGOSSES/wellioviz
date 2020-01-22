@@ -10,7 +10,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 
 #### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
 
-##### Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html
+##### Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html <---- THIS IS OUT OF DATE
 
 This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... uses an older version of index.js than in this repo...will update to current eventually... in progress
 
