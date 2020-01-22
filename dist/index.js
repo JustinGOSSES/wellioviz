@@ -645,8 +645,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    */
   CurveBox:function (well_curve_config_template){
    
-   
-    //// These parts of the function establish variables from the config JSON in shorter variable names
+       //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If there is a greater change that the template might not include them & they are necessary,
     //// then a default or blank value is used
 
@@ -672,6 +671,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 
     let curve_names = template_curves["curve_names"]
     let curve_colors = template_curves["curve_colors"]
+    let curve_stroke_dasharray = template_curves["curve_stroke_dasharray"] 
     let curve_name = curve_names[0]
     let curve_color = curve_colors[0]
     let curve_units = template_curves["curve_units"];
@@ -780,6 +780,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("stroke-width", 1.5)
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
+        .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
       
       if(k > 0){distance_from_top = -30}
@@ -874,11 +875,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
               }
         }
     }
-    
-    /////////// TRYING SOMETHING FOR LINES HERE. STILL IN PROGRESS !!!! ///////////
-    
+    /////////// LINES ////////////////////// LINES ////////////////////// LINES ///////////
     try {
-        
         for (let i = 0; i < template_lines.length; i++) {
            let this_line = template_lines[i]
             svg.append("line")
@@ -903,19 +901,36 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         console.log("could not do lines for tops in curveBox function")
       }
       ////// hacking in a rectange for now /////
-      svg.append('rect')
+          /////////// RECTANGLE //////////////////////////////////////////////
+      try {
+        
+        for (let i = 0; i < template_rectangles.length; i++) {
+           let this_rectangle = template_rectangles[i]
+            svg.append('rect')
                 .attr("x", 50+margin.left) 
-                .attr("y", y(1602))
-                .attr("width", 15)
-                .attr("height",60)
-                .style("stroke-width", "2px")
+                .attr("y", y(this_rectangle.depth_top))
+                .attr("width", this_rectangle.width)
+                .attr("height",this_rectangle.height)
+                .style("stroke-width", this_rectangle.stroke-width)
                 .style("stroke", "purple")
-                .style("fill", "red")
-                .style("opacity", 0.5);
-      /////////// TRYING SOMETHING FOR LINES HERE ///////////
+                .style("fill", this_rectangle.fill)
+                .style("opacity", this_rectangle.opacity);
+
+            svg.append("text")
+              .attr("x", width*0.75)             
+              .attr("y", y(this_rectangle.depth_top))
+              .attr("text-anchor", "start")  
+              .style("font-size", "12px")  
+              .text(this_rectangle.label);
+        }
+      }
+      catch{
+        console.log("could not do rectangle in curveBox function for some reason")
+      }
     
     return svg.node();
   }
+
 ,
     
     /**
