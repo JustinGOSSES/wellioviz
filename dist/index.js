@@ -202,28 +202,28 @@ module.exports = {
    * @returns {array} returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
   */
   convertWellJSONToObj:function  (well_log_json,CurveNames,UWI){
-    depth = well_log_json["CURVES"]["DEPTH"]
-    curve_data = []
-    for(eachCr in CurveNames){
-      curve_data.push(well_log_json["CURVES"][CurveNames[eachCr]])
-    }
-    array_of_obj = []
-    if (depth.length === well_log_json["CURVES"][CurveNames[0]].length){
-       for(eachPt in depth){
-         obj = {}
-         obj["UWI"] = UWI
-         for(i in CurveNames){
-            obj[CurveNames[i]] = parseFloat(curve_data[i][eachPt])
-         }
-         array_of_obj.push(obj) 
+    let depth = well_log_json["CURVES"][depth_curve_name]
+  let curve_data = []
+  for(let eachCr in CurveNames){
+    curve_data.push(well_log_json["CURVES"][CurveNames[eachCr]])
+  }
+  let array_of_obj = []
+  if (depth.length === well_log_json["CURVES"][CurveNames[0]].length){
+     for (let eachPt = 0; eachPt < depth.length; eachPt++) {
+       let obj = {}
+       obj["UWI"] = UWI
+       for (let i = 0; i < CurveNames.length; i++){
+          obj[CurveNames[i]] = parseFloat(curve_data[i][eachPt])
        }
+       array_of_obj.push(obj) 
      }
-    else{
-      console.log("depth didn't match curve length")
-      array_of_obj.push("depth didn't match curve length")
-    }
-    return array_of_obj
-  },
+   }  
+  else{
+  	console.log("depth didn't match curve length")
+    array_of_obj.push("depth didn't match curve length")
+  }
+  return array_of_obj
+},
 
 
   ///////////////////////////////
@@ -261,7 +261,7 @@ module.exports = {
 
 
 
-
+  
 
   ///////////////////////////////
   //// Functions for reformatting data other than wellio.js style JSON
@@ -494,7 +494,7 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
   let logs_in_json = turnFilesIntoTextIntoWellioJSON(logs)
   let new_templates = []
   for (let i = 0; i < logs_in_json.length; i++) {
-    let three_things2 = fromJSONofWEllGetThingsForPlotting(logs_in_json[i])
+    let three_things2 = fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
     let new_data =three_things2["well_log_curves_reformatted_for_d3"]
     let example_template_n = JSON.parse(JSON.stringify(example_template))
     example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
@@ -504,6 +504,10 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
     example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
     example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
     example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
+    let svg_holder = d3.select("#"+div_id).append("div")
+    svg_holder.style("vertical-align","middle")
+      .attr("class","svg_holder")
+      .style("display","inline-block")
     example_template_n[0]["curve_box"]["div_id"] = div_id
     example_template_n[0]["curve_box"]["width"] = width
     example_template_n[0]["curve_box"]["height"] = height
@@ -511,6 +515,26 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
     curveBox(example_template_n)
   }
   return new_templates
+},
+
+/**
+ * minimumDataIntoTemplateFunc
+ * @param 
+ */
+minimumDataIntoTemplateFunc: function (example_template,data,well_names,curve_names,curve_colors,curve_units,fill,div_id,width,height,depth_curve_name){
+  //// remember that all curve components should be an array, even if one item!
+  let example_template_n = JSON.parse(JSON.stringify(example_template))
+  example_template_n[0]["components"][0]["curves"][0]["data"] = data
+  example_template_n[0]["components"][0]["curves"][0]["well_names"] = well_names
+  example_template_n[0]["components"][0]["curves"][0]["curve_names"] = curve_names
+  example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = curve_colors
+  example_template_n[0]["components"][0]["curves"][0]["curve_units"] = curve_units
+  example_template_n[0]["components"][0]["curves"][0]["fill"] = fill
+  example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_curve_name
+  example_template_n[0]["curve_box"]["div_id"] = div_id
+  example_template_n[0]["curve_box"]["width"] = width
+  example_template_n[0]["curve_box"]["height"] = height
+  return example_template_n
 },
 
 /**
@@ -645,7 +669,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    */
   CurveBox:function (well_curve_config_template){
    
-       //// These parts of the function establish variables from the config JSON in shorter variable names
+    //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If there is a greater change that the template might not include them & they are necessary,
     //// then a default or blank value is used
 
@@ -743,10 +767,56 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     
-    const svg = d3.select("#"+div_id).append("svg")
+    
+    
+    
+    const svg_holder = d3.select("#"+div_id).append("div")
+      // .style("vertical-align","middle")
+      .attr("class","svg_holder")
+      .style("display","inline-block")
+    
+    
+    const svg_header = d3.select("#"+div_id+" div.svg_holder").append("svg")
+    
+    
+    
+    svg_header.attr("class","header")
+    svg_header.attr("width",width)
+        .attr("height",height/5);
+    svg_header.append("g")
+        .call(xAxis);
+    svg_header.append("g")
+    svg_header.style("margin","0 auto");
+    svg_header.style("display","block");
+        // .call(yAxis);
+  
+    
+    
+    
+    if(title !== "Elephants"){
+      let distance_from_top = -15
+      svg_header.append("text") // 
+          .attr("x", (margin.left/3+(width/2)))            
+          .attr("y", 0 + (- distance_from_top))
+          .attr("text-anchor", "middle")  
+          .style("font-size", template_overall["title"]["title_font_size"])  
+          .text(title);
+    svg_header.append("text")
+        .attr("x", margin.left+width/4)             
+        .attr("y", 0 + (margin.top + distance_from_top))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "14px") 
+        .style("text-decoration", "underline")  
+        .text("test");
+    }
+    
+    const svg = d3.select("#"+div_id+" div.svg_holder").append("svg")
+    //const svg = d3.select("#"+div_id).append("svg")
     svg.attr("class","first")
     svg.attr("width",width)
         .attr("height",height);
+        svg.style("margin","0 auto");
+        svg.style("display","block");
     svg.append("g")
         .call(xAxis);
     svg.append("g")
@@ -773,6 +843,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if (curve_units[k]){curveUnit = curve_units[k]}   
     let min = mins[k]
     let max = maxes[k]
+    // if (curve_units[k]){min = mins[k]}   
+    // if (curve_units[k]){max = maxes[k]}   
+    //return [min,max]
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
@@ -927,11 +1000,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       catch{
         console.log("could not do rectangle in curveBox function for some reason")
       }
-    
+    svg_holder.node()
+    svg_header.node()
     return svg.node();
-  }
-
-,
+  },
     
     /**
      * Function for saving a SVG from the HTML DOM as a SVG file. This currently only works on front-end but might be later adapted for server-side rendering.
@@ -963,15 +1035,16 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
      */
     multipleLogPlot:function(div_id,templates){
       const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
-      let new_templates = []
-      for (let i = 0; i < templates.length; i++) {
-        templates[i][0]["curve_box"]["div_id"] = div_id
-        new_templates.push(templates[i])
-        let template = templates[i]
-        curveBox(template)
-      }
-      return new_templates
-    }
+    let new_templates = []
+    for (let i = 0; i < templates.length; i++) {
+    //// NEED TO CHANGE THE LINE BELOW
+    //templates[i][0]["curve_box"]["div_id"] = div_id
+    new_templates.push(templates[i])
+    let template = templates[i]
+    let check = curveBox(template)
+  }
+  return new_templates
+}
 
 
 
