@@ -706,6 +706,13 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let depth_curve_name = template_curves["depth_curve_name"]
     
     
+    ///////// NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
+    let header_sep_svg_or_not = "yes"
+    let svg_header_height = 2+curve_names.length
+    svg_header_height = svg_header_height.toString()+"em"
+    ///////// NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
+    
+    
     
 //       //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
 //       let depth_min
@@ -763,7 +770,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     
     //// Calculate Axis & Scales
     let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
-    let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom, margin.top])
+    let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
     let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     
@@ -782,7 +789,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     
     svg_header.attr("class","header")
     svg_header.attr("width",width)
-        .attr("height",height/5); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
+        .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
     svg_header.append("g")
         .call(xAxis);
     svg_header.append("g")
@@ -790,7 +797,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_header.style("display","block");
         // .call(yAxis); /// took out as we don't want axis to show
   
-    
     if(title !== "Elephants"){
       let distance_from_top = -15
       svg_header.append("text") // 
@@ -799,13 +805,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .attr("text-anchor", "middle")  
           .style("font-size", template_overall["title"]["title_font_size"])  
           .text(title);
-    svg_header.append("text")
-        .attr("x", margin.left+width/4)             
-        .attr("y", 0 + (margin.top + distance_from_top))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "14px") 
-        .style("text-decoration", "underline")  
-        .text("test");
     }
     
     const svg = d3.select("#"+div_id+" div.svg_holder").append("svg")
@@ -846,8 +845,36 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //return [min,max]
     
     
-    let header_text_line = min.toFixed(1)+"  "+curveUnit+"  "+curve_names[k]+"  "+max.toFixed(1)
-    
+    let header_text_line = min.toFixed(1)+" -- "+curve_names[k]+"  "+curve_units[k]+" -- "+max.toFixed(1)
+ 
+    if (header_sep_svg_or_not == "yes"){
+      
+       //if(k > 0){distance_from_top = -30}
+       //if(k == 0){distance_from_top = "1em"}
+       //else{
+      let distance_from_top = (1+(k*2)).toString()+"em"
+      
+      svg_header.append("text")
+          .attr("x", width/2)          
+          .attr("y", 0 + distance_from_top)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "14px") 
+          .style("text-decoration", "underline")  
+          .style('fill',curve_colors[k])
+          .text(header_text_line); 
+    }
+    else {
+      if(k > 0){distance_from_top = -30}
+      
+      svg.append("text")
+          .attr("x", width/2)          
+          .attr("y", 0 + (margin.top + distance_from_top))
+          .attr("text-anchor", "middle")  
+          .style("font-size", "14px") 
+          .style("text-decoration", "underline")  
+          .style('fill',curve_colors[k])
+          .text(header_text_line);  
+    }
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
@@ -857,51 +884,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("stroke-linecap", "round")
         .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
-      
-      if(k > 0){distance_from_top = -30}
-      
-    svg.append("text")
-        .attr("x", (width/2))             
-        .attr("y", 0 + (margin.top + distance_from_top))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "14px") 
-        .style("text-decoration", "underline")  
-        .style('color',curve_colors[k])
-        .style('fill',curve_colors[k])
-        .text(header_text_line);  
-    
-//     svg.append("text")
-//         .attr("x", (width-margin.right))             
-//         .attr("y", 0 + (margin.top + distance_from_top))
-//         .attr("text-anchor", "end")  
-//         .style("font-size", "14px") 
-//         .style("text-decoration", "underline")  
-//         .text(max.toFixed(1));
-      
-//       svg.append("text")
-//         .attr("x", (width-margin.right-width/3))             
-//         .attr("y", 0 + (margin.top + distance_from_top))
-//         .attr("text-anchor", "middle")  
-//         .style("font-size", "14px") 
-//         .style("text-decoration", "underline")  
-//         .text(curveUnit);
-      
-//       svg.append("text")
-//         .attr("x", margin.left+width/4)             
-//         .attr("y", 0 + (margin.top + distance_from_top))
-//         .attr("text-anchor", "middle")  
-//         .style("font-size", "14px") 
-//         .style("text-decoration", "underline")  
-//         .text(curve_names[k]);
-    
-//       svg.append("text")
-//           .attr("x", margin.left)             
-//           .attr("y", 0 + (margin.top + distance_from_top))
-//           .attr("text-anchor", "middle")  
-//           .style("font-size", "14px") 
-//           .style("text-decoration", "underline")  
-//           .text(min.toFixed(1));
-    
       }
     // define the area filled under the curve
        
@@ -1016,27 +998,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_header.node()
     return svg.node();
   },
-    
-    /**
-     * Function for saving a SVG from the HTML DOM as a SVG file. This currently only works on front-end but might be later adapted for server-side rendering.
-     * The plan is for default behavior of curveBox to be that an SVG is appended to a div. However, this function is trying to enable saving just the SVG as an SVG file. 
-     * This might be useful if the well log visualizations could be pre-rendered on the server and then loaded to the front-end, which theoretically might save load time.
-     * @param {element} svgEl an element from the DOM. It should include the whole chart to be in the SVG.
-     * @param {string} name is the name of the resulting SVG. An example might be "testChart4.SVG"
-     */
-    saveSvg:function(svgEl, name) {
-      svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-      var svgData = svgEl.outerHTML;
-      var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-      var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
-      var svgUrl = URL.createObjectURL(svgBlob);
-      var downloadLink = document.createElement("a");
-      downloadLink.href = svgUrl;
-      downloadLink.download = name;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-  },
 
 
     //////////
@@ -1046,19 +1007,21 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
      * @param {Object} templates An array of CurveBox input templates
      */
     multipleLogPlot:function(div_id,templates){
-      const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
-    let new_templates = []
-    for (let i = 0; i < templates.length; i++) {
-    //// NEED TO CHANGE THE LINE BELOW
-    //templates[i][0]["curve_box"]["div_id"] = div_id
-    new_templates.push(templates[i])
-    let template = templates[i]
-    let check = curveBox(template)
-  }
-  return new_templates
-}
-
-
+      let noDIV = d3.select("#"+div_id).selectAll("div").remove()
+      let noSVG = d3.select("#"+div_id).selectAll("svg").remove()
+      let new_templates = []
+      for (let i = 0; i < templates.length; i++) {
+        let svg_holder = d3.select("#"+div_id).append("div")
+        svg_holder.style("vertical-align","middle")
+          .attr("id",div_id+"svg_holder"+i)
+          .style("display","inline-block")
+        templates[i][0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
+        new_templates.push(templates[i])
+        let template = templates[i]
+        let check = curveBox(template)
+      }
+      return new_templates
+    }
 
 
 
