@@ -669,7 +669,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    */
   CurveBox:function (well_curve_config_template){
    
-    //// These parts of the function establish variables from the config JSON in shorter variable names
+     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If there is a greater change that the template might not include them & they are necessary,
     //// then a default or blank value is used
 
@@ -782,16 +782,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     
     svg_header.attr("class","header")
     svg_header.attr("width",width)
-        .attr("height",height/5);
+        .attr("height",height/5); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
     svg_header.append("g")
         .call(xAxis);
     svg_header.append("g")
     svg_header.style("margin","0 auto");
     svg_header.style("display","block");
-        // .call(yAxis);
+        // .call(yAxis); /// took out as we don't want axis to show
   
-    
-    
     
     if(title !== "Elephants"){
       let distance_from_top = -15
@@ -846,6 +844,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     // if (curve_units[k]){min = mins[k]}   
     // if (curve_units[k]){max = maxes[k]}   
     //return [min,max]
+    
+    
+    let header_text_line = min.toFixed(1)+"  "+curveUnit+"  "+curve_names[k]+"  "+max.toFixed(1)
+    
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
@@ -858,37 +860,47 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       
       if(k > 0){distance_from_top = -30}
       
-      svg.append("text")
-        .attr("x", (width-margin.right))             
-        .attr("y", 0 + (margin.top + distance_from_top))
-        .attr("text-anchor", "end")  
-        .style("font-size", "14px") 
-        .style("text-decoration", "underline")  
-        .text(max.toFixed(1));
-      
-      svg.append("text")
-        .attr("x", (width-margin.right-width/3))             
+    svg.append("text")
+        .attr("x", (width/2))             
         .attr("y", 0 + (margin.top + distance_from_top))
         .attr("text-anchor", "middle")  
         .style("font-size", "14px") 
         .style("text-decoration", "underline")  
-        .text(curveUnit);
-      
-      svg.append("text")
-        .attr("x", margin.left+width/4)             
-        .attr("y", 0 + (margin.top + distance_from_top))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "14px") 
-        .style("text-decoration", "underline")  
-        .text(curve_names[k]);
+        .style('color',curve_colors[k])
+        .style('fill',curve_colors[k])
+        .text(header_text_line);  
     
-      svg.append("text")
-          .attr("x", margin.left)             
-          .attr("y", 0 + (margin.top + distance_from_top))
-          .attr("text-anchor", "middle")  
-          .style("font-size", "14px") 
-          .style("text-decoration", "underline")  
-          .text(min.toFixed(1));
+//     svg.append("text")
+//         .attr("x", (width-margin.right))             
+//         .attr("y", 0 + (margin.top + distance_from_top))
+//         .attr("text-anchor", "end")  
+//         .style("font-size", "14px") 
+//         .style("text-decoration", "underline")  
+//         .text(max.toFixed(1));
+      
+//       svg.append("text")
+//         .attr("x", (width-margin.right-width/3))             
+//         .attr("y", 0 + (margin.top + distance_from_top))
+//         .attr("text-anchor", "middle")  
+//         .style("font-size", "14px") 
+//         .style("text-decoration", "underline")  
+//         .text(curveUnit);
+      
+//       svg.append("text")
+//         .attr("x", margin.left+width/4)             
+//         .attr("y", 0 + (margin.top + distance_from_top))
+//         .attr("text-anchor", "middle")  
+//         .style("font-size", "14px") 
+//         .style("text-decoration", "underline")  
+//         .text(curve_names[k]);
+    
+//       svg.append("text")
+//           .attr("x", margin.left)             
+//           .attr("y", 0 + (margin.top + distance_from_top))
+//           .attr("text-anchor", "middle")  
+//           .style("font-size", "14px") 
+//           .style("text-decoration", "underline")  
+//           .text(min.toFixed(1));
     
       }
     // define the area filled under the curve
