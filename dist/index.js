@@ -506,9 +506,9 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
     example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
     let svg_holder = d3.select("#"+div_id).append("div")
     svg_holder.style("vertical-align","middle")
-      .attr("class","svg_holder")
+      .attr("id",div_id+"svg_holder"+i)
       .style("display","inline-block")
-    example_template_n[0]["curve_box"]["div_id"] = div_id
+    example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
     example_template_n[0]["curve_box"]["width"] = width
     example_template_n[0]["curve_box"]["height"] = height
     new_templates.push(example_template_n)
