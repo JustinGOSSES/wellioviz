@@ -43,9 +43,11 @@ If you’d like to contribute, but you’re not so experienced with JavaScript, 
 Add a feature request or bug report issue <a href="https://github.com/JustinGOSSES/wellioviz/issues/new/choose">here</a> When you add an issue, there will be two choices for issues templates to use, one for bug reports and another for feature requests.
 
 ### Pull Requests
-A pull request is suggested change in the code. 
-- State why you are proposing this change. 
-- When you make a pull request, please try to keep the changes to one feature at a time. 
-- We don't have tests yet, so in lieu of that, please fork the active Observable notebook noted in the README add in your changed functions and make sure everything still works with your changes. If there are changes needed to be made to get things to work that are not in index.js but only in the Observable notebook, please note that in your pull request. This is unlikely but theoretically possible.
+If you've fixed an issue in the code, please consider submitting a pull request, which is basically a fork or branch of this repository submitted back to it with a specific change. 
+1. State why you are proposing this change. 
+2. When you make a pull request, please try to keep the changes to one feature at a time if possible (not always possible). 
+3. We don't have tests yet, so in lieu of that, please fork the active Observable notebook noted in the README add in your changed functions and make sure everything still works with your changes. If there are changes needed to be made to get things to work that are not in index.js but only in the Observable notebook, please note that in your pull request. This is unlikely but theoretically possible.
 - Please consider other use-cases and make sure your code changes aren't narrowing the scope of wellioviz to only your use case.
 - Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a>
+
+If anything is confusing, open an issue.
