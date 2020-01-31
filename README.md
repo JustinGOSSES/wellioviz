@@ -27,7 +27,7 @@ https://observablehq.com/@justingosses/overly-simplified-stratigraphic-modeling
 https://observablehq.com/@justingosses/well-log-curve-cross-sections
 
 
-<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5"><img src="well_log_screenshot.png"></a>
+<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5"><img src="docs/images/well_log_screenshot.png"></a>
 
 ## Why
 
