@@ -5,11 +5,6 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="docs/images/well_log_screenshot.png"></a>
 
 ## IT IS IN PROGRESS.....
-#### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
-
-
-## DOCS
-Docs will be here: https://justingosses.github.io/wellioviz/ They are only partially up to date currently.
 
 ## Demos & Examples
 
@@ -47,9 +42,13 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 
 For more information on how wellioviz is organized, check out the <a href="ARCHITECTURE.MD">ARCHITECTURE.MD</a> document. 
 
+## DOCS
+Docs will be here: https://justingosses.github.io/wellioviz/ They are only partially up to date currently. 
 
 ## Contributing
 Check out the Contributing <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/CONTRIBUTING.md">Guidelines</a>. Issues, documentation, pull requests, examples, test cases, and questions needed!
+
+#### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
 
 ### Theoretical Development Plan...
 - Build on Observable and sync to index.js file inside the dist folder.
