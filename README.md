@@ -14,26 +14,22 @@ Docs will be here: https://justingosses.github.io/wellioviz/ They are only parti
 ## Demos & Examples
 
 ### 1.More Recent Obserevable-Notebook-Based Demo
-#### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
-Status: Up to date
-Link: <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">here</a>
+- #### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
+- Status: Up to date
+- Link: <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">here</a>
 
 ### 2. HTML demo as github pages page in this repository
-Status: Out of date
-Link: Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html <---- THIS IS OUT OF DATE
-
-This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... uses an older version of index.js than in this repo...will update to current eventually... in progress
+- Status: Out of date
+- Link: Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html <---- THIS IS OUT OF DATE
+- This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... uses an older version of index.js than in this repo...will update to current eventually... in progress
 
 
 ### 3. Alterative Observable-notebook-based demos out of date
-Status: Way out of date!
-Link: Other older Observable notebooks that use older versions of wellioviz code but give further idea what is possible are: 
-
-https://observablehq.com/@justingosses/well-log-in-d3-js-v5
-&
-https://observablehq.com/@justingosses/overly-simplified-stratigraphic-modeling
-&
-https://observablehq.com/@justingosses/well-log-curve-cross-sections
+- Status: Way out of date!
+- Link: Other older Observable notebooks that use older versions of wellioviz code but give further idea what is possible are: 
+- https://observablehq.com/@justingosses/well-log-in-d3-js-v5
+- https://observablehq.com/@justingosses/overly-simplified-stratigraphic-modeling
+- https://observablehq.com/@justingosses/well-log-curve-cross-sections
 
 ## Why?
 
