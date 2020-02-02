@@ -13,16 +13,19 @@ Docs will be here: https://justingosses.github.io/wellioviz/ They are only parti
 
 ## Demos & Examples
 
-1. ### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
+### 1.
+### MOST RECENT OBSERVABLE DEMO IS: https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2
 
 Use the link above to see the current state of things...
 
-2. Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html <---- THIS IS OUT OF DATE
+### 2. 
+Building a basic demo here: https://justingosses.github.io/wellioviz/demo.html <---- THIS IS OUT OF DATE
 
 This is the wellio demo but with the visualization going to be rebuilt with wellioviz. Currently only using the bare minimum of wellioviz but will build more in as time goes on.... uses an older version of index.js than in this repo...will update to current eventually... in progress
 
 
-3. Other older Observable notebooks that use older versions of wellioviz code are:
+### 3. 
+#### Other older Observable notebooks that use older versions of wellioviz code are:
 
 https://observablehq.com/@justingosses/well-log-in-d3-js-v5
 
