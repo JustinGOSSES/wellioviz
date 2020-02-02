@@ -29,6 +29,7 @@ https://observablehq.com/@justingosses/well-log-curve-cross-sections
 
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5"><img src="docs/images/well_log_screenshot.png"></a>
 
+
 ## Why
 
 Most geologists who make charts of well logs via code seem to do so in Python, often working in Jupyter notebooks. Very often, they will use matplotlib. There are other potential places and reasons you might need code-created plots of well logs, that matplotlib doesn't work great for. For many of these use-cases, a JavaScript based approach to plotting well logs makes more sense.
@@ -88,7 +89,9 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 
 ### Architecture Sketch
 <a href="images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png"></a>
-
+<a href="images/wellioviz_architecture_data_change.png"><img src="docs/images/wellioviz_architecture_data_change.png"></a>
+<a href="images/curve_box_org.png"><img src="docs/images/curve_box_org.png"></a>
+<a href="images/cross_section_org.png"><img src="docs/images/cross_section_org.png"></a>
 
 ## Contributing
 Check out the Contributing <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/CONTRIBUTING.md">Guidelines</a>. Issues, documentation, pull requests, examples, test cases, and questions needed!
