@@ -703,17 +703,16 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     
     let depth_curve_name = template_curves["depth_curve_name"]
     
-  
+    ///// THIS LINE BELOW DOESN"T MAKE ANY SENSE, CHANGE ////
     let div_id = template_overall["div_id"]
     if(template_overall["div_id"]){div_id = template_overall["div_id"]}
 
-    
-    
+   
     ///////// NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
     let header_sep_svg_or_not = "yes"
     let svg_header_height = 1+curve_names.length
     
-    svg_header_height = svg_header_height.toString()+"em"
+    //svg_header_height = svg_header_height.toString()+"em"
     svg_header_height = "3em"
     ///////// NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
     
@@ -805,6 +804,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_header.style("display","block");
         // .call(yAxis); /// took out as we don't want axis to show
   
+     ///////// change this!!!!!
     if(title !== "Elephants"){
       let distance_from_top = -15
       svg_header.append("text") // 
@@ -820,20 +820,20 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     const curveBox_main_div = d3.select("#"+div_id).append("div")
     curveBox_main_div
         .attr("height",300)
-        .attr("class","curveBox_main_div")
+        .attr("class","component_outter")
         .style('display','flex')
         .style('position','relative')
   
-    const curveBox_sub_div = d3.select("#"+div_id+" div.curveBox_main_div").append("div")
+    const curveBox_sub_div = d3.select("#"+div_id+" div.component_outter").append("div")
     curveBox_sub_div
-        .attr("class","curveBox_sub_div")
+        .attr("class","component_inner")
          .style('overflow-y',"auto")
         .style('position','absolute')
   
     
 
     
-    const svg = d3.select("#"+div_id+" div.curveBox_main_div div.curveBox_sub_div").append("svg")
+    const svg = d3.select("#"+div_id+" div.component_outter div.component_inner").append("svg")
     
     
     //const svg = d3.select("#"+div_id).append("svg")
