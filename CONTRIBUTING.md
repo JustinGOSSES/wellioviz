@@ -3,7 +3,9 @@
 ## What Type of Contributions Are Welcome?
 All contributions welcome! 
 
-.... for context
+## Code of Conduct
+<a href="CODE_OF_CONDUCT.md">Code of Conduct</a>
+
 ## How I'm Keeping Things In Sync During Development.
 The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! 
 
