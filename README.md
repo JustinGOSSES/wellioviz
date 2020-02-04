@@ -48,8 +48,6 @@ Docs will be here: https://justingosses.github.io/wellioviz/ They are only parti
 ## Contributing
 Check out the Contributing <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/CONTRIBUTING.md">Guidelines</a>. Issues, documentation, pull requests, examples, test cases, and questions needed!
 
-## Code of Conduct
-<a href="CODE_OF_CONDUCT.md">Code of Conduct</a>
 #### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
 
 ### Theoretical Development Plan...
@@ -63,3 +61,6 @@ Check out the Contributing <a href="https://github.com/JustinGOSSES/wellioviz/bl
 
 <a href="docs/BRAINSTORMS.md">BRAINSTORM.md</a>
 <a href="docs/audiences.md">AUDIENCES.md</a>
+
+## Code of Conduct
+<a href="CODE_OF_CONDUCT.md">Code of Conduct</a>
