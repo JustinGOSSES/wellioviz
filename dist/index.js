@@ -669,30 +669,26 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    */
   CurveBox:function (well_curve_config_template){
      
+    //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
-    //// If there is a greater change that the template might not include them & they are necessary,
-    //// then a default or blank value is used
+    //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
 
-    //let well_curve_config_template = well_curve_config_template[0]
-    
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
     let template_lines = template_components[0]["lines"]
     let template_rectangles = template_components[0]["rectangles"]
-    
     let title = ""
     //// Determine if title exists for the curve_box.
     if(template_overall["show_title"] != "yes"){let title = ""}
     else{title=template_overall["title"]["text"]}
-
+    /// Parameters that define shape & size of overall curve box
     let width = template_overall["width"]
     let height = template_overall["height"]
     let margin = template_overall["margin"]
-    
+    //// Data is in d3.js form. An array of objects consisting of single level key:value pairs
     let data = template_curves["data"]
-  
-
+    //// Variables related to curves, these should all be arrays with one or more values!
     let curve_names = template_curves["curve_names"]
     let curve_colors = template_curves["curve_colors"]
     let curve_stroke_dasharray = template_curves["curve_stroke_dasharray"] 
@@ -700,24 +696,23 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let curve_color = curve_colors[0]
     let curve_units = template_curves["curve_units"];
     if(template_curves["curve_units"]){curve_units = template_curves["curve_units"]}
-    
+    else{curve_units = ""}
+    //// The depth_curve_name needs to be the same for all curves plotted!
     let depth_curve_name = template_curves["depth_curve_name"]
-    
     ///// THIS LINE BELOW DOESN"T MAKE ANY SENSE, CHANGE ////
     let div_id = template_overall["div_id"]
     if(template_overall["div_id"]){div_id = template_overall["div_id"]}
+    else{return "there_was_no_div_id_in_the_template"}
 
    
-    ///////// NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
+    ///////// NEED TO PUT THESE IN TEMPLATE !!!!! => //////////////////////////
     let header_sep_svg_or_not = "yes"
     let svg_header_height = 1+curve_names.length
-    
-    //svg_header_height = svg_header_height.toString()+"em"
     svg_header_height = "3em"
-    ///////// NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
+    ///////// <= NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
     
     
-    
+     ///////// NEED TO FIX DEPTHS AS THERE ARE MULTIPLE DEPTH LIMITS AND THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 //       //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
 //       let depth_min
 //       let depth_max
@@ -736,17 +731,16 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 //       //// Apply depth min and max to incoming well log data
 //       //// To save time, we'll first check if the first object in the array had as depth that is smaller than min
 //       //// and check if the last object in the array has a depth that is larger than the max, if not. we do nothing.
-          
-        
 
 //       if(data[0][depth_curve_name] > depth_min && data[-1][depth_curve_name] < depth_max){}
 //       else{data = data.filter(function(objects){
 //   return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
 // })}
+  
     let depth_min = -1000000
     let depth_max = 1000000
+  
     if(template_curves["min_depth"][0] == "autocalculate" || template_curves["min_depth"] == "autocalculate"){
-      
       depth_min = data[0][depth_curve_name]
     }
     else{depth_min = template_curves["min_depth"]}
@@ -757,8 +751,11 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 
     // let depth_min = template_curves["min_depth"][0]
     //  let depth_max = template_curves["max_depth"][0]
+  
+    /////////  <=== NEED TO FIX DEPTHS. THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 
-    // Calculate x domain extent for one or more than one curve
+  
+    //////////////  Calculate x domain extent for one or more than one curve, used in scaling =>////////////// 
     let mins = []
     let maxes = []
     for (let i = 0; i < curve_names.length; i++) {
@@ -769,75 +766,70 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     }
     let min_all_curves = d3.min(mins)
     let max_all_curves = d3.max(maxes)
+
     
-    
-    
-    //// Calculate Axis & Scales
+    //////////////  Calculate Axis & Scales =>////////////// 
     let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
     let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
     let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
-    
-    
-    
-    
-    const svg_holder = d3.select("#"+div_id).append("div")
-      // .style("vertical-align","middle")
-      .attr("class","svg_holder")
-      // .style('display',"flex")
-      .style("overflow-x","scroll")
-  
-      
-    
-    
-    const svg_header = d3.select("#"+div_id+" div.svg_holder").append("svg")
-    
-    
-    
-    svg_header.attr("class","header")
-    svg_header.attr("width",width)
-        .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
-    svg_header.append("g")
-        .call(xAxis);
-    svg_header.append("g")
-    svg_header.style("margin","0 auto");
-    svg_header.style("display","block");
-        // .call(yAxis); /// took out as we don't want axis to show
-  
-     ///////// change this!!!!!
-    if(title !== "Elephants"){
-      let distance_from_top = -15
-      svg_header.append("text") // 
-          .attr("x", (margin.left/3+(width/2)))            
-          .attr("y", 0 + (- distance_from_top))
-          .attr("text-anchor", "middle")  
-          .style("font-size", template_overall["title"]["title_font_size"])  
-          .text(title);
-    }
-    // let svg_box = d3.select("#"+div_id+" div.svg_holder")
-    // svg_box.style("display","flex")
-  
-    const curveBox_main_div = d3.select("#"+div_id).append("div")
-    curveBox_main_div
-        .attr("height",300)
-        .attr("class","component_outter")
-        .style('display','flex')
-        .style('position','relative')
-  
-    const curveBox_sub_div = d3.select("#"+div_id+" div.component_outter").append("div")
-    curveBox_sub_div
-        .attr("class","component_inner")
-         .style('overflow-y',"auto")
-        .style('position','absolute')
-  
-    
 
+    //////////////  Initiate Divs + SVGs. Different depending single SVG or header separate =>////////////// 
+    let svg = ""
+    let svg_holder = ""
+    let svg_header = ""
+    if (header_sep_svg_or_not == "yes"){
+      svg_holder = d3.select("#"+div_id).append("div")
+        // .style("vertical-align","middle")
+        .attr("class","svg_holder")
+        // .style('display',"flex")
+        .style("overflow-x","scroll")
+
+      svg_header = d3.select("#"+div_id+" div.svg_holder").append("svg")
+
+      svg_header.attr("class","header")
+      svg_header.attr("width",width)
+          .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
+      svg_header.append("g")
+          .call(xAxis);
+      svg_header.append("g")
+      svg_header.style("margin","0 auto");
+      svg_header.style("display","block");
+          // .call(yAxis); /// took out as we don't want axis to show
+
+       ///////// change this!!!!!
+      if(title !== "Elephants"){
+        let distance_from_top = -15
+        svg_header.append("text") // 
+            .attr("x", (margin.left/3+(width/2)))            
+            .attr("y", 0 + (- distance_from_top))
+            .attr("text-anchor", "middle")  
+            .style("font-size", template_overall["title"]["title_font_size"])  
+            .text(title);
+      }
+
+      const curveBox_main_div = d3.select("#"+div_id).append("div")
+      curveBox_main_div
+          .attr("height",300)
+          .attr("class","component_outter")
+          .style('display','flex')
+          .style('position','relative')
+
+      const curveBox_sub_div = d3.select("#"+div_id+" div.component_outter").append("div")
+      curveBox_sub_div
+          .attr("class","component_inner")
+           .style('overflow-y',"auto")
+          .style('position','absolute')
+      
+      svg = d3.select("#"+div_id+" div.component_outter div.component_inner").append("svg")
+    }
+
+    else{
+      svg = d3.select("#"+div_id).append("svg")
+    }
     
-    const svg = d3.select("#"+div_id+" div.component_outter div.component_inner").append("svg")
-    
-    
-    //const svg = d3.select("#"+div_id).append("svg")
-    svg.attr("class","first")
+    //////////////  Building curvebox parts that aren't header. First define size & title =>////////////// 
+    svg.attr("class","components")
     svg.attr("width",width)
         .attr("height",height);
         svg.style("margin","0 auto");
@@ -846,9 +838,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg.append("g")
         .call(xAxis);
     svg.append("g")
-        .call(yAxis);
-    //// throw away code for single curve to plot that will be deleted soon  
-    //// was here:
     //// Code that assumes multiple curves are plotted in same curvebox  
     let distance_from_top = -15
     if(title !== ""){
@@ -861,6 +850,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       //distance_from_top = -20
      }
   
+  //////////////  Building curves within curvebox =>////////////// 
   for (let k = 0; k < curve_names.length; k++) {
   //// code that creates a line for each Curve in order provided and applies 
   //// the color in the color array in order provided
@@ -869,20 +859,12 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if (curve_units[k]){curveUnit = curve_units[k]}   
     let min = mins[k]
     let max = maxes[k]
-    // if (curve_units[k]){min = mins[k]}   
-    // if (curve_units[k]){max = maxes[k]}   
-    //return [min,max]
-    
-    
-    let header_text_line = min.toFixed(1)+" -- "+curve_names[k]+"  "+curve_units[k]+" -- "+max.toFixed(1)
+
+    let header_text_line = min.toFixed(1)+" - "+curve_names[k]+"  "+curve_units[k]+" - "+max.toFixed(1)
  
+    //////////////  Header text, two way depending on  =>////////////// 
     if (header_sep_svg_or_not == "yes"){
-      
-       //if(k > 0){distance_from_top = -30}
-       //if(k == 0){distance_from_top = "1em"}
-       //else{
       let distance_from_top = (1+(k*2)).toString()+"em"
-      
       svg_header.append("text")
           .attr("x", width/2)          
           .attr("y", 0 + distance_from_top)
@@ -892,18 +874,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style('fill',curve_colors[k])
           .text(header_text_line); 
     }
-    else {
-      if(k > 0){distance_from_top = -30}
-      
-      svg.append("text")
-          .attr("x", width/2)          
-          .attr("y", 0 + (margin.top + distance_from_top))
-          .attr("text-anchor", "middle")  
-          .style("font-size", "14px") 
-          .style("text-decoration", "underline")  
-          .style('fill',curve_colors[k])
-          .text(header_text_line);  
-    }
+    
+    //////////////  Appends a curve line but doesn't include fill yet =>////////////// 
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
@@ -914,18 +886,15 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
       }
-    // define the area filled under the curve
-       
-      let two_curve_fill_flag = "no"
+  
+      //////////////   define the area filled under the curve =>////////////// 
+      //let two_curve_fill_flag = "no"
       for (let i = 0; i < template_curves["fill"].length; i++) {
-        ////
-        
         if (template_curves["fill"][i][0]["fill"] == "yes"){        
           let number_colors = template_curves["fill"][i][0]["fill_colors"].length
           let curve_name1 = template_curves["fill"][i][0]["curve_name"]
           let threshold = -99999999
           let fill_color = "gray"
-          //////
           for (let j = 0; j < number_colors; j++) {
           console.log("got to start of J loop",j)
               let area1 = d3.area()
@@ -933,7 +902,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                 threshold = template_curves["fill"][i][0]["cutoffs"][j]
                 fill_color = template_curves["fill"][i][0]["fill_colors"][j]
                 }
-         
               if(template_curves["fill"][i][0]["fill_direction"] == "left"){
                   let start_from_left = template_overall["margin"]["left"]
                   area1
@@ -941,9 +909,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                       .x0(d => start_from_left)
                         .defined(d => ((d[curve_name1])>threshold))
                       .y(d => y(d[depth_curve_name]));
-              
               }
-              
               if(template_curves["fill"][i][0]["fill_direction"] == "right"){
                   let start_from_right = template_overall["margin"]["right"]
                   area1
@@ -967,11 +933,11 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                     .attr("stroke", "none")
                     .attr("fill",fill_color)
                     .attr("fill-opacity",0.8);
-              
               }
         }
     }
-    /////////// LINES ////////////////////// LINES ////////////////////// LINES ///////////
+  
+    //////////////  Horizontal Lines AKA tops =>////////////// 
     try {
         for (let i = 0; i < template_lines.length; i++) {
            let this_line = template_lines[i]
@@ -996,8 +962,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       catch{
         console.log("could not do lines for tops in curveBox function")
       }
-      ////// hacking in a rectange for now /////
-          /////////// RECTANGLE //////////////////////////////////////////////
+  
+      //////////////  Rectangles for things like cores & sample locations =>////////////// 
       try {
         
         for (let i = 0; i < template_rectangles.length; i++) {
@@ -1023,6 +989,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       catch{
         console.log("could not do rectangle in curveBox function for some reason")
       }
+    //////////////  Calling node. Only returning svg node for saving single SVG file purposes =>////////////// 
     svg_holder.node()
     svg_header.node()
     return svg.node();
