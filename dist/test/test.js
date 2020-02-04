@@ -23,7 +23,6 @@ testTemplate_A =
 
 
 
-  
 input_sparse_style = [{
     "single_curve_box_or_cross_section":"single",
     "cross_section_title":"",
@@ -45,7 +44,9 @@ input_sparse_style = [{
       "title": {"text": "", "title_font_size": "10px"}, /// Should be skip-able // default=skip
       "div_id": "well_holder4", /// Should be skip-able // default=random str? What happens if div doesn't exist?
       "order_of_component":["curves","rectangles","lines"], // not built yet, default is curve, then line, then rectangle
-      "lines_connected_across_curve_boxes":"no" // not built yet, default is skip function
+      "lines_connected_across_curve_boxes":"no", // not built yet, default is skip function
+      "header_sep_svg_or_not":"yes",
+      "svg_header_height":"3em"
   },
    "components":[{
      "curves":[

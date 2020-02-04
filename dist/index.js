@@ -300,159 +300,163 @@ module.exports = {
  * @param {string} string_of_either__help_example_definitions_mandatories A string of either "help" "example" or "definitions" 
  */
 curveBoxTemplateExamples: function (string_of_either__help_example_definitions_mandatories){
-    let request_string = string_of_either__help_example_definitions_mandatories
-    if(request_string=="help"){
-      return "The curveBoxTemplateExamples function returns example templates based on an input argument. Possible argument values are 'example' 'defintions' or 'mandatories'" 
+  let request_string = string_of_either__help_example_definitions_mandatories
+  if(request_string=="help"){
+    return "The curveBoxTemplateExamples function returns example templates based on an input argument. Possible argument values are 'example' 'defintions' or 'mandatories'" 
+  }
+  if(request_string=="example"){
+    return [{
+  "curve_box":{
+    "show_well_name":"yes", /// not built yet
+    "show_depth_type":"no", /// not built yet
+    "show_curve_units":"yes", /// not built yet
+    "curve_box_depth_min":-999, /// not built yet
+    "curve_box_depth_max":-999, /// not built yet
+    "take_out_null_or_visualize":"no", /// not built yet
+    "show_title":"no", 
+    "width": 260, 
+    "height": 500, 
+    "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
+    "title": {"text": "", "title_font_size": "10px"}, /// not built yet
+    "div_id": "well_holder_3", /// Should be skip-able // default=random str? What happens if div doesn't exist?
+    "order_of_component":["curves","rectanges","lines"], /// not built yet
+    "lines_connected_across_curveboxes":"no", /// not built yet
+    "header_sep_svg_or_not":"yes",
+    "svg_header_height":"3em"
+},
+ "components":[{
+   "curves":[
+    { "data_type":"curve", 
+      "curve_names":["RHOB"],
+      "curve_colors":["black"],
+      "curve_stroke_dasharray":["solid"],
+      "fill":[
+                {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
+              ],
+       "curve_units":["g/cm3"],
+       "depth_limits":[{"min":"autocalculate","max":"autocalculate"}],
+       "curve_limits":[{"curve_name":"","min":-10000000,"max":3}],
+        "data":[{"depth":1598.3,"RHOB":2.2322},{"depth":1598.4,"RHOB":2.0513},{"depth":1598.5,"RHOB":2.2548},{"depth":1598.6,"RHOB":2.9445},{"depth":1598.7,"RHOB":2.2223},{"depth":1598.8,"RHOB":2.447},{"depth":1598.9,"RHOB":2.598},{"depth":1599,"RHOB":2.8088},{"depth":1599.1,"RHOB":2.2248},{"depth":1599.2,"RHOB":2.2399},{"depth":1599.3,"RHOB":2.251},{"depth":1599.4,"RHOB":2.255},{"depth":1599.5,"RHOB":2.2526},{"depth":1599.6,"RHOB":2.2322},{"depth":1599.7,"RHOB":2.2513},{"depth":1599.8,"RHOB":2.2548},{"depth":1599.9,"RHOB":2.2445},{"depth":1600,"RHOB":2.2223},{"depth":1600.1,"RHOB":2.2047},{"depth":1600.2,"RHOB":2.198}], /// not built yet
+       "depth_curve_name":"DEPT",/// not built yet
+      //////
+     "data_id":["placeholder_data_id",], /// not built yet
+     "well_names":[""], /// not built yet
+     "log_scale": [false],  /// not built yet
+     "line_color": ["red"], /// not built yet
+     "max_depth": "autocalculate", /// not built yet
+     "min_depth": "autocalculate", /// not built yet
+     "depth_type_string":["MD"], /// not built yet
+     "null_value": [""], /// not built yet
     }
-    if(request_string=="example"){
-      return [{
-    "curve_box":{
-      "show_well_name":"yes", /// not built yet
-      "show_depth_type":"no", /// not built yet
-      "show_curve_units":"yes", /// not built yet
-      "curve_box_depth_min":-999, /// not built yet
-      "curve_box_depth_max":-999, /// not built yet
-      "take_out_null_or_visualize":"no", /// not built yet
-      "show_title":"no", 
-      "width": 260, 
-      "height": 500, 
-      "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
-      "title": {"text": "", "title_font_size": "10px"}, /// not built yet
-      "div_id": "well_holder_3", /// Should be skip-able // default=random str? What happens if div doesn't exist?
-      "order_of_component":["curves","rectanges","lines"], /// not built yet
-      "lines_connected_across_curveboxes":"no" /// not built yet
-  },
-   "components":[{
-     "curves":[
-      { "data_type":"curve", 
-        "curve_names":["RHOB"],
-        "curve_colors":["black"],
-        "curve_stroke_dasharray":["solid"],
-        "fill":[
-                  {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
-                ],
-         "curve_units":["g/cm3"],
-         "depth_limits":[{"min":"autocalculate","max":"autocalculate"}],
-         "curve_limits":[{"curve_name":"","min":-10000000,"max":3}],
-          "data":[{"depth":1598.3,"RHOB":2.2322},{"depth":1598.4,"RHOB":2.0513},{"depth":1598.5,"RHOB":2.2548},{"depth":1598.6,"RHOB":2.9445},{"depth":1598.7,"RHOB":2.2223},{"depth":1598.8,"RHOB":2.447},{"depth":1598.9,"RHOB":2.598},{"depth":1599,"RHOB":2.8088},{"depth":1599.1,"RHOB":2.2248},{"depth":1599.2,"RHOB":2.2399},{"depth":1599.3,"RHOB":2.251},{"depth":1599.4,"RHOB":2.255},{"depth":1599.5,"RHOB":2.2526},{"depth":1599.6,"RHOB":2.2322},{"depth":1599.7,"RHOB":2.2513},{"depth":1599.8,"RHOB":2.2548},{"depth":1599.9,"RHOB":2.2445},{"depth":1600,"RHOB":2.2223},{"depth":1600.1,"RHOB":2.2047},{"depth":1600.2,"RHOB":2.198}], /// not built yet
-         "depth_curve_name":"DEPT",/// not built yet
-        //////
-       "data_id":["placeholder_data_id",], /// not built yet
-       "well_names":[""], /// not built yet
-       "log_scale": [false],  /// not built yet
-       "line_color": ["red"], /// not built yet
-       "max_depth": "autocalculate", /// not built yet
-       "min_depth": "autocalculate", /// not built yet
-       "depth_type_string":["MD"], /// not built yet
-       "null_value": [""], /// not built yet
-      }
-   ],
-    "lines":[
-      {
-       "data_type":"line",  /// not built yet
-        "label":"example",  /// not built yet
-       "depth":-999, /// not built yet
-       "color":"red", /// not built yet
-       "stroke_width":"1px", /// not built yet
-       "stroke_style":"solid", /// not built yet
-       "transparency":1.0 /// not built yet
-      }
-    ],
-      "rectangles":[
-         {
-       "data_type":"rectangle", 
-       "depth_top":0,  
-       "x_starting_upper_left_corner":0,
-       "width":100, 
-       "height":100,
-       "stroke-width":"2px",
-       "fill":"red",
-       "opacity":0.5,
-       "label":"Core Example", // not built into plotting template yet
-       "label_orientation":"horizontal", // not built into plotting template yet
-       "lable_position":"right" // not built into plotting template yet
-      }
-     ]
-   }]
-  }]
+ ],
+  "lines":[
+    {
+     "data_type":"line",  /// not built yet
+      "label":"example",  /// not built yet
+     "depth":-999, /// not built yet
+     "color":"red", /// not built yet
+     "stroke_width":"1px", /// not built yet
+     "stroke_style":"solid", /// not built yet
+     "transparency":1.0 /// not built yet
     }
-    else if(request_string=="defintions"){
-      return [{
-    "curve_box":{
-      "show_well_name":"yes or no. If '' is no", // not built yet
-      "show_depth_type":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
-      "show_curve_units":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
-      "curve_box_depth_min":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet 
-      "curve_box_depth_max":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet
-      "take_out_null_or_visualize":"yes or no. If '' is no", // not built yet 
-      "show_title":"yes or no. If '' is no", // not built yet 
-      "width": "number, if blank default is 250", 
-      "height": "number, if blank default is 500", 
-      "margin": ' should be an object like {"top": 10, "right": 10, "bottom": 30, "left": 60} if missing will default to these values', 
-      "title": 'object like:{"text": "", "title_font_size": "10px"} if default, an empty string, "" will skill', 
-      "div_id": "should be a string that equals a div id like: 'well_holder' Do not include the #",  ///What happens if div doesn't exist?
-      "order_of_component":'Should be an array of strings that correlate to component types like:["curves","rectangles","lines"]', // not built yet
-      "lines_connected_across_curveboxes":"yes or no. If '' is no" // not built yet
-  },
-   "components":[{
-     "curves":[
-      { "data_type":"requires one of possible strings: curve, line, rectangle if not one of acceptable string it just skips it.", // not built yet
-        "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
-        "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
-       "curve_stroke_dasharray":"A style for the curve line. Can be solid or a string of integers separated by commas like '5,5' or '20,10,10,5,10,10'",
-        "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
-         "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
-         "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
-         "curve_limits":'An array of objects that hold the min and max curve values allow to cut off spurious value spikes, like: [{"curve_name":"GR","min":0,"max":100},{"curve_name":"PDF","min":0,"max":100}]',
-          "data":'Should be an array of objects where the keys in key:value pairs in each object are curve_names or UWI like: [{"UWI":"111aa","DEPTH":4140.5,"GR":0},{"UWI":"111aa","DEPTH":4141,"GR":0}] for the entire depth of the well being showin the curve_box', 
-         "depth_curve_name":"A string of the curve that is the depth being plotted, like: 'DEPT'. Should be the same name as the depth curve in the array of objects in the data key above.",
-        //////
-        "data_id":["array of strings whose length must equal curve_units, curve_names, etc."], // not built yet
-        "well_names":"An array of strings that represent well names if multiple curves shown in same curve_box. If only one well name, only one is required.", // not built yet /// 
-       "log_scale": "An array of either True or False not in string form but as a primative. If true, plotting will be on log scale for the curve that is in that position of the arrays",  // not built yet 
-       ////// Plotting things but need to be next to curve data or will be too confusing.
-       "line_color": "An array of strings that establish the color of the line of the curve. RGB or common color name, like 'red'. If absent, default is black", 
-       "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
-       "min_depth": "Any array of numbers where each represents the min depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the min depth is autocalculated from the min depth of the input data in the data field. This is default behavior.", 
-       "depth_type_string":"All the curves should be calculated and populated vs. this curve. Takes a string, like: 'DEPT'",
-       "null_value": "An array of null values used for each curve. Default is no null values considered, but could be something like: ['-999.25','-999.25','-999.25','NA']"
-      }
-   ],
-    "lines":[
-      {
-       "data_type":'must be string, will be ignored if not "line", "curve", or "rectangle"', 
-       "label":"The label for horiztonal line in string form",
-       "depth":"number for the depth at which the line is placed", 
-       "color":"string for the color of the line in common color name or RGB format. If '' then black will be used.", 
-       "stroke_width":"A string with of px value for stroke width, like: '1px'. Default if absent is '1px'.", 
-       "stroke_style":'Should be string, if not or doesnt exist will be treated as "solid"',
-       "transparency":'Should be float between 0.0 and 1.0. Otherwise default is 1.0.'
-      }
-    ],
-      "rectangles":[
-         {
-       "data_type":"rectangle", 
-       "depth_top":"A number for the depth of the upper left corner of the rectangle", // 
-       "x_starting_upper_left_corner":"A number for the x axis value of the upper left corner of the rectangle",
-       "width":"Width of rectangle as number", 
-       "height":"Height of rectangle as number",
-       "stroke-width":"Stroke width of line that makes rectangle as a strike, like '2px'.",
-       "fill":"String that represents the color of the rectangle fill in either common color name or RGB like, 'red'",
-       "opacity":"Float between 0 and 1 that represents the opacity of the fill, default is 0.5",
-       "label":"String that appears on end of line and likely represents a top name, like: 'Top Jurassic Final Final Final'", // not built into plotting template yet
-       "label_orientation":"A string that is either 'horizontal' or 'vertical'. If other values, will treat as horizontal label orientation", // not built into plotting template yet
-       "lable_position":"Exceptable strings are top, center, right, left, bottom. Default right." // not built into plotting template yet
-      }
-     ]
-   }]
-  }]
+  ],
+    "rectangles":[
+       {
+     "data_type":"rectangle", 
+     "depth_top":0,  
+     "x_starting_upper_left_corner":0,
+     "width":100, 
+     "height":100,
+     "stroke-width":"2px",
+     "fill":"red",
+     "opacity":0.5,
+     "label":"Core Example", // not built into plotting template yet
+     "label_orientation":"horizontal", // not built into plotting template yet
+     "lable_position":"right" // not built into plotting template yet
     }
-    else if(request_string=="mandatories"){
-      return [
-        "This is not yet populated!!!!"
-      ]
+   ]
+ }]
+}]
+  }
+  else if(request_string=="defintions"){
+    return [{
+  "curve_box":{
+    "show_well_name":"yes or no. If '' is no", // not built yet
+    "show_depth_type":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
+    "show_curve_units":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
+    "curve_box_depth_min":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet 
+    "curve_box_depth_max":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet
+    "take_out_null_or_visualize":"yes or no. If '' is no", // not built yet 
+    "show_title":"yes or no. If '' is no", // not built yet 
+    "width": "number, if blank default is 250", 
+    "height": "number, if blank default is 500", 
+    "margin": ' should be an object like {"top": 10, "right": 10, "bottom": 30, "left": 60} if missing will default to these values', 
+    "title": 'object like:{"text": "", "title_font_size": "10px"} if default, an empty string, "" will skill', 
+    "div_id": "should be a string that equals a div id like: 'well_holder' Do not include the #",  ///What happens if div doesn't exist?
+    "order_of_component":'Should be an array of strings that correlate to component types like:["curves","rectangles","lines"]', // not built yet
+    "lines_connected_across_curveboxes":"yes or no. If '' is no", // not built yet
+    "header_sep_svg_or_not":"yes or no. 'no' will build the curvebox as a single SVG. 'yes' will build it as two SVGs within nested divs. The later better helps enable scrolling curves and stationary header",
+    "svg_header_height":"Example = 3em; A string representing the height of the header part of the curvebox when header & components part of curvebox are separate SVGs."
+},
+ "components":[{
+   "curves":[
+    { "data_type":"requires one of possible strings: curve, line, rectangle if not one of acceptable string it just skips it.", // not built yet
+      "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
+      "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
+     "curve_stroke_dasharray":"A style for the curve line. Can be solid or a string of integers separated by commas like '5,5' or '20,10,10,5,10,10'",
+      "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
+       "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
+       "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
+       "curve_limits":'An array of objects that hold the min and max curve values allow to cut off spurious value spikes, like: [{"curve_name":"GR","min":0,"max":100},{"curve_name":"PDF","min":0,"max":100}]',
+        "data":'Should be an array of objects where the keys in key:value pairs in each object are curve_names or UWI like: [{"UWI":"111aa","DEPTH":4140.5,"GR":0},{"UWI":"111aa","DEPTH":4141,"GR":0}] for the entire depth of the well being showin the curve_box', 
+       "depth_curve_name":"A string of the curve that is the depth being plotted, like: 'DEPT'. Should be the same name as the depth curve in the array of objects in the data key above.",
+      //////
+      "data_id":["array of strings whose length must equal curve_units, curve_names, etc."], // not built yet
+      "well_names":"An array of strings that represent well names if multiple curves shown in same curve_box. If only one well name, only one is required.", // not built yet /// 
+     "log_scale": "An array of either True or False not in string form but as a primative. If true, plotting will be on log scale for the curve that is in that position of the arrays",  // not built yet 
+     ////// Plotting things but need to be next to curve data or will be too confusing.
+     "line_color": "An array of strings that establish the color of the line of the curve. RGB or common color name, like 'red'. If absent, default is black", 
+     "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
+     "min_depth": "Any array of numbers where each represents the min depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the min depth is autocalculated from the min depth of the input data in the data field. This is default behavior.", 
+     "depth_type_string":"All the curves should be calculated and populated vs. this curve. Takes a string, like: 'DEPT'",
+     "null_value": "An array of null values used for each curve. Default is no null values considered, but could be something like: ['-999.25','-999.25','-999.25','NA']"
     }
-  },
+ ],
+  "lines":[
+    {
+     "data_type":'must be string, will be ignored if not "line", "curve", or "rectangle"', 
+     "label":"The label for horiztonal line in string form",
+     "depth":"number for the depth at which the line is placed", 
+     "color":"string for the color of the line in common color name or RGB format. If '' then black will be used.", 
+     "stroke_width":"A string with of px value for stroke width, like: '1px'. Default if absent is '1px'.", 
+     "stroke_style":'Should be string, if not or doesnt exist will be treated as "solid"',
+     "transparency":'Should be float between 0.0 and 1.0. Otherwise default is 1.0.'
+    }
+  ],
+    "rectangles":[
+       {
+     "data_type":"rectangle", 
+     "depth_top":"A number for the depth of the upper left corner of the rectangle", // 
+     "x_starting_upper_left_corner":"A number for the x axis value of the upper left corner of the rectangle",
+     "width":"Width of rectangle as number", 
+     "height":"Height of rectangle as number",
+     "stroke-width":"Stroke width of line that makes rectangle as a strike, like '2px'.",
+     "fill":"String that represents the color of the rectangle fill in either common color name or RGB like, 'red'",
+     "opacity":"Float between 0 and 1 that represents the opacity of the fill, default is 0.5",
+     "label":"String that appears on end of line and likely represents a top name, like: 'Top Jurassic Final Final Final'", // not built into plotting template yet
+     "label_orientation":"A string that is either 'horizontal' or 'vertical'. If other values, will treat as horizontal label orientation", // not built into plotting template yet
+     "lable_position":"Exceptable strings are top, center, right, left, bottom. Default right." // not built into plotting template yet
+    }
+   ]
+ }]
+}]
+  }
+  else if(request_string=="mandatories"){
+    return [
+      "This is not yet populated!!!!"
+    ]
+  }
+},
 
 /** 
  * takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
@@ -686,6 +690,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let width = template_overall["width"]
     let height = template_overall["height"]
     let margin = template_overall["margin"]
+    let header_sep_svg_or_not = template_overall["header_sep_svg_or_not"]
+    let svg_header_height = template_overall["svg_header_height"]
     //// Data is in d3.js form. An array of objects consisting of single level key:value pairs
     let data = template_curves["data"]
     //// Variables related to curves, these should all be arrays with one or more values!
@@ -699,19 +705,13 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     else{curve_units = ""}
     //// The depth_curve_name needs to be the same for all curves plotted!
     let depth_curve_name = template_curves["depth_curve_name"]
+    
+    
     ///// THIS LINE BELOW DOESN"T MAKE ANY SENSE, CHANGE ////
     let div_id = template_overall["div_id"]
     if(template_overall["div_id"]){div_id = template_overall["div_id"]}
     else{return "there_was_no_div_id_in_the_template"}
 
-   
-    ///////// NEED TO PUT THESE IN TEMPLATE !!!!! => //////////////////////////
-    let header_sep_svg_or_not = "yes"
-    let svg_header_height = 1+curve_names.length
-    svg_header_height = "3em"
-    ///////// <= NEED TO PUT THESE IN TEMPLATE !!!!! //////////////////////////
-    
-    
      ///////// NEED TO FIX DEPTHS AS THERE ARE MULTIPLE DEPTH LIMITS AND THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 //       //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
 //       let depth_min
