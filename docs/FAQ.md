@@ -4,6 +4,7 @@
 - What is minimum you have to supply in terms of new data for each format?
 - How to do scrolling or zoom if not baked in... examples. 
 - What parts of the code can be easily substituted with your own & which parts are more fixed and likely to cause difficulty if you substitute your own. 
+- For the curve x scales, while "linear" and "log" are straight forward, might need to include an option of how to make and add your own scale
 
 
 ## Painpoints
