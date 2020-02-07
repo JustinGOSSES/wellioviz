@@ -341,7 +341,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       //////
      "data_id":["placeholder_data_id",], /// not built yet
      "well_names":[""], /// not built yet
-     "log_scale": [false],  /// not built yet
+     "scale_linear_log_or_yours":["linear"],
      "line_color": ["red"], /// not built yet
      "max_depth": "autocalculate", /// not built yet
      "min_depth": "autocalculate", /// not built yet
@@ -413,7 +413,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       //////
       "data_id":["array of strings whose length must equal curve_units, curve_names, etc."], // not built yet
       "well_names":"An array of strings that represent well names if multiple curves shown in same curve_box. If only one well name, only one is required.", // not built yet /// 
-     "log_scale": "An array of either True or False not in string form but as a primative. If true, plotting will be on log scale for the curve that is in that position of the arrays",  // not built yet 
+     "scale_linear_log_or_yours": "An array of either 'linear' or 'log' or {'yours':scale_obj} where scale_obj might be something like: scale_obj = d3.scaleLog().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right]) that uses any of the d3.js scales methods https://github.com/d3/d3/blob/master/API.md#scales-d3-scale", 
+     
      ////// Plotting things but need to be next to curve data or will be too confusing.
      "line_color": "An array of strings that establish the color of the line of the curve. RGB or common color name, like 'red'. If absent, default is black", 
      "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
@@ -571,7 +572,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     template[0]['components'][0]['curves'][0]["fill"] = []
     template[0]['components'][0]['curves'][0]["data_id"] = []
     template[0]['components'][0]['curves'][0]["well_names"] = []
-    template[0]['components'][0]['curves'][0]["log_scale"] = []
+    template[0]['components'][0]['curves'][0]["scale_linear_log_or_yours"] = []
     template[0]['components'][0]['curves'][0]["line_color"] = []
     template[0]['components'][0]['curves'][0]["max_depth"] = []
     template[0]['components'][0]['curves'][0]["min_depth"] = []
@@ -593,7 +594,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       template[0]['components'][0]['curves'][0]["fill"].push(curve["fill"])
       template[0]['components'][0]['curves'][0]["data_id"].push(curve["data_id"])
       template[0]['components'][0]['curves'][0]["well_names"].push(curve["well_name"])
-      template[0]['components'][0]['curves'][0]["log_scale"].push(curve["log_scale"])
+      template[0]['components'][0]['curves'][0]["scale_linear_log_or_yours"].push(curve["scale_linear_log_or_yours"])
       template[0]['components'][0]['curves'][0]["line_color"].push(curve["line_color"])
       template[0]['components'][0]['curves'][0]["max_depth"].push(curve["max_depth"])
       template[0]['components'][0]['curves'][0]["min_depth"].push(curve["min_depth"]) 
@@ -673,7 +674,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    */
   CurveBox:function (well_curve_config_template){
      
-    //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
+     //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
 
@@ -701,6 +702,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let curve_name = curve_names[0]
     let curve_color = curve_colors[0]
     let curve_units = template_curves["curve_units"];
+    let scale_linear_log_or_yours = template_curves["scale_linear_log_or_yours"];
     if(template_curves["curve_units"]){curve_units = template_curves["curve_units"]}
     else{curve_units = ""}
     //// The depth_curve_name needs to be the same for all curves plotted!
@@ -769,8 +771,18 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 
     
     //////////////  Calculate Axis & Scales =>////////////// 
+    //// define x scale, aka the one for the curve
     let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
+    if(scale_linear_log_or_yours == "log"){
+      x = d3.scaleLog().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
+    }
+    else if(scale_linear_log_or_yours == "linear"){}
+    else if(typeof(scale_linear_log_or_yours) !== "string"){
+      x = scale_linear_log_or_yours["yours"]
+    }                                                                        
+    //// define y scale, aka the one for the depth
     let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
+    //// define the axises using the scales and how many ticks we want
     let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
 
@@ -993,8 +1005,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_holder.node()
     svg_header.node()
     return svg.node();
-  }
-,
+  },
 
 
     //////////
