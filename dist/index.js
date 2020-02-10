@@ -345,7 +345,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
      "line_color": ["red"], /// not built yet
      "max_depth": "autocalculate", /// not built yet
      "min_depth": "autocalculate", /// not built yet
-     "depth_type_string":["MD"], /// not built yet
+     "depth_type_string":[""], 
+     "depth_units_string":[""],
      "null_value": [""], /// not built yet
     }
  ],
@@ -420,6 +421,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
      "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
      "min_depth": "Any array of numbers where each represents the min depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the min depth is autocalculated from the min depth of the input data in the data field. This is default behavior.", 
      "depth_type_string":"All the curves should be calculated and populated vs. this curve. Takes a string, like: 'DEPT'",
+     "depth_units_string":"units of depth, examples are meters,m., cm., feet, etc.",
      "null_value": "An array of null values used for each curve. Default is no null values considered, but could be something like: ['-999.25','-999.25','-999.25','NA']"
     }
  ],
@@ -564,6 +566,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     ///// THESE HAVE A SINGLE VALUE ACROSS ALL CURVES IN A CURVEBOX
     template[0]['components'][0]['curves'][0]["data_type"] = "curve"
     template[0]['components'][0]['curves'][0]["depth_type_string"]= curve_box_components[0]['curves'][0]['depth_type_string']
+    template[0]['components'][0]['curves'][0]["depth_units_string"]= curve_box_components[0]['curves'][0]['depth_units_string']
     template[0]['components'][0]['curves'][0]["depth_curve_name"] = curve_box_components[0]['curves'][0]['depth_curve_name']
     ///// THESE HAVE MULTIPLE VALUES IN A CURVEBOX ONE PER CURVE.
     template[0]['components'][0]['curves'][0]["curve_names"] = []
@@ -673,8 +676,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    * @returns {*} SVG.node() But its main function is to append this SVG to a DIV given in the template that is the single parameter.
    */
   CurveBox:function (well_curve_config_template){
-     
-     //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
+    //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
 
@@ -705,8 +707,28 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let scale_linear_log_or_yours = template_curves["scale_linear_log_or_yours"];
     if(template_curves["curve_units"]){curve_units = template_curves["curve_units"]}
     else{curve_units = ""}
-    //// The depth_curve_name needs to be the same for all curves plotted!
-    let depth_curve_name = template_curves["depth_curve_name"]
+    //// The depth_curve_name needs to be the same for all curves plotted! 
+    let depth_curve_name = ""
+    if (template_curves["depth_curve_name"].length > 1 && typeof(template_curves["depth_curve_name"]) == "object" && template_curves["depth_curve_name"][0] !== template_curves["depth_curve_name"][1]
+    ){
+      depth_curve_name = "depth_curve_name is not the same in two or more curves"
+    }
+    else{
+      depth_curve_name = template_curves["depth_curve_name"]
+    }
+    let depth_type_string = ""
+    if(
+      template_curves["depth_type_string"].length > 1 && typeof(template_curves["depth_type_string"]) == "object" && template_curves["depth_type_string"][0] != template_curves["depth_type_string"][1]
+    ){
+      depth_type_string = "depth type string is not the same in two or more curves"
+    }
+    else if (template_curves["depth_type_string"][0] == ""){depth_type_string = ""}
+    else if (template_curves["depth_type_string"]){depth_type_string = "- "+template_curves["depth_type_string"]}
+    let depth_units_string = ""
+    if(template_curves["depth_units_string"] && template_curves["depth_units_string"][0] !== ""){
+      depth_units_string = "- " + template_curves["depth_units_string"]
+    }
+   
     
     
     ///// THIS LINE BELOW DOESN"T MAKE ANY SENSE, CHANGE ////
@@ -850,6 +872,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         svg.style('overflow-y',"scroll")
     svg.append("g")
         .call(xAxis)
+    let y_axis_text = depth_curve_name+" "+depth_units_string+" "+depth_type_string
     svg.append("g")
         .call(yAxis)
         .append("text")
@@ -858,7 +881,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("y", 0 - (margin.left*0.6))
         .attr("x",((height)/-2)+margin.top)
         .style("text-anchor", "end")
-        .text(depth_curve_name)
+        .text(y_axis_text)
         .style("fill","#2b2929")
   
     //svg.append("g")

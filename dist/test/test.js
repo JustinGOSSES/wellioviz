@@ -66,7 +66,8 @@ input_sparse_style = [{
      "data_ID":"",
      "max_depth": "1607.3", /// should be number, if not number or doens't exit then "autocalculate" 
      "min_depth": "1598.3", /// should be number, if not number or doens't exit then "autocalculate" 
-     "depth_type_string":"MD", // not built yet /// should be string, if not or doesn't exist, then skip func
+     "depth_type_string":"TVDSS", /// should be string, if not or doesn't exist, then skip func
+      "depth_units_string":"md",
      "depth_curve_name":"DEPTH", /// should be string, ideally all depth curve names are the same
       "null_value": "", // not built yet, can be anything. Skip if blank or "" or "unknown". If not skip, then look for any values that match after d3 style data object is generated and either take them out or give special value based on behavior defined for curvebox in key "take_out_null_or_visualize" above.
      "x_max": 3, // not built yet /// should be number /// auto-calculate if not number or is "autocalculate"
