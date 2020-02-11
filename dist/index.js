@@ -676,7 +676,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    * @returns {*} SVG.node() But its main function is to append this SVG to a DIV given in the template that is the single parameter.
    */
   CurveBox:function (well_curve_config_template){
-    //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
+      //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
 
@@ -735,6 +735,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let div_id = template_overall["div_id"]
     if(template_overall["div_id"]){div_id = template_overall["div_id"]}
     else{return "there_was_no_div_id_in_the_template"}
+  
+    d3.select("#"+div_id).selectAll("*").remove();
 
      ///////// NEED TO FIX DEPTHS AS THERE ARE MULTIPLE DEPTH LIMITS AND THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 //       //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
@@ -814,6 +816,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let svg_holder = ""
     let svg_header = ""
     if (header_sep_svg_or_not == "yes"){
+      
       svg_holder = d3.select("#"+div_id).append("div")
         // .style("vertical-align","middle")
         .attr("class","svg_holder")
@@ -1078,11 +1081,12 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       let noSVG = d3.select("#"+div_id).selectAll("svg").remove()
       let new_templates = []
       for (let i = 0; i < templates.length; i++) {
-        let svg_holder = d3.select("#"+div_id).append("div")
-        svg_holder.style("vertical-align","middle")
-          .attr("id",div_id+"svg_holder"+i)
+        let curvebox_holder = d3.select("#"+div_id).append("div")
+        curvebox_holder.style("vertical-align","middle")
+          .attr("id",div_id+"curvebox_holder"+i)
           .style("display","inline-block")
-        templates[i][0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
+          
+        templates[i][0]["curve_box"]["div_id"] = div_id+"curvebox_holder"+i
         new_templates.push(templates[i])
         let template = templates[i]
         let check = curveBox(template)
