@@ -316,6 +316,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "show_title":"no", 
     "width": 260, 
     "height": 500, 
+    "height_multiplier_components":2,
     "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
     "title": {"text": "", "title_font_size": "10px"}, /// not built yet
     "div_id": "well_holder_3", /// Should be skip-able // default=random str? What happens if div doesn't exist?
@@ -391,6 +392,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "show_title":"yes or no. If '' is no", // not built yet 
     "width": "number, if blank default is 250", 
     "height": "number, if blank default is 500", 
+    "height_multiplier_components":"An interger or float that multiplies the height to get the height of the curves inside the curvebox. If curves height is greater than height, then scroll behavior will result.",
     "margin": ' should be an object like {"top": 10, "right": 10, "bottom": 30, "left": 60} if missing will default to these values', 
     "title": 'object like:{"text": "", "title_font_size": "10px"} if default, an empty string, "" will skill', 
     "div_id": "should be a string that equals a div id like: 'well_holder' Do not include the #",  ///What happens if div doesn't exist?
@@ -691,7 +693,12 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     else{title=template_overall["title"]["text"]}
     /// Parameters that define shape & size of overall curve box
     let width = template_overall["width"]
-    let height = template_overall["height"]
+    let height_multiplier_components = 0.95
+    if  (template_overall["height_multiplier_components"]){
+         height_multiplier_components = template_overall["height_multiplier_components"]
+         }
+    let height = template_overall["height"]*height_multiplier_components 
+    let height_components = template_overall["height"]
     let margin = template_overall["margin"]
     let header_sep_svg_or_not = template_overall["header_sep_svg_or_not"]
     let svg_header_height = template_overall["svg_header_height"]
@@ -821,7 +828,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         // .style("vertical-align","middle")
         .attr("class","svg_holder")
         // .style('display',"flex")
-        .style("overflow-x","scroll")
+        .style("overflow-x","auto")
 
       svg_header = d3.select("#"+div_id+" div.svg_holder").append("svg")
 
@@ -848,16 +855,23 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 
       const curveBox_main_div = d3.select("#"+div_id).append("div")
       curveBox_main_div
-          .attr("height",300)
+          .attr("height",height_components+"px")
           .attr("class","component_outter")
           .style('display','flex')
           .style('position','relative')
+          //.style('overflow-y','hidden')
+          //.style('position','absolute')
+          .style('box-sizing','border-box')
+          
 
       const curveBox_sub_div = d3.select("#"+div_id+" div.component_outter").append("div")
       curveBox_sub_div
           .attr("class","component_inner")
-           .style('overflow-y',"auto")
+          .style('overflow-y',"auto")
           .style('position','absolute')
+          //.style("position","relative")
+          .style('max-height',height_components+"px")
+          //.style('background-color','pink')
       
       svg = d3.select("#"+div_id+" div.component_outter div.component_inner").append("svg")
     }
@@ -872,7 +886,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("height",height);
         svg.style("margin","0 auto");
         // svg.style("display","block");
-        svg.style('overflow-y',"scroll")
+        svg.style('overflow',"scroll")
     svg.append("g")
         .call(xAxis)
     let y_axis_text = depth_curve_name+" "+depth_units_string+" "+depth_type_string
