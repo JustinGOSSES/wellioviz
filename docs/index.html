@@ -36,51 +36,99 @@
               
                 
                 <li><a
-                  href='#loading-functions'
-                  class="h5 bold black caps">
-                  loading functions
-                  
+                  href='#installation-usage-architecture-and-contributing'
+                  class="h5 bold black caps toggle-sibling">
+                  Installation, Usage, Architecture, and Contributing
+                  <span class='icon'>▸</span>
                 </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#installation'
+                        class='regular pre-open'>
+                        .Installation
+                      </a></li>
+                    
+                      <li><a
+                        href='#usage'
+                        class='regular pre-open'>
+                        .Usage
+                      </a></li>
+                    
+                      <li><a
+                        href='#architecture'
+                        class='regular pre-open'>
+                        .Architecture
+                      </a></li>
+                    
+                      <li><a
+                        href='#contributing'
+                        class='regular pre-open'>
+                        .Contributing
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
                 
                 </li>
               
                 
                 <li><a
-                  href='#transformation-funtions'
-                  class="h5 bold black caps">
-                  Transformation funtions
-                  
+                  href='#api'
+                  class="h5 bold black caps toggle-sibling">
+                  API
+                  <span class='icon'>▸</span>
                 </a>
                 
-                </li>
-              
-                
-                <li><a
-                  href='#packaging-functions'
-                  class="h5 bold black caps">
-                  Packaging functions
+                <div class='toggle-target display-none'>
                   
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#plotting-functions'
-                  class="h5 bold black caps">
-                  Plotting functions
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#loading-functions'
+                        class='regular pre-open'>
+                        .loading functions
+                      </a></li>
+                    
+                      <li><a
+                        href='#transformation-funtions'
+                        class='regular pre-open'>
+                        .Transformation funtions
+                      </a></li>
+                    
+                      <li><a
+                        href='#packaging-functions'
+                        class='regular pre-open'>
+                        .Packaging functions
+                      </a></li>
+                    
+                      <li><a
+                        href='#plotting-functions'
+                        class='regular pre-open'>
+                        .Plotting functions
+                      </a></li>
+                    
+                      <li><a
+                        href='#helper-functions'
+                        class='regular pre-open'>
+                        .Helper Functions
+                      </a></li>
+                    
+                    </ul>
                   
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#helper-functions'
-                  class="h5 bold black caps">
-                  Helper Functions
                   
-                </a>
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -233,69 +281,524 @@
   
     <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
 <p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
-<h4>Different Data Inputs</h4>
-<p>This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.</p>
-<p>Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. This is referred to elsewhere in the code and documentation as the sparse incoming data approach.</p>
-<p>Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.</p>
-<p>Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt for that purpose as the plotting function takes a standard JSON. End users should be able to provide their own functions to reformat their data &#x26; style choices into the template that is fed into the curveBox function.</p>
-<h4>Code Organization:</h4>
-<p>Code is organized into 4 groups of functions: </p>
-<p><b>Loading, Transformation, Packaging, &#x26; Plotting.</b> </p>
-<p>The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. </p>
-<ul>
-<li>In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.</li>
-<li>Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.</li>
-<li>In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.</li>
-</ul>
-<h4>Plotting Organization Ideas</h4>
-<ul>
-<li>Central unit is the CurveBox. A rectangular 2D representation of a well bore with depth on y axis and curve values on x axis. </li>
-<li>Multiple log curves can go in a single curve box.</li>
-<li>Multiple curve boxes can be combined horizontally into a cross-section.</li>
-<li>Typically only one well will usually be in a single curve box, but there is nothing stopping you from putting multiple wells into a single curvebox. </li>
-<li>One well can be spread across multiple curve boxes with a different well log curve or curves in each curvebox.</li>
-<li>Curves can optionally have fills whose color and presence can be based on thresholds related to one curve or multiple curves in that curve box.</li>
-<li>Curveboxes can have lines and boxes with or without transparency that represent things like formation tops or sample locations.</li>
-<li>Curveboxes top and base can be either autocalculated based on the depth extent of the log curves, lines, and rectange supplied or set explicitly.</li>
-<li>Only one depth type, such as measured depth (MD) or total vertical depth (TVD) can be used for plotting in a curvebox. However, you can show a second depth type if you provide a mapping to the first depth type. In other words, at MD 235 meters TVD is 213 meters, at MD 236 meters TVD is 213.2 meters, etc.</li>
-</ul>
-<h4>Example Sequence of Functions for Sparse Style Incoming Data</h4>
-<ul>
-<li>get or create incoming data/instructions in Sparse JSON style: <code>input_sparse_style</code></li>
-<li>get an example plotting template: <code>example_template = curveBoxTemplateExamples("example")</code></li>
-<li>use a function to populate an example plotting template with your incoming data: <code>template_for_plotting = putIncomingSparseJsonIntoPlottingTemplate(input_sparse_style ,template_example)</code></li>
-<li>create a div in a html document and give it an ID. Add div ID to template_for_plotting:</li>
-<li>run plotting function for a single curvebox: <code>makeThisCurveBox(template_for_plotting)</code> which inside calls curveBox(template_for_plotting) after deleting any previous SVG appended to the stated div</li>
-</ul>
 
   
 </section></div>
           
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='loading-functions' class='mt0'>
-    loading functions
-  </h2>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
-    <h3>Functions used to get data in.</h3>
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='installation-usage-architecture-and-contributing'>
+      Installation, Usage, Architecture, and Contributing
+    </h3>
+    
+    
+  </div>
+  
+
+  
+
+    <div class='pre p1 fill-light mt0'>Installation, Usage, Architecture, and Contributing</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='installation'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Installation</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <h3>Installation Instructions for Various Environments</h3>
+<h4>Jupyter Notebook wiht JavaScript Kernal</h4>
+<p>-- IN PROGRESS --</p>
+<h4>Jupyter Notebook wiht Python Kernal</h4>
+<p>-- IN PROGRESS --</p>
+<h4>Observable Notebook - JavaScript</h4>
+<p>-- IN PROGRESS --</p>
+<h4>Website</h4>
+<p>-- IN PROGRESS --</p>
+<h4>Node.js backend</h4>
+<p>-- IN PROGRESS --</p>
+
+    <div class='pre p1 fill-light mt0'>Installation</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='usage'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Usage</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. Therefore, most of the demos used something else to load the well log curves and get them into something that is either JSON or JSON like.</p>
+<h4>Hellow World Using a Well Log coming in as a sparse JSON and plotted with Wellioviz.</h4>
+<p>-- IN PROGRESS --</p>
+<h4>Hello World Using a Well Log in LAS 2.0 &#x26; JavaScript Notebook  (Wellio &#x26; Wellioviz)</h4>
+<p>-- IN PROGRESS --</p>
+<h4>Hello World Using a Well Log in LAS 2.0 &#x26; both Python (LASIO) and JavaScript (Wellio &#x26; Wellioviz)</h4>
+<p>-- IN PROGRESS --</p>
+<h3>Examples:</h3>
+<h4>Observable Demos:</h4>
+<ul>
+<li><a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2</a></li>
+</ul>
+<h4>Website Demos:</h4>
+<p>-- IN PROGRESS --</p>
+
+    <div class='pre p1 fill-light mt0'>Usage</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='architecture'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Architecture</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <h3>Basic Sketch</h3>
+<p><a href="images/wellioviz_architecture.png"><img src="/images/wellioviz_architecture.png" style="max-width:800px;"></a></p>
+<h3>Different Data Inputs</h3>
+<pre><code>  This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.
+
+  Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. This is referred to elsewhere in the code and documentation as the sparse incoming data approach.
+  
+  Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.
+  
+  Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt for that purpose as the plotting function takes a standard JSON. End users should be able to provide their own functions to reformat their data &#x26; style choices into the template that is fed into the curveBox function.
+  
+  #### Code Organization:
+  Code is organized into 4 groups of functions: 
+    
+  &#x3C;b>Loading, Transformation, Packaging, &#x26; Plotting.&#x3C;/b> 
+    
+  The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
+  - In the loading &#x26; transformation steps, different functions will exist as incoming data is formatted in different ways initially.
+  - Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
+  - In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
+</code></pre>
+<h3>Core Organization in Abstract Terms:</h3>
+<ul>
+<li>Central point of organizatin for API is curvebox. </li>
+<li>Each curvebox is built from JSON template. The JSON includes information for what is plotted and how it is plotted. This will supply data, text, and styling choices for each curve box. Instead of calling d3.js code directly, inputs will be supplied via the template. </li>
+<li>
+<p>Organization of input information is: </p>
+<ul>
+<li>CurveBox-wide information</li>
+<li>Curve Information</li>
+<li>Top (line) information</li>
+<li>Rectangle information</li>
+</ul>
+</li>
+<li>
+<p>Use of JSON as input to plotting functions using standard format enables:</p>
+<ol>
+<li>default values to be used most of the time and new values to be easiely substituted via template.key = something calls. </li>
+<li>Possible supplying of the JSON from not just JavaScript but other languages like Python. A similar organization is followed with Altair/Vega as seen in <a href="https://eitanlees.github.io/altair-stack/">this blog post</a>. </li>
+</ol>
+</li>
+<li>
+<p>There are multiple options for combining curveboxes. This will require the JavaScript code to generate not just SVGs, but also divs that are appended to divs created by other code. </p>
+<ul>
+<li>At this time, it looks like the most flexible will be to intiate a html div with an given ID, then append SVGs to that div. </li>
+<li>Each curvebox is created and appended separately as a separate div. </li>
+<li>
+<p>Inside this main curvebox div, header information and curves within curvebox are optionally separate divs or a single SVG. </p>
+<ul>
+<li>The former enables scrolling of the curves while still seeing the header. The later enable saving the curvebox as an actual SVG file.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>An initial CurveBox JSON template is used that has good defaults that then has limited key:value pairs replaced with new information for that specific curveBox. Things will be possible like:</p>
+<ul>
+<li>
+<ol>
+<li>For single curve single well, only thing that must be changed is well-name, curveName, curve data. </li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>For multiple curve + single well + single curvebox all that absolutely needs to be changed is the same as before but two curve names and maybe fill parameter if fill is wanted.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>For single curve multiple wells, an array of curveNames acceptable in order or preference, multiple wellio JSON datas objects is all that is required at minimum. </li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Where to Make Changes After A Visualization is Already Plotted Once</h3>
+<p><a href="images/wellioviz_architecture_data_change.png"><img src="/images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a></p>
+<h3>Visualization Organization</h3>
+<ul>
+<li>Curvebox: The central unit of visualization. Can contain either a single Curve or multiple curves, typically from one well.</li>
+<li>Within CurveBox, header information is in one DIV, curves in another div. Both of these in a curvebox div. To enable scrolling the curves might have to be within a nested div.</li>
+<li>CurveboxHolder aka a Cross-section: Made up of multiple curveboxes. Each curvebox can represent a different well or different curves (one per box) from the same well. Typically no plotting between curveboxes but there may be for tops in cross-sections. </li>
+</ul>
+<h4>Organization of CurveBoxes &#x26; Cross-sections</h4>
+<p><a href="images/curve_box_org.png"><img src="/images/curve_box_org.png" style="max-width:800px;"></a>
+<a href="images/cross_section_org.png"><img src="/images/cross_section_org.png" style="max-width:800px;"></a></p>
+<h3>Initial List of Curvebox Visualization Visual Parts</h3>
+<p>These will all be generated by the curveBox() function according to the explicity instructions within the plotting JSON given to the curveBox() function.</p>
+<ul>
+<li>Axis (for example ticks and integers to represent depth) (x and y)</li>
+<li>Axis titles (x and y)</li>
+<li>Curvebox Title</li>
+<li>Curve lines (color, stroke size, stroke style)</li>
+<li>Curve fill based on under or over a curve </li>
+<li>Curve fill multiple fill colors based on cutoffs &#x26; under or over a curve value</li>
+<li>Curve fill based on overlap of two curves</li>
+<li>Curve fill based on SVG pattern</li>
+<li>Curve fill like property but visualized as curve line color</li>
+<li>Curve fill like property but visualized as colored rectangle within well box or curve box.</li>
+<li>Curve units</li>
+<li>Curve min &#x26; max</li>
+<li>Curve Name</li>
+<li>Top lines</li>
+<li>Top titles</li>
+<li>Boxes with transparency to represent core location, formations, etc.</li>
+<li>Box titles</li>
+<li>X &#x26; Y values on hover</li>
+<li>Clickable curvebox with coordinates returned to other functions via click</li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'>Architecture</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='contributing'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Contributing</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <h2>What Type of Contributions Are Welcome?</h2>
+<p>All contributions welcome! </p>
+<h2>Code of Conduct</h2>
+<p><a href="CODE_OF_CONDUCT.md">Code of Conduct</a></p>
+<h2>How I'm Keeping Things In Sync During Development.</h2>
+<p>The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! </p>
+<p>The active notebook is noted in the README. </p>
+<p><i>I try to sync changes to the index.js file in this code repository after each work session.</i> </p>
+<p>Potential code to keep in sync is in several locations: </p>
+<ul>
+<li>An Observable notebook</li>
+<li>This code repository, particularly in the index.js file in the dist directory. </li>
+<li>Documentation as found in the docs folder in this code repository.</li>
+<li>The demo page found in the docs folder in this code repository.</li>
+</ul>
+<h4>Index.js &#x26; Observable notebook are almost always kept in sync. When they aren't, I'll let people know and put it in the README.</h4>
+<h4>The demo page is not kept in sync and will only be updated occasionally.</h4>
+<h4>The docs are updated gradually. Sometimes there will be new or changing functions that aren't populated yet.</h4>
+<h2>Ways to Contribute!</h2>
+<h3>Documentation</h3>
+<p>Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.</p>
+<h4>How to Edit &#x26; Generate the Docs</h4>
+<p>There is Documentation on how to make the docs in the docs folder<a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/MakingDocs.md"> here</a></p>
+<h3>Contributing Code</h3>
+<p>Code contributions are always welcome, whether it be small modifications or entire features. </p>
+<p>As the project gains momentum, check the <a href="https://github.com/JustinGOSSES/wellioviz/issues">Issues</a> for outstanding issues &#x26; features under development. There is an attempt at organizing the issues using the project board <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">here</a>. For the most part, the issues board contains all the issues.. just in an organization to make it clear what is being worked on now.</p>
+<p>If you’d like to contribute, but you’re not so experienced with JavaScript, look for good first issue tags or email the maintainer for suggestions.</p>
+<h3>Issues, Features, and Bug Reports</h3>
+<p>Add a feature request or bug report issue <a href="https://github.com/JustinGOSSES/wellioviz/issues/new/choose">here</a> When you add an issue, there will be two choices for issues templates to use, one for bug reports and another for feature requests.</p>
+<h3>Pull Requests</h3>
+<p>If you've fixed an issue in the code, please consider submitting a pull request, which is basically a fork or branch of this repository submitted back to it with a specific change.
+1. State why you are proposing this change.
+2. When you make a pull request, please try to keep the changes to one feature at a time if possible (not always possible).
+3. We don't have tests yet, so in lieu of that, please fork the active Observable notebook noted in the README add in your changed functions and make sure everything still works with your changes. If there are changes needed to be made to get things to work that are not in index.js but only in the Observable notebook, please note that in your pull request. This is unlikely but theoretically possible.</p>
+<ul>
+<li>Please consider other use-cases and make sure your code changes aren't narrowing the scope of wellioviz to only your use case.</li>
+<li>Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a></li>
+</ul>
+<p>If anything is confusing, open an issue.</p>
+
+    <div class='pre p1 fill-light mt0'>Contributing</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='api'>
+      API
+    </h3>
+    
+    
+  </div>
+  
+
+  
+
+    <div class='pre p1 fill-light mt0'>API</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='loading-functions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>loading functions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <h3>Functions used to get data in.</h3>
 <p>As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  </p>
 
+    <div class='pre p1 fill-light mt0'>loading functions</div>
   
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='transformation-funtions' class='mt0'>
-    Transformation funtions
-  </h2>
+  
 
   
-    <p>Data is reformatted into a form that wellioviz can used.</p>
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='transformation-funtions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Transformation funtions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Data is reformatted into a form that wellioviz can used.</p>
 <h4>Transformation functions for data that comes in as Wellio.js style JSON</h4>
 <ul>
 <li><a href="#convertwelljsontoobj">#convertwelljsontoobj</a> </li>
@@ -307,63 +810,204 @@
 <li><a href="#createdeptharray">#createdeptharray</a></li>
 </ul>
 
+    <div class='pre p1 fill-light mt0'>Transformation funtions</div>
   
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='packaging-functions' class='mt0'>
-    Packaging functions
-  </h2>
+  
 
   
-    <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='packaging-functions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Packaging functions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
 <ul>
 <li><a href="#multiplelogplot">#multiplelogplot</a></li>
 </ul>
 
+    <div class='pre p1 fill-light mt0'>Packaging functions</div>
   
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='plotting-functions' class='mt0'>
-    Plotting functions
-  </h2>
+  
 
   
-    <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plotting-functions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Plotting functions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
 <ul>
 <li><a href="#curvebox">#curvebox</a></li>
 <li><a href="#savesvg">#savesvg</a></li>
 </ul>
 <hr>
 
+    <div class='pre p1 fill-light mt0'>Plotting functions</div>
   
-</section></div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='helper-functions' class='mt0'>
-    Helper Functions
-  </h2>
+  
 
   
-    <p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='helper-functions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Helper Functions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
 <ul>
 <li><a href="#define_wellioviz">#define_wellioviz</a></li>
 <li><a href="#getexampletemplate">#getexampletemplate</a></li>
 <li><a href="#getfakeincomingsparsedataexample">#getfakeincomingsparsedataexample</a></li>
 </ul>
 
+    <div class='pre p1 fill-light mt0'>Helper Functions</div>
   
-</section></div>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+
+  
+</section>
+
           
         
           

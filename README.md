@@ -40,7 +40,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 ## Architecture 
 <a href="images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png"></a>
 
-For more information on how wellioviz is organized, check out the <a href="ARCHITECTURE.MD">ARCHITECTURE.MD</a> document. 
+For more information on how wellioviz is organized, check out the <a href="docs/ARCHITECTURE.MD">ARCHITECTURE.MD</a> document. 
 
 ## DOCS
 Docs will be here: https://justingosses.github.io/wellioviz/ They are only partially up to date currently. 

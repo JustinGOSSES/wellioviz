@@ -3,75 +3,50 @@ toc:
     description: |
       ### WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
       Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
+  
+  - name: Installation, Usage, Architecture, and Contributing
+    children:
+    - name: Installation
+      file: docs/INSTALLATION.md
 
-      #### Different Data Inputs
+    - name: Usage
+      file: docs/USAGE.md
+    
+    - name: Architecture
+      file: docs/ARCHITECTURE.MD
 
-      This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.
+    - name: Contributing
+      file: CONTRIBUTING.md
+  
+  - name: API
+    children:
 
-      Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. This is referred to elsewhere in the code and documentation as the sparse incoming data approach.
-      
-      Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.
-      
-      Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt for that purpose as the plotting function takes a standard JSON. End users should be able to provide their own functions to reformat their data & style choices into the template that is fed into the curveBox function.
-      
-      #### Code Organization:
-      Code is organized into 4 groups of functions: 
-        
-      <b>Loading, Transformation, Packaging, & Plotting.</b> 
-        
-      The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
-      - In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
-      - Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
-      - In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
-      
-
-      #### Plotting Organization Ideas
-      - Central unit is the CurveBox. A rectangular 2D representation of a well bore with depth on y axis and curve values on x axis. 
-      - Multiple log curves can go in a single curve box.
-      - Multiple curve boxes can be combined horizontally into a cross-section.
-      - Typically only one well will usually be in a single curve box, but there is nothing stopping you from putting multiple wells into a single curvebox. 
-      - One well can be spread across multiple curve boxes with a different well log curve or curves in each curvebox.
-      - Curves can optionally have fills whose color and presence can be based on thresholds related to one curve or multiple curves in that curve box.
-      - Curveboxes can have lines and boxes with or without transparency that represent things like formation tops or sample locations.
-      - Curveboxes top and base can be either autocalculated based on the depth extent of the log curves, lines, and rectange supplied or set explicitly.
-      - Only one depth type, such as measured depth (MD) or total vertical depth (TVD) can be used for plotting in a curvebox. However, you can show a second depth type if you provide a mapping to the first depth type. In other words, at MD 235 meters TVD is 213 meters, at MD 236 meters TVD is 213.2 meters, etc.
-
-
-      #### Example Sequence of Functions for Sparse Style Incoming Data
-      - get or create incoming data/instructions in Sparse JSON style: `input_sparse_style`
-      - get an example plotting template: `example_template = curveBoxTemplateExamples("example")`
-      - use a function to populate an example plotting template with your incoming data: `template_for_plotting = putIncomingSparseJsonIntoPlottingTemplate(input_sparse_style ,template_example)`
-      - create a div in a html document and give it an ID. Add div ID to template_for_plotting:
-      - run plotting function for a single curvebox: `makeThisCurveBox(template_for_plotting)` which inside calls curveBox(template_for_plotting) after deleting any previous SVG appended to the stated div
-
-
-
-  - name: loading functions
-    description: |
-      ### Functions used to get data in. 
-      As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  
-  - name: Transformation funtions
-    description: |
-      Data is reformatted into a form that wellioviz can used.
-      #### Transformation functions for data that comes in as Wellio.js style JSON
-      - {@link #convertwelljsontoobj} 
-      - {@link #fromjsonofwellgetthingsforplotting}
-      - {@link #takeinarraysandgetobjectofcurvedataforplotting}
-      #### Transformation functions for data that comes in as sparse style JSON
-      - {@link #createdeptharray}
-  - name: Packaging functions
-    description: |
-      Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.
-      - {@link #multiplelogplot}
-  - name: Plotting functions
-    description: |
-      How the data should be plotted and what data should be plotted is turned into an SVG.
-      - {@link #curvebox}
-      - {@link #savesvg}
-      --------------------------------------------------------------------------------
-  - name: Helper Functions
-    description: |
-      In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.
-      - {@link #define_wellioviz}
-      - {@link #getexampletemplate}
-      - {@link #getfakeincomingsparsedataexample}
+    - name: loading functions
+      description: |
+        ### Functions used to get data in. 
+        As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  
+    - name: Transformation funtions
+      description: |
+        Data is reformatted into a form that wellioviz can used.
+        #### Transformation functions for data that comes in as Wellio.js style JSON
+        - {@link #convertwelljsontoobj} 
+        - {@link #fromjsonofwellgetthingsforplotting}
+        - {@link #takeinarraysandgetobjectofcurvedataforplotting}
+        #### Transformation functions for data that comes in as sparse style JSON
+        - {@link #createdeptharray}
+    - name: Packaging functions
+      description: |
+        Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.
+        - {@link #multiplelogplot}
+    - name: Plotting functions
+      description: |
+        How the data should be plotted and what data should be plotted is turned into an SVG.
+        - {@link #curvebox}
+        - {@link #savesvg}
+        --------------------------------------------------------------------------------
+    - name: Helper Functions
+      description: |
+        In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.
+        - {@link #define_wellioviz}
+        - {@link #getexampletemplate}
+        - {@link #getfakeincomingsparsedataexample}
