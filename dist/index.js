@@ -31,6 +31,13 @@ module.exports = {
    * Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults, 
    * such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
   */ 
+ wellio:function(){
+  return require("wellio")
+ },
+ d3:function(){
+  return require("d3")
+ },
+
  define_wellioviz: function(){
   return "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library."
  },
@@ -232,7 +239,7 @@ module.exports = {
 
   /////// this require wellio!
   fileToJSON:function (afile){
-    return wellio.las2json(afile)
+    return module.exports.wellio.las2json(afile)
   },
   /////////
   turnFilesIntoTextIntoWellioJSON:function (files_array){
@@ -499,7 +506,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
  * @param {*} height 
  */
 putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
-  const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
+  const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
   let logs_in_json = turnFilesIntoTextIntoWellioJSON(logs)
   let new_templates = []
   for (let i = 0; i < logs_in_json.length; i++) {
@@ -513,7 +520,7 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
     example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
     example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
     example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
-    let svg_holder = d3.select("#"+div_id).append("div")
+    let svg_holder =module.exports.d3.select("#"+div_id).append("div")
     svg_holder.style("vertical-align","middle")
       .attr("id",div_id+"svg_holder"+i)
       .style("display","inline-block")
@@ -681,7 +688,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
-
+    let d3 = module.exports.d3
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
