@@ -467,7 +467,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
  * takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
 * THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!
 */
-takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames,CurveName){
+takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames,CurveName, DepthName){
   //// would be run like: reformattedForWelliovizCurveData = takeInArraysAndGetObjectOfCurveDataForPlotting([{"depth":depthArray,"RHOB":data2[0].curve_values}],"RHOB")
   // [{"depth":[],"curveData":[]}]
   // [{"depth":[],"curveData":[]}]
