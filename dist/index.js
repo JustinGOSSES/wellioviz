@@ -31,12 +31,8 @@ module.exports = {
    * Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults, 
    * such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
   */ 
- wellio:function(){
-  return require("wellio")
- },
- d3:function(){
-  return require("d3")
- },
+ wellio:require("wellio"),
+ d3:require("d3"),
 
  define_wellioviz: function(){
   return "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library."
@@ -1098,6 +1094,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
      * @param {Object} templates An array of CurveBox input templates
      */
     multipleLogPlot:function(div_id,templates){
+      let d3 = module.exports.d3
       let noDIV = d3.select("#"+div_id).selectAll("div").remove()
       let noSVG = d3.select("#"+div_id).selectAll("svg").remove()
       let new_templates = []
@@ -1121,6 +1118,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
      * @returns {string} curve_box_return - A string representation of the SVG variable called SVG. This can be fiven to the saveSvg function to save the SVG as a file with .svg ending.
      */
     makeThisCurveBox:function(template_for_plotting){
+      let d3 = module.exports.d3
       let div_id = template_for_plotting[0]["curve_box"]["div_id"]
       const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
       let curve_box_return = module.exports.curveBox(template_for_plotting)
