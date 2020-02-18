@@ -35,9 +35,10 @@
     "visualization",
     "plotting",
     "web",
-    "d3.js"],
+    "d3.js"
+  ],
   "author": "Justin Gosses",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "wellio": "^0.1.5"
   },
@@ -53,5 +54,8 @@
   "bugs": {
     "url": "https://github.com/JustinGOSSES/wellioviz/issues"
   },
-  "homepage": "https://github.com/JustinGOSSES/wellioviz"
+  "homepage": "https://github.com/JustinGOSSES/wellioviz",
+  "directories": {
+    "doc": "docs"
+  }
 }

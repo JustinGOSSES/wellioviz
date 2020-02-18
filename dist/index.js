@@ -239,7 +239,7 @@ module.exports = {
     //// For each well log file, turn into text, then convert text into wellio style JSON using wellio.js
     let logs_in_json = []
     for (let i = 0; i < files_array.length; i++) {
-      logs_in_json.push(fileToJSON(files_array[i]))
+      logs_in_json.push(wellioviz.fileToJSON(files_array[i]))
     }
     return logs_in_json
   },
@@ -255,7 +255,7 @@ module.exports = {
   fromJSONofWEllGetThingsForPlotting: function(jsonWell){
     curve_names = Object.keys(jsonWell["CURVES"])
     uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
-    well_log_curves_reformatted_for_d3 = convertWellJSONToObj(jsonWell,curve_names,uwi)
+    well_log_curves_reformatted_for_d3 = wellioviz.convertWellJSONToObj(jsonWell,curve_names,uwi)
     return {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
   },
 
@@ -503,7 +503,7 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
   let logs_in_json = turnFilesIntoTextIntoWellioJSON(logs)
   let new_templates = []
   for (let i = 0; i < logs_in_json.length; i++) {
-    let three_things2 = fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
+    let three_things2 = wellioviz.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
     let new_data =three_things2["well_log_curves_reformatted_for_d3"]
     let example_template_n = JSON.parse(JSON.stringify(example_template))
     example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
@@ -605,14 +605,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       template[0]['components'][0]['curves'][0]["min_depth"].push(curve["min_depth"]) 
       template[0]['components'][0]['curves'][0]["null_value"].push(curve["null_value"]) 
       ////
-      let depth_array = createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
+      let depth_array = wellioviz.createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
       let curve_array = curve["curve_values"]
       let curve_name = curve["curve_type"]
       let depth_curve_name = curve["depth_curve_name"]
       //// the function below is off...someting undefined
       let obj_starter = [{[depth_curve_name]:depth_array,[curve_name]:curve_array}]
       
-      let reformatted_for_wellioviz_curve_data = takeInArraysAndGetObjectOfCurveDataForPlotting(obj_starter,curve_name,depth_curve_name)
+      let reformatted_for_wellioviz_curve_data = wellioviz.takeInArraysAndGetObjectOfCurveDataForPlotting(obj_starter,curve_name,depth_curve_name)
       ////
       array_individual_curves_and_depth_objects.push(reformatted_for_wellioviz_curve_data)
       ////
@@ -1103,7 +1103,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         templates[i][0]["curve_box"]["div_id"] = div_id+"curvebox_holder"+i
         new_templates.push(templates[i])
         let template = templates[i]
-        let check = curveBox(template)
+        let check = wellioviz.curveBox(template)
       }
       return new_templates
     }
