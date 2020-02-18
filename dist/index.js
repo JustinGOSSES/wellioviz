@@ -505,7 +505,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
  */
 putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
   const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
-  let logs_in_json = turnFilesIntoTextIntoWellioJSON(logs)
+  let logs_in_json = module.exports.turnFilesIntoTextIntoWellioJSON(logs)
   let new_templates = []
   for (let i = 0; i < logs_in_json.length; i++) {
     let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
@@ -526,7 +526,7 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
     example_template_n[0]["curve_box"]["width"] = width
     example_template_n[0]["curve_box"]["height"] = height
     new_templates.push(example_template_n)
-    curveBox(example_template_n)
+    module.exports.curveBox(example_template_n)
   }
   return new_templates
 },
