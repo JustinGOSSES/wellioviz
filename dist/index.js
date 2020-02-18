@@ -239,7 +239,7 @@ module.exports = {
     //// For each well log file, turn into text, then convert text into wellio style JSON using wellio.js
     let logs_in_json = []
     for (let i = 0; i < files_array.length; i++) {
-      logs_in_json.push(wellioviz.fileToJSON(files_array[i]))
+      logs_in_json.push(module.exports.fileToJSON(files_array[i]))
     }
     return logs_in_json
   },
@@ -252,10 +252,10 @@ module.exports = {
    * @param {object} jsonWell a full wellio style JSON
    * @returns {array} returns an object of 3 things that will eventually be used in plotting. {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
   */
-  fromJSONofWEllGetThingsForPlotting: function(jsonWell){
+  fromJSONofWEllGetThingsForPlotting: function(jsonWell,depth_curve_name){
     curve_names = Object.keys(jsonWell["CURVES"])
     uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
-    well_log_curves_reformatted_for_d3 = wellioviz.convertWellJSONToObj(jsonWell,curve_names,uwi)
+    well_log_curves_reformatted_for_d3 = module.exports.convertWellJSONToObj(jsonWell,curve_names,uwi,depth_curve_name)
     return {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
   },
 
@@ -503,7 +503,7 @@ putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,cur
   let logs_in_json = turnFilesIntoTextIntoWellioJSON(logs)
   let new_templates = []
   for (let i = 0; i < logs_in_json.length; i++) {
-    let three_things2 = wellioviz.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
+    let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
     let new_data =three_things2["well_log_curves_reformatted_for_d3"]
     let example_template_n = JSON.parse(JSON.stringify(example_template))
     example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
@@ -605,14 +605,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       template[0]['components'][0]['curves'][0]["min_depth"].push(curve["min_depth"]) 
       template[0]['components'][0]['curves'][0]["null_value"].push(curve["null_value"]) 
       ////
-      let depth_array = wellioviz.createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
+      let depth_array = module.exports.createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
       let curve_array = curve["curve_values"]
       let curve_name = curve["curve_type"]
       let depth_curve_name = curve["depth_curve_name"]
       //// the function below is off...someting undefined
       let obj_starter = [{[depth_curve_name]:depth_array,[curve_name]:curve_array}]
       
-      let reformatted_for_wellioviz_curve_data = wellioviz.takeInArraysAndGetObjectOfCurveDataForPlotting(obj_starter,curve_name,depth_curve_name)
+      let reformatted_for_wellioviz_curve_data = module.exports.takeInArraysAndGetObjectOfCurveDataForPlotting(obj_starter,curve_name,depth_curve_name)
       ////
       array_individual_curves_and_depth_objects.push(reformatted_for_wellioviz_curve_data)
       ////
@@ -677,7 +677,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    * @param {object} well_curve_config_template 
    * @returns {*} SVG.node() But its main function is to append this SVG to a DIV given in the template that is the single parameter.
    */
-  CurveBox:function (well_curve_config_template){
+  curveBox:function (template_for_plotting){
       //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
@@ -1103,10 +1103,41 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         templates[i][0]["curve_box"]["div_id"] = div_id+"curvebox_holder"+i
         new_templates.push(templates[i])
         let template = templates[i]
-        let check = wellioviz.curveBox(template)
+        let check = module.exports.curveBox(template)
       }
       return new_templates
-    }
+    },
+      /**
+     * This function is used to plot a single curveboxe in the div listed in the plotting templates div_id key. 
+     * When called it removes anything that is a child of the div listed in div_id before appending a new curveBox there.
+     * @param {string} template_for_plotting A JSON of all the information needed to be plotted using the format of wellioviz exactly.
+     * @returns {string} curve_box_return - A string representation of the SVG variable called SVG. This can be fiven to the saveSvg function to save the SVG as a file with .svg ending.
+     */
+    makeThisCurveBox:function(template_for_plotting){
+      let div_id = template_for_plotting[0]["curve_box"]["div_id"]
+      const noSVG = d3.select("#"+div_id).selectAll("svg").remove()
+      let curve_box_return = module.exports.curveBox(template_for_plotting)
+    return curve_box_return
+    },
+      /**
+     * This function is used to save a given SVG element with a given name. It creates a download link div which is then used to download the SVG file. 
+     * In certain environments, this  may not work for security reasons.
+     * @param {string} svgEl An SVG element returned from the curveBox function.
+     * @param {string} name The name of the file to be downloaded.
+     */
+    saveSvg:function(svgEl, name) {
+      svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      var svgData = svgEl.outerHTML;
+      var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+      var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+      var svgUrl = URL.createObjectURL(svgBlob);
+      var downloadLink = document.createElement("a");
+      downloadLink.href = svgUrl;
+      downloadLink.download = name;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+  }
 
 
 
