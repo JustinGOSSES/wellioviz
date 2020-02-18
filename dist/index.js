@@ -204,7 +204,7 @@ module.exports = {
    * @param {string} UWI a string the represents the well name
    * @returns {array} returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
   */
-  convertWellJSONToObj:function  (well_log_json,CurveNames,UWI){
+  convertWellJSONToObj:function  (well_log_json,CurveNames,UWI,depth_curve_name){
     let depth = well_log_json["CURVES"][depth_curve_name]
   let curve_data = []
   for(let eachCr in CurveNames){
@@ -253,11 +253,13 @@ module.exports = {
    * and returns an object that contains 3 things in an object format that are used in function ___ for plotting.
    * the data array of objects that D3.js likes for data used in plotting.
    * @param {object} jsonWell a full wellio style JSON
+   * @param {string} depth_curve_name String for the depth curve name
    * @returns {array} returns an object of 3 things that will eventually be used in plotting. {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
   */
   fromJSONofWEllGetThingsForPlotting: function(jsonWell,depth_curve_name){
     curve_names = Object.keys(jsonWell["CURVES"])
     uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
+    depth_curve_name = depth_curve_name
     well_log_curves_reformatted_for_d3 = module.exports.convertWellJSONToObj(jsonWell,curve_names,uwi,depth_curve_name)
     return {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
   },
