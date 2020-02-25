@@ -843,7 +843,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       svg_header.append("g")
           .call(xAxis);
       svg_header.append("g")
-      svg_header.style("margin","0 auto");
       svg_header.style("display","block");
       //.call(yAxis); /// took out as we don't want axis to show
 
