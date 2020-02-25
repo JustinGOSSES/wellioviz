@@ -683,10 +683,12 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    * @returns {*} SVG.node() But its main function is to append this SVG to a DIV given in the template that is the single parameter.
    */
   curveBox:function (template_for_plotting){
-      //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
+    let d3 = module.exports.d3
+
+    //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
-    let d3 = module.exports.d3
+
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
@@ -819,9 +821,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //// define y scale, aka the one for the depth
     let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
     //// define the axises using the scales and how many ticks we want
+    let svg_header_minus_one = (parseInt(svg_header_height.replace("em",""))-1)
+    let svg_header_minus_one_in_em = svg_header_minus_one.toString()+"em"
+    console.log("svg_header_minus_one_in_em",svg_header_minus_one_in_em)
     let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+    let xAxis_header = g => g.attr("transform", "translate(0,45)").call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
     //let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
+    //let yAxis2 = g => g.attr("transform", `translate(${margin.left*.333},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
 
     //////////////  Initiate Divs + SVGs. Different depending single SVG or header separate =>////////////// 
     let svg = ""
@@ -838,11 +845,15 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       svg_header = d3.select("#"+div_id+" div.svg_holder").append("svg")
 
       svg_header.attr("class","header")
+      
       svg_header.attr("width",width)
           .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
       svg_header.append("g")
-          .call(xAxis);
+          .call(xAxis_header)
+            .append("text")
+            .text("test svg header")
       svg_header.append("g")
+      //svg_header.style("margin","0 auto");
       svg_header.style("display","block");
       //.call(yAxis); /// took out as we don't want axis to show
 
@@ -893,17 +904,29 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         svg.style('overflow',"scroll")
     svg.append("g")
         .call(xAxis)
+        .append("text")
+          .text("test svg")
     let y_axis_text = depth_curve_name+" "+depth_units_string+" "+depth_type_string
     svg.append("g")
         .call(yAxis)
         .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("dy", ".75em")
-        .attr("y", 0 - (margin.left*0.6))
-        .attr("x",((height)/-2)+margin.top)
-        .style("text-anchor", "end")
-        .text(y_axis_text)
-        .style("fill","#2b2929")
+          .attr("transform", "rotate(-90)")
+          .attr("dy", ".75em")
+          .attr("y", 0 - (margin.left*0.6))
+          .attr("x",((height)/-2)+margin.top)
+          .style("text-anchor", "end")
+          .text(y_axis_text)
+          .style("fill","#2b2929")
+  // svg.append("g")
+  //       .call(yAxis2)
+  //       .append("text")
+  //         .attr("transform", "rotate(-90)")
+  //         .attr("dy", ".75em")
+  //         .attr("y", 0 - (margin.left*0.2))
+  //         .attr("x",((height)/-2)+margin.top)
+  //         .style("text-anchor", "end")
+  //         .text(y_axis_text+"THIS IS THE SECOND ONE")
+  //         .style("fill","#2b2929")
   
     //svg.append("g")
     //// Code that assumes multiple curves are plotted in same curvebox  
@@ -965,6 +988,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("text-decoration", "underline")  
           .style('fill',curve_colors[k])
           .text(header_text_line); 
+      svg_header.append("g")
+        .call(xAxis_header)
+          .append("text")
     }
     
     //////////////  Appends a curve line but doesn't include fill yet =>////////////// 
@@ -1085,7 +1111,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_holder.node()
     svg_header.node()
     return svg.node();
-  },
+  }
+,
 
 
     //////////
