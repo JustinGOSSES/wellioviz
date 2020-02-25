@@ -328,7 +328,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "order_of_component":["curves","rectanges","lines"], /// not built yet
     "lines_connected_across_curveboxes":"no", /// not built yet
     "header_sep_svg_or_not":"yes",
-    "svg_header_height":"3em"
+    "svg_header_height":"4em"
 },
  "components":[{
    "curves":[
