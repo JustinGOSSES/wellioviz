@@ -1,9 +1,9 @@
 ### Installation Instructions for Various Environments
 
-#### Jupyter Notebook wiht JavaScript Kernal
+#### Jupyter Notebook with JavaScript Kernal
 -- IN PROGRESS --
 
-#### Jupyter Notebook wiht Python Kernal
+#### Jupyter Notebook with Python Kernal
 -- IN PROGRESS --
 
 #### Observable Notebook - JavaScript
