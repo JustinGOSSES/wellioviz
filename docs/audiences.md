@@ -56,3 +56,5 @@ Initial template is used with good defaults.
 - How to visually distinguish wells vs. multiple curves in single well
 - connections between curves?
 - Why "yes" and "no" instead of True and False in json key:value pairs. Python uses True. Javascript uses true.
+- The svg_header_height can get confusing if you usually do only one curve in a curvebox and then switch to muliplte. More on this in issue #66 https://github.com/JustinGOSSES/wellioviz/issues/66
+-  
