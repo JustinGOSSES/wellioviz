@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>wellioviz 0.0.1 | Documentation</title>
+  <title>wellioviz 0.0.10 | Documentation</title>
   <meta name='description' content='Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>wellioviz</h3>
-          <div class='mb1'><code>0.0.1</code></div>
+          <div class='mb1'><code>0.0.10</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -134,6 +134,26 @@
               
                 
                 <li><a
+                  href='#wellio'
+                  class="">
+                  wellio
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#help'
+                  class="">
+                  help
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#define_wellioviz'
                   class="">
                   define_wellioviz
@@ -246,7 +266,7 @@
                 <li><a
                   href='#curvebox'
                   class="">
-                  CurveBox
+                  curveBox
                   
                 </a>
                 
@@ -257,6 +277,26 @@
                   href='#multiplelogplot'
                   class="">
                   multipleLogPlot
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makethiscurvebox'
+                  class="">
+                  makeThisCurveBox
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#savesvg'
+                  class="">
+                  saveSvg
                   
                 </a>
                 
@@ -340,9 +380,9 @@
   
 
   <h3>Installation Instructions for Various Environments</h3>
-<h4>Jupyter Notebook wiht JavaScript Kernal</h4>
+<h4>Jupyter Notebook with JavaScript Kernal</h4>
 <p>-- IN PROGRESS --</p>
-<h4>Jupyter Notebook wiht Python Kernal</h4>
+<h4>Jupyter Notebook with Python Kernal</h4>
 <p>-- IN PROGRESS --</p>
 <h4>Observable Notebook - JavaScript</h4>
 <p>-- IN PROGRESS --</p>
@@ -1016,8 +1056,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='define_wellioviz'>
-      define_wellioviz
+    <h3 class='fl m0' id='wellio'>
+      wellio
     </h3>
     
     
@@ -1035,7 +1075,7 @@ whole LAS 2.0 formatted well log file to JSON and send that whole JSON along wit
 <p>Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults,
 such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
 
-    <div class='pre p1 fill-light mt0'>define_wellioviz()</div>
+    <div class='pre p1 fill-light mt0'>wellio</div>
   
   
 
@@ -1050,6 +1090,122 @@ such that the end-user only has to understand what they want to change about the
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='help'>
+      help
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>A function that directs users to the docs if they need help.</p>
+
+    <div class='pre p1 fill-light mt0'>help(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        It says = I'm really no help. Please check out the docs at 
+<a href="https://justingosses.github.io/wellioviz/">https://justingosses.github.io/wellioviz/</a>
+ or the main README.md at 
+<a href="https://github.com/JustinGOSSES/wellioviz">https://github.com/JustinGOSSES/wellioviz</a>
+. Best of luck.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='define_wellioviz'>
+      define_wellioviz
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>A definition of what the wellioviz library is all about.</p>
+
+    <div class='pre p1 fill-light mt0'>define_wellioviz(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Returns a string that defines wellioviz.
+
+      
+    
   
 
   
@@ -1103,37 +1259,9 @@ such that the end-user only has to understand what they want to change about the
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
         returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
-EXAMPLE: = [
-{"multipleLines":"yes",
-"curveNames":
-["GR","RESD"]
-,
-"curveColors":
-["Green","pink"]
-,
-"fill":[
-{"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":
-[0,0.3,0.8]
-,"fillColors":
-["gray","orange","yellow"]
-,"curve2":""},
-{"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
-],
-"depthLimits":{"min":0,"max":100000},
-"curveLimits":
-[{"curveName":"","min":0,"max":100}]
-,
-"curveUnits":
-["",""]
-,
-"data":
-[{"depth": "1599.600", "GR": 100},{"depth": "1599.600", "GR": 52.2322},{"depth": "1599.600", "GR": 29.23},{"depth": "1599.600", "GR": 56.2322}]
-,
-"width":200,
-"height":500,
-"margin":({top: 50, right: 3, bottom: 30, left: 30}),
-"title":{"text":"","title_font_size":"10px"},
-"depth_curve_name":"depth"}
+EXAMPLE: = 
+[
+!!!!!!!!! THIS IS OUT OF DATE SO DELETING UNTIL IT STABLIZES !!!!!!!
 ]
 
       
@@ -1230,7 +1358,7 @@ It is used next by funtion _<strong><em> and </em></strong>.</p>
 array of curves names, and a string for UWI
 and returns the data array of objects that D3.js likes for data used in plotting.</p>
 
-    <div class='pre p1 fill-light mt0'>convertWellJSONToObj(well_log_json: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, CurveNames: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, UWI: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+    <div class='pre p1 fill-light mt0'>convertWellJSONToObj(well_log_json: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, CurveNames: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, UWI: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, depth_curve_name: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
   
   
 
@@ -1268,6 +1396,14 @@ and returns the data array of objects that D3.js likes for data used in plotting
             <span class='code bold'>UWI</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a string the represents the well name
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>depth_curve_name</span> <code class='quiet'>(any)</code>
+	    
           </div>
           
         </div>
@@ -1320,7 +1456,7 @@ and returns the data array of objects that D3.js likes for data used in plotting
 and returns an object that contains 3 things in an object format that are used in function ___ for plotting.
 the data array of objects that D3.js likes for data used in plotting.</p>
 
-    <div class='pre p1 fill-light mt0'>fromJSONofWEllGetThingsForPlotting(jsonWell: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+    <div class='pre p1 fill-light mt0'>fromJSONofWEllGetThingsForPlotting(jsonWell: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, depth_curve_name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
   
   
 
@@ -1339,6 +1475,15 @@ the data array of objects that D3.js likes for data used in plotting.</p>
           <div>
             <span class='code bold'>jsonWell</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    a full wellio style JSON
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>depth_curve_name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    String for the depth curve name
 
           </div>
           
@@ -1547,7 +1692,7 @@ Someone might run this function with "example" as the parameter, give back the J
   <p>takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
 THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
 
-    <div class='pre p1 fill-light mt0'>takeInArraysAndGetObjectOfCurveDataForPlotting(arraysOfCurvesAndNames: any, CurveName: any)</div>
+    <div class='pre p1 fill-light mt0'>takeInArraysAndGetObjectOfCurveDataForPlotting(arraysOfCurvesAndNames: any, CurveName: any, DepthName: any)</div>
   
   
 
@@ -1573,6 +1718,14 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>CurveName</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>DepthName</span> <code class='quiet'>(any)</code>
 	    
           </div>
           
@@ -1952,7 +2105,7 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
   <div class='clearfix'>
     
     <h3 class='fl m0' id='curvebox'>
-      CurveBox
+      curveBox
     </h3>
     
     
@@ -1961,7 +2114,7 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
 
   <p>CurveBox is the central function to wellioviz in a lot of ways, not least as it holds the d3.js code. It takes a JSOn template, appends the resulting SVG to a defined DIV.</p>
 
-    <div class='pre p1 fill-light mt0'>CurveBox(well_curve_config_template: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): any</div>
+    <div class='pre p1 fill-light mt0'>curveBox(template_for_plotting: any, well_curve_config_template: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): any</div>
   
   
 
@@ -1975,6 +2128,14 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>template_for_plotting</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -2058,6 +2219,149 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
           <div>
             <span class='code bold'>templates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
 	    An array of CurveBox input templates
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makethiscurvebox'>
+      makeThisCurveBox
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This function is used to plot a single curveboxe in the div listed in the plotting templates div_id key.
+When called it removes anything that is a child of the div listed in div_id before appending a new curveBox there.</p>
+
+    <div class='pre p1 fill-light mt0'>makeThisCurveBox(template_for_plotting: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>template_for_plotting</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    A JSON of all the information needed to be plotted using the format of wellioviz exactly.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        curve_box_return - A string representation of the SVG variable called SVG. This can be fiven to the saveSvg function to save the SVG as a file with .svg ending.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='savesvg'>
+      saveSvg
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This function is used to save a given SVG element with a given name. It creates a download link div which is then used to download the SVG file.
+In certain environments, this  may not work for security reasons.</p>
+
+    <div class='pre p1 fill-light mt0'>saveSvg(svgEl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>svgEl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    An SVG element returned from the curveBox function.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The name of the file to be downloaded.
 
           </div>
           

@@ -49,3 +49,10 @@ Initial template is used with good defaults.
 - How to maintain the ability to return SVG and not just append SVG
 - How much of interaction should be built into wellioviz vs. code that uses wellioviz? Put another way, how much of demo app should be inside wellioviz vs. the main.js for the demo page?
 - How to enable easy and flexible use on html/css/JS front-end page, Observable, different wells in JSON formatting, mostly Python Jupyter notebook use, and backend pre-rendered SVGs from same codebase?
+
+### Examples, Problems, Rationals, Reasoning to include in documenation somehwere:
+- Single SVG vs. separate header div to enable scrolling (what they requires in curveBox function then
+- How the multiple curves in a single curvebox are handled in the code & visually.
+- How to visually distinguish wells vs. multiple curves in single well
+- connections between curves?
+- Why "yes" and "no" instead of True and False in json key:value pairs. Python uses True. Javascript uses true.

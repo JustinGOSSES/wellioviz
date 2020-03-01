@@ -2,6 +2,10 @@
 
 WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
 
+We're on NPM <a href="https://www.npmjs.com/package/wellioviz">v0.0.11</a>
+[![NPM](https://nodei.co/npm/<package>.png?compact=true)](https://npmjs.org/package/wellioviz)
+
+
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="docs/images/well_log_screenshot.png"></a>
 
 ## IT IS IN PROGRESS.....

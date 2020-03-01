@@ -34,6 +34,19 @@ module.exports = {
  wellio:require("wellio"),
  d3:require("d3"),
 
+/**
+ * A function that directs users to the docs if they need help.
+ * @returns {string} It says = I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.
+ */
+help:function(){
+  return "I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck."
+},
+
+
+ /**
+  * A definition of what the wellioviz library is all about. 
+  * @returns {string} Returns a string that defines wellioviz.
+  */
  define_wellioviz: function(){
   return "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library."
  },
@@ -56,22 +69,7 @@ module.exports = {
    * getExampleTemplate is a function that provides an example template for what to supply to the curveBox function further down.
    * @returns {array} returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
    * EXAMPLE: = [
-      {"multipleLines":"yes",
-      "curveNames":["GR","RESD"],
-      "curveColors":["Green","pink"],
-      "fill":[
-        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,0.3,0.8],"fillColors":["gray","orange","yellow"],"curve2":""},
-        {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
-      ],
-      "depthLimits":{"min":0,"max":100000},
-      "curveLimits":[{"curveName":"","min":0,"max":100}],
-      "curveUnits":["",""],
-      "data":[{"depth": "1599.600", "GR": 100},{"depth": "1599.600", "GR": 52.2322},{"depth": "1599.600", "GR": 29.23},{"depth": "1599.600", "GR": 56.2322}],
-      "width":200,
-      "height":500,
-      "margin":({top: 50, right: 3, bottom: 30, left: 30}),
-      "title":{"text":"","title_font_size":"10px"},
-      "depth_curve_name":"depth"}
+     !!!!!!!!! THIS IS OUT OF DATE SO DELETING UNTIL IT STABLIZES !!!!!!!
       ]
   */
   getExampleTemplate: function (){
@@ -118,11 +116,17 @@ module.exports = {
       "show_title":"no", // not built into plotting template yet /// Should be skip-able /// default=No
       "width": 260, /// not skippable, check if number // default if blank or missing =250
       "height": 500, /// not skippable, check if number // default if blank or missing=500
+      "height_multiplier_components":3, // default if missing is 0.95
       "margin": {"top": 50, "right": 10, "bottom": 30, "left": 60}, /// not skippable, check if number // defaults used if blank, string, or missing. If string or blank, add message to error message to console stating what default was used.
       "title": {"text": "", "title_font_size": "10px"}, /// Should be skip-able // default=skip
       "div_id": "well_holder4", /// Should be skip-able // default=random str? What happens if div doesn't exist?
       "order_of_component":["curves","rectangles","lines"], // not built yet, default is curve, then line, then rectangle
-      "lines_connected_across_curve_boxes":"no" // not built yet, default is skip function
+      "lines_connected_across_curve_boxes":"no", // not built yet, default is skip function
+      "header_sep_svg_or_not":"yes",
+      "svg_header_height":"4em",
+      "gridlines":"yes",
+      "gridlines_color":'#D3D3D3',
+      "gridlines_stroke_width":0.20
   },
    "components":[{
      "curves":[
@@ -135,7 +139,7 @@ module.exports = {
           2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,                           2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,             2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,             2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,             2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,             2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,             2.255, 2.2526,2.2322, 2.2513, 2.2548, 2.2445, 2.2223, 2.2047, 2.198, 2.2088, 2.2248, 2.2399, 2.251,             2.255, 2.2526], /// Should be array. If not array, return error message?
        "step": 0.1, /// Should be number. If not array, return error message?
        "units": "g/cc", /// should be string but try to plot whatever as string. if greater than X length include error message in console about excessive length will look bad but still plot.
-       "log_scale": false,  // not built yet // if anything except True, skip function. Do not assume populated.
+       "scale_linear_log_or_yours": "linear",  
        ////// Plotting things but need to be next to curve data or will be too confusing.
        "line_color": "rgb(205,0,0,1)", /// Test for string, if string use. If not string "black"
        "curve_stroke_dasharray":"5,5",
@@ -143,7 +147,8 @@ module.exports = {
        "data_ID":"",
        "max_depth": "1607.3", /// should be number, if not number or doens't exit then "autocalculate" 
        "min_depth": "1598.3", /// should be number, if not number or doens't exit then "autocalculate" 
-       "depth_type_string":"MD", // not built yet /// should be string, if not or doesn't exist, then skip func
+       "depth_type_string":"TVDSS", /// should be string, if not or doesn't exist, then skip func
+        "depth_units_string":"md",
        "depth_curve_name":"DEPTH", /// should be string, ideally all depth curve names are the same
         "null_value": "", // not built yet, can be anything. Skip if blank or "" or "unknown". If not skip, then look for any values that match after d3 style data object is generated and either take them out or give special value based on behavior defined for curvebox in key "take_out_null_or_visualize" above.
        "x_max": 3, // not built yet /// should be number /// auto-calculate if not number or is "autocalculate"
@@ -328,7 +333,10 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "order_of_component":["curves","rectanges","lines"], /// not built yet
     "lines_connected_across_curveboxes":"no", /// not built yet
     "header_sep_svg_or_not":"yes",
-    "svg_header_height":"4em"
+    "svg_header_height":"4em",
+    "gridlines":"yes",
+    "gridlines_color":'#D3D3D3',
+    "gridlines_stroke_width":0.20
 },
  "components":[{
    "curves":[
@@ -404,7 +412,10 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "order_of_component":'Should be an array of strings that correlate to component types like:["curves","rectangles","lines"]', // not built yet
     "lines_connected_across_curveboxes":"yes or no. If '' is no", // not built yet
     "header_sep_svg_or_not":"yes or no. 'no' will build the curvebox as a single SVG. 'yes' will build it as two SVGs within nested divs. The later better helps enable scrolling curves and stationary header",
-    "svg_header_height":"Example = 3em; A string representing the height of the header part of the curvebox when header & components part of curvebox are separate SVGs."
+    "svg_header_height":"Example = 3em; A string representing the height of the header part of the curvebox when header & components part of curvebox are separate SVGs.",
+    "gridlines":"yes or no as strings. Default is 'yes'",
+    "gridlines_color":"Can be gray or any color in hex or rgb format. Default is ''#D3D3D3'",
+    "gridlines_stroke_width":"thickness of the line. Default is 0.20"
 },
  "components":[{
    "curves":[
@@ -709,6 +720,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let margin = template_overall["margin"]
     let header_sep_svg_or_not = template_overall["header_sep_svg_or_not"]
     let svg_header_height = template_overall["svg_header_height"]
+    let gridlines = template_overall["gridlines"]
+    let gridlines_color = template_overall["gridlines_color"]
+    let gridlines_stroke_width = template_overall["gridlines_stroke_width"]
     //// Data is in d3.js form. An array of objects consisting of single level key:value pairs
     let data = template_curves["data"]
     //// Variables related to curves, these should all be arrays with one or more values!
@@ -824,11 +838,11 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let svg_header_minus_one = (parseInt(svg_header_height.replace("em",""))-1)
     let svg_header_minus_one_in_em = svg_header_minus_one.toString()+"em"
     console.log("svg_header_minus_one_in_em",svg_header_minus_one_in_em)
-    let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
-    let xAxis_header = g => g.attr("transform", "translate(0,45)").call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+    let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
+    let xAxis_header = g => g.attr("transform", "translate(0,45)").call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
     //let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
-    //let yAxis2 = g => g.attr("transform", `translate(${margin.left*.333},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
+    // let yAxis2 = g => g.attr("transform", `translate(${margin.left-35},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
 
     //////////////  Initiate Divs + SVGs. Different depending single SVG or header separate =>////////////// 
     let svg = ""
@@ -848,10 +862,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       
       svg_header.attr("width",width)
           .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
-      svg_header.append("g")
-          .call(xAxis_header)
-            .append("text")
-            .text("test svg header")
+      // svg_header.append("g")
+      //     .call(xAxis_header)
+      //       .append("text")
+      //       .text("test svg header")
       svg_header.append("g")
       //svg_header.style("margin","0 auto");
       svg_header.style("display","block");
@@ -917,16 +931,30 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("text-anchor", "end")
           .text(y_axis_text)
           .style("fill","#2b2929")
-  // svg.append("g")
-  //       .call(yAxis2)
-  //       .append("text")
-  //         .attr("transform", "rotate(-90)")
-  //         .attr("dy", ".75em")
-  //         .attr("y", 0 - (margin.left*0.2))
-  //         .attr("x",((height)/-2)+margin.top)
-  //         .style("text-anchor", "end")
-  //         .text(y_axis_text+"THIS IS THE SECOND ONE")
-  //         .style("fill","#2b2929")
+    // svg.append("g")
+    //     .call(yAxis2)
+    //     .append("text")
+    //       .attr("transform", "rotate(-90)")
+    //       .attr("dy", ".75em")
+    //       .attr("y", -35)
+    //       .attr("x",((height)/-2)+margin.top)
+    //       .style("text-anchor", "end")
+    //       .text(y_axis_text+"THIS IS THE SECOND ONE")
+    //       .style("fill","#2b2929")
+    
+    if(gridlines == "yes"){
+      var gridlines_obj = d3.axisTop()
+                      .ticks((width-margin.left-margin.right)/25)
+                      .tickFormat("")
+                      .tickSize(-height+margin.top+10)
+                      .scale(x);
+      svg.append("g")
+         .attr("class", "grid")
+         .call(gridlines_obj)
+          .style("stroke",gridlines_color)
+          .style("stroke-width",gridlines_stroke_width) 
+    }
+    
   
     //svg.append("g")
     //// Code that assumes multiple curves are plotted in same curvebox  
@@ -1112,6 +1140,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_header.node()
     return svg.node();
   }
+
 ,
 
 
