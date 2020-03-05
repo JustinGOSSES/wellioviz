@@ -28,7 +28,9 @@ input_sparse_style = [{
     "svg_header_height":"4em",
     "gridlines":"yes",
     "gridlines_color":'#D3D3D3',
-    "gridlines_stroke_width":0.20
+    "gridlines_stroke_width":0.20,
+    "grouped_or_independent_x_scales":"independent"
+    
 },
  "components":[{
    "curves":[
@@ -45,7 +47,7 @@ input_sparse_style = [{
      ////// Plotting things but need to be next to curve data or will be too confusing.
      "line_color": "rgb(205,0,0,1)", /// Test for string, if string use. If not string "black"
      "curve_stroke_dasharray":"5,5",
-     "fill":[{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}],
+     "fill":{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""},
      "data_ID":"",
      "max_depth": "1607.3", /// should be number, if not number or doens't exit then "autocalculate" 
      "min_depth": "1598.3", /// should be number, if not number or doens't exit then "autocalculate" 
@@ -94,4 +96,4 @@ input_sparse_style = [{
    ]
  }]
 }]
-}]
+}]s

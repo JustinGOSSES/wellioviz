@@ -51,50 +51,11 @@ help:function(){
   return "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library."
  },
   ///////////////////////////////
-
-  //// Example template
-  // well_curve_config_template_new_well_01_01_095_19W4 = [
-    //{"multipleLines":"yes",
-    //"curveNames":["GR"],
-    //"curveColors":["pink"],
-    //"fill":[{"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,65,95,109],"fillColors":["lightgreen","green","red"ink:,"this tring messed up]"]
-    //"data":well_log_curves_reformatted_for_d3_2,
-    //"width":200,
-    //"height":400,
-    //"margin":({top: 20, right: 3, bottom: 30, left: 30}),
-    //"depth_curve_name":"DEPTH"}
-    //]
-  ////////////
-  /** 
-   * getExampleTemplate is a function that provides an example template for what to supply to the curveBox function further down.
-   * @returns {array} returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
-   * EXAMPLE: = [
-     !!!!!!!!! THIS IS OUT OF DATE SO DELETING UNTIL IT STABLIZES !!!!!!!
-      ]
-  */
-  getExampleTemplate: function (){
-    return [
-      {"multipleLines":"yes",
-      "curveNames":["GR","RESD"],
-      "curveColors":["Green","pink"],
-      "fill":[
-        {"curveName":"GR","fill":"yes","fillDirection":"left","cutoffs":[0,0.3,0.8],"fillColors":["gray","orange","yellow"],"curve2":""},
-        {"curveName":"RESD","fill":"no","fillDirection":"left","cutoffs":[],"fillColors":[],"curve2":""}
-      ],
-      "depthLimits":{"min":"autocalculate","max":"autocalculate"},
-      "curveLimits":[{"curveName":"","min":0,"max":100}],
-      "curveUnits":["",""],
-      "data":[{"depth": "1599.600", "GR": 100},{"depth": "1599.600", "GR": 52.2322},{"depth": "1599.600", "GR": 29.23},{"depth": "1599.600", "GR": 56.2322}],
-      "width":200,
-      "height":500,
-      "margin":({top: 50, right: 3, bottom: 30, left: 30}),
-      "title":{"text":"","title_font_size":"10px"},
-      "depth_curve_name":"DEPTH"}
-      ]
-  },
+ 
 
   /** 
-   * getFakeIncomingSparseDataExample is a function that takes nothing and returns a JSON of fake sparse incoming data. This is much less than the JSON wellio gives when it converts a LAS file into a JSON. This is one of the type examples of data input. 
+   * getFakeIncomingSparseDataExample is a function that takes nothing and returns a JSON of fake sparse incoming data. 
+   * This is much less than the JSON wellio gives when it converts a LAS file into a JSON. This is one of the type examples of data input. It is an alternative to wellio.js style JSON.
    * It is used next by funtion ____ and ___. 
    * @returns {array} returns an array that contains an object. probably just a single object? Many of the things like max and min depth that are auto-calculated when the input is a wellio JSON and instead explicitly defined here. This saves data transmission from a backend as well as front-end calculation time. 
   */
@@ -126,7 +87,9 @@ help:function(){
       "svg_header_height":"4em",
       "gridlines":"yes",
       "gridlines_color":'#D3D3D3',
-      "gridlines_stroke_width":0.20
+      "gridlines_stroke_width":0.20,
+      "grouped_or_independent_x_scales":"independent"
+      
   },
    "components":[{
      "curves":[
@@ -143,7 +106,7 @@ help:function(){
        ////// Plotting things but need to be next to curve data or will be too confusing.
        "line_color": "rgb(205,0,0,1)", /// Test for string, if string use. If not string "black"
        "curve_stroke_dasharray":"5,5",
-       "fill":[{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}],
+       "fill":{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""},
        "data_ID":"",
        "max_depth": "1607.3", /// should be number, if not number or doens't exit then "autocalculate" 
        "min_depth": "1598.3", /// should be number, if not number or doens't exit then "autocalculate" 
@@ -336,7 +299,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "svg_header_height":"4em",
     "gridlines":"yes",
     "gridlines_color":'#D3D3D3',
-    "gridlines_stroke_width":0.20
+    "gridlines_stroke_width":0.20,
+    "grouped_or_independent_x_scales":"independent"
 },
  "components":[{
    "curves":[
@@ -415,7 +379,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "svg_header_height":"Example = 3em; A string representing the height of the header part of the curvebox when header & components part of curvebox are separate SVGs.",
     "gridlines":"yes or no as strings. Default is 'yes'",
     "gridlines_color":"Can be gray or any color in hex or rgb format. Default is ''#D3D3D3'",
-    "gridlines_stroke_width":"thickness of the line. Default is 0.20"
+    "gridlines_stroke_width":"thickness of the line. Default is 0.20",
+    "grouped_or_independent_x_scales":"independent or grouped as exceptable answers as strings. When 'independent' the min and max value of each curve in a curvebox is used for x scale unless explicitly given for that curve. When 'grouped' is given, the max and min of all curves is calculated and used to create the x axis scale."
 },
  "components":[{
    "curves":[
@@ -477,7 +442,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       "This is not yet populated!!!!"
     ]
   }
-},
+}
+,
 
 /** 
  * takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
@@ -699,8 +665,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
-
-   
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
@@ -757,8 +721,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if(template_curves["depth_units_string"] && template_curves["depth_units_string"][0] !== ""){
       depth_units_string = "- " + template_curves["depth_units_string"]
     }
-   
-    
     
     ///// THIS LINE BELOW DOESN"T MAKE ANY SENSE, CHANGE ////
     let div_id = template_overall["div_id"]
@@ -809,10 +771,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
   
     /////////  <=== NEED TO FIX DEPTHS. THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 
- 
-  
-  
-  
     //////////////  Initiate Divs + SVGs. Different depending single SVG or header separate =>////////////// 
     let svg = ""
     let svg_holder = ""
@@ -864,12 +822,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     else{
       svg = d3.select("#"+div_id).append("svg")
     }
-    
-  
-  
-    
-  
-    /////// old =>
+   
+     //////////////  Calculate Axis & Scales =>////////////// 
+    //// Need to handle: zero curves, arbitrary number of curves, and min/max of all curves in single axis.
+    //// For zero curves, need to look into rectange and lines for x scales maybe?
+    //// Need to handle scales in linear, log, or arbitary user-provided scale.
+    //// Also, need x function for gridlines! so....?
+    //////// NEED TO MAKE THIS FLAG IN INPUT PLOTTING JSON
+    let flag_for_single_scale_or_independent_scales = "independent"
     //////////////  Calculate x domain extent for one or more than one curve, used in scaling =>////////////// 
     let mins = []
     let maxes = []
@@ -881,31 +841,18 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     }
     let min_all_curves = d3.min(mins)
     let max_all_curves = d3.max(maxes)
-
-    
-    //////////////  Calculate Axis & Scales =>////////////// 
-    //// Need to handle: zero curves, arbitrary number of curves, and min/max of all curves in single axis.
-    //// For zero curves, need to look into rectange and lines for x scales maybe?
-    //// Need to handle scales in linear, log, or arbitary user-provided scale.
-    //// Also, need x function for gridlines! so....?
-    //////// NEED TO MAKE THIS FLAG IN INPUT PLOTTING JSON
-    let flag_for_single_scale_or_independent_scales = "independent"
+   
     if (curve_names.length == 0){
       //// THIS NEEDS TO CHANGE TO LOOK AT RECTANGLE AT SOME POINT!!!!!!
       min_all_curves = 0
       max_all_curves = 100
     }
   //////////////  Calculate x domain extent for one or more than one curve, used in scaling =>////////////// 
-    // let mins = []
-    // let maxes = []
-    // let min_all_curves 
-    // let max_all_curves
     let x_func
     let x
     let xAxis_header
     let xAxis
     if (flag_for_single_scale_or_independent_scales = "single"){
-        
         for (let i = 0; i < curve_names.length; i++) {
           let min_this = d3.min(data, function(d) { return +d[curve_names[i]]})
           let max_this = d3.max(data, function(d) { return +d[curve_names[i]]})
@@ -922,70 +869,18 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
        else if(typeof(scale_linear_log_or_yours) !== "string"){
         x = scale_linear_log_or_yours["yours"]
          }
-       
        xAxis_header = g => g.attr("transform", "translate(0,45)").call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
         
         
       }
-    //////// asdfadsfs possibly take out
-     
-//     for (let i = 0; i < curve_names.length; i++) {
-//      let min_this = d3.min(data, function(d) { return +d[curve_names[i]]})
-//      let max_this = d3.max(data, function(d) { return +d[curve_names[i]]})
-//      let x = d3.scaleLinear().domain([min_this,max_all_curves]).nice().range([margin.left, width - margin.right])
-//      if(scale_linear_log_or_yours == "log"){
-//         x = d3.scaleLog().domain([min_this,max_this]).nice().range([margin.left, width - margin.right])
-//         }
-//      else if(scale_linear_log_or_yours == "linear"){}
-//      else if(typeof(scale_linear_log_or_yours) !== "string"){
-//       x = scale_linear_log_or_yours["yours"]
-//         }
-//      if(i==0){
-//        x_func == x
-//      } 
-//      xAxis_header = g => g.attr("transform", "translate(0,45)").call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
-     
-     
-//     }
-   //////asfdadsfadsf
-    
-    //// define x scale, aka the one for the curve
-    // let x = d3.scaleLinear().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
-    // if(scale_linear_log_or_yours == "log"){
-    //   x = d3.scaleLog().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right])
-    // }
-    // else if(scale_linear_log_or_yours == "linear"){}
-    // else if(typeof(scale_linear_log_or_yours) !== "string"){
-    //   x = scale_linear_log_or_yours["yours"]
-    // }                                                                        
-    //// define y scale, aka the one for the depth
+             
+    //////////////////// define y scale, aka the one for the depth  ////////////////////
     let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
-    
-//     //// define the axises using the scales and how many ticks we want
-//     let svg_header_minus_one = (parseInt(svg_header_height.replace("em",""))-1)
-//     let svg_header_minus_one_in_em = svg_header_minus_one.toString()+"em"
-//     console.log("svg_header_minus_one_in_em",svg_header_minus_one_in_em)
-//     let xAxis = g => g.attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
-    
-//     let xAxis_header = g => g.attr("transform", "translate(0,45)").call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
-    
-    
     //let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
     // let yAxis2 = g => g.attr("transform", `translate(${margin.left-35},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
-    
-    
-    ////// <= old
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
     //////////////  Building curvebox parts that aren't header. First define size & title =>////////////// 
     svg.attr("class","components")
     svg.attr("width",width)
@@ -993,14 +888,13 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         svg.style("margin","0 auto");
         svg.style('overflow',"scroll")
     
-   if (header_sep_svg_or_not == "no"){
+    if (header_sep_svg_or_not == "no"){
        let xAxis = xAxis_header
        svg.append("g")
         .call(xAxis)
         .append("text")
           .text("test svg")
        }
-   
   
     let y_axis_text = depth_curve_name+" "+depth_units_string+" "+depth_type_string
     svg.append("g")
@@ -1037,31 +931,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .attr("text-anchor", "middle")  
           .style("font-size", template_overall["title"]["title_font_size"])  
           .text(title);
-      //distance_from_top = -20
-      // svg.append("text")
-      //   .attr("transform", "translate(${margin.left},0)")
-      //   .attr("y", 0 + (margin.left/2))
-      //   .attr("x",0 + (width/2))
-      //   .attr("dy", "1em")
-      //   .style("text-anchor", "middle")
-      //   .text("Value");
-      
-       
      }
-  //////////////  Y Axis Depth Lables =>////////////// 
-  // svg.append("text")
-  //       //.attr("transform", "rotate(-90)")
-  //       .attr("x", 0 + (margin.left))
-  //       .attr("y",0 + (width/2))
-  //       .attr("dy", "1em")
-  //       .style("text-anchor", "middle")
-  //       .text(depth_curve_name);
-  // svg.append("text") // 
-  //       .attr("x", (margin.left/3+(width/2)))            
-  //       .attr("y", height-margin.bottom+30)
-  //       .attr("text-anchor", "middle")   
-  //       .text("ttest")
-  //       .attr("transform", `rotate(-90)`)
+
   
   if(gridlines == "yes"){
       var gridlines_obj = d3.axisTop()
@@ -1085,9 +956,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if (curve_units[k]){curveUnit = curve_units[k]}   
     let min = mins[k]
     let max = maxes[k]
-
+    
     let header_text_line = min.toFixed(1)+" - "+curve_names[k]+"  "+curveUnit+" - "+max.toFixed(1)
-    console.log("header_text_line",header_text_line)
     let min_this = d3.min(data, function(d) { return +d[curve_names[k]]})
     let max_this = d3.max(data, function(d) { return +d[curve_names[k]]})
     let x = d3.scaleLinear().domain([min_this,max_this]).nice().range([margin.left, width - margin.right])
@@ -1105,7 +975,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if (header_sep_svg_or_not == "yes"){
       let distance_from_top = (1+(k*2.7)).toString()+"em"
       svg_header.append("text")
-          .attr("x", width/2)          
+          .attr("x", (margin.left+width)/2)          
           .attr("y", 0 + distance_from_top)
           .attr("text-anchor", "middle")  
           .style("font-size", "11px") 
@@ -1114,11 +984,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .text(header_text_line); 
       let translate_string = "translate(0,"+(45-(30*k)).toString()+")"
       xAxis_header = g => g.attr("transform", translate_string).call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
-      
       svg_header.append("g")
         .call(xAxis_header)
           .append("text")
-      
     }
     let another_line = d3.line().x(d => x(d[curve_names[k]])).y(d => y(d[depth_curve_name]));
     //////////////  Appends a curve line but doesn't include fill yet =>////////////// 
@@ -1131,29 +999,23 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("stroke-linecap", "round")
         .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
-    
-    
-    
-    
-    
      }
-      
-      //////////////   define the area filled under the curve =>////////////// 
+    //////////////   define the area filled under the curve =>////////////// 
+    
       for (let i = 0; i < template_curves["fill"].length; i++) {
         //let i = k
-        if (template_curves["fill"][i][0]["fill"] == "yes"){        
-          let number_colors = template_curves["fill"][i][0]["fill_colors"].length
-          let curve_name1 = template_curves["fill"][i][0]["curve_name"]
+        if (template_curves["fill"][i]["fill"] == "yes"){        
+          let number_colors = template_curves["fill"][i]["fill_colors"].length
+          let curve_name1 = template_curves["fill"][i]["curve_name"]
           let threshold = -99999999
           let fill_color = "gray"
           for (let j = 0; j < number_colors; j++) {
-          console.log("got to start of J loop",j)
               let area1 = d3.area()
               if (number_colors != 0){
-                threshold = template_curves["fill"][i][0]["cutoffs"][j]
-                fill_color = template_curves["fill"][i][0]["fill_colors"][j]
+                threshold = template_curves["fill"][i]["cutoffs"][j]
+                fill_color = template_curves["fill"][i]["fill_colors"][j]
                 }
-              if(template_curves["fill"][i][0]["fill_direction"] == "left"){
+              if(template_curves["fill"][i]["fill_direction"] == "left"){
                   let start_from_left = template_overall["margin"]["left"]
                   area1
                       .x1(d => x(d[curve_name1]))
@@ -1161,7 +1023,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                         .defined(d => ((d[curve_name1])>threshold))
                       .y(d => y(d[depth_curve_name]));
               }
-              if(template_curves["fill"][i][0]["fill_direction"] == "right"){
+              if(template_curves["fill"][i]["fill_direction"] == "right"){
                   let start_from_right = template_overall["margin"]["right"]
                   area1
                         .x0(d => x(d[curve_name1]))
@@ -1169,8 +1031,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                           .defined(d => ((d[curve_name1])<threshold))
                         .y(d => y(d[depth_curve_name]));
               }
-              if(template_curves["fill"][i][0]["fill_direction"] == "between"){
-                  let between_2_curve = template_curves["fill"][i][0]["curve2"] 
+              if(template_curves["fill"][i]["fill_direction"] == "between"){
+                  let between_2_curve = template_curves["fill"][i]["curve2"] 
                   area1
                     .x1(d => x(d[curve_name1]))
                     .x0(d => x(d[between_2_curve]))
@@ -1187,7 +1049,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
               }
         }
     }
-  
   
     //////////////  Horizontal Lines AKA tops =>////////////// 
     try {
@@ -1245,9 +1106,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     svg_holder.node()
     svg_header.node()
     return svg.node();
-  }
-
-,
+  },
 
 
     //////////
