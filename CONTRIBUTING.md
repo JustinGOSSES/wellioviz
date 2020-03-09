@@ -11,13 +11,16 @@ The way I'm developing is to do changes in Observable notebook first. For this t
 
 The active notebook is noted in the README. 
 
-<i>I try to sync changes to the index.js file in this code repository after each work session.</i> 
+#### How I try develop this repository now...
+1. Make changes to <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">an Observable notebook</a> that has all the code. These changes are usually for one, or  maybe two issues, on the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. 
+2. Create a branch for these changes on the git repo. 
+3. When I'm happy with the changes in the Observable notebook, I copy them to the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/dist/index.js">index.js file</a> in the git repository.
+4. Merge the forked branch back into master. 
+5. Change version in the package.json file. Push that change.
+6. Run npm publish. 
+7. Clear issues that are fixed due to the version bump.
 
-Potential code to keep in sync is in several locations: 
-- An Observable notebook
-- This code repository, particularly in the index.js file in the dist directory. 
-- Documentation as found in the docs folder in this code repository.
-- The demo page found in the docs folder in this code repository.
+These means the code in certain <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"> Observable notebooks</a> where I'm actively working with the code might be ahead of the master branch in private mode, but I try to only publish (share the changes to the notebook publically) once I have pushed to the github repository.
 
 #### Index.js & Observable notebook are almost always kept in sync. When they aren't, I'll let people know and put it in the README.
 #### The demo page is not kept in sync and will only be updated occasionally. 
