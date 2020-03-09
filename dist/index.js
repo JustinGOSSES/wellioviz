@@ -797,6 +797,18 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
       svg_header.append("g")
       svg_header.style("display","block");
+      let depth_string_on_top = ""
+      if(depth_type_string == ""){
+         depth_string_on_top = depth_curve_name
+         }
+      else{depth_string_on_top = depth_type_string}
+      svg_header.append("text")
+          .attr("x", (margin.left)/2)          
+          .attr("y", 0 + margin.top/0.5)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "10px") 
+          .style("text-decoration", "underline")  
+          .text(depth_string_on_top); 
 
        ///////// change this!!!!!
       if(title !== "Elephants"){
@@ -836,6 +848,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //// For zero curves, need to look into rectange and lines for x scales maybe?
     //// Need to handle scales in linear, log, or arbitary user-provided scale.
     //// Also, need x function for gridlines! so....?
+    
     //////////////  Calculate x domain extent for one or more than one curve, used in scaling =>////////////// 
     let mins = []
     let maxes = []
@@ -993,6 +1006,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       svg_header.append("g")
         .call(xAxis_header)
           .append("text")
+      
     }
     let another_line = d3.line().x(d => x(d[curve_names[k]])).y(d => y(d[depth_curve_name]));
     //////////////  Appends a curve line but doesn't include fill yet =>////////////// 
