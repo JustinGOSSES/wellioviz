@@ -665,6 +665,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //////////////  DEFINING VARIABLES so the longer name doesn't have to be used ////////////// 
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
+    // default values might be defined here for cases where they are accidentally not defined
+
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
@@ -700,6 +702,12 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let scale_linear_log_or_yours = template_curves["scale_linear_log_or_yours"];
     if(template_curves["curve_units"]){curve_units = template_curves["curve_units"]}
     else{curve_units = ""}
+  
+    //////// NEED TO MAKE THIS FLAG IN INPUT PLOTTING JSON
+    let flag_for_single_scale_or_independent_scales = template_overall["grouped_or_independent_x_scales"]
+    let grouped_or_independent_x_scale = template_overall["grouped_or_independent_x_scales"]
+    
+    
     //// The depth_curve_name needs to be the same for all curves plotted! 
     let depth_curve_name = ""
     if (template_curves["depth_curve_name"].length > 1 && typeof(template_curves["depth_curve_name"]) == "object" && template_curves["depth_curve_name"][0] !== template_curves["depth_curve_name"][1]
@@ -828,8 +836,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //// For zero curves, need to look into rectange and lines for x scales maybe?
     //// Need to handle scales in linear, log, or arbitary user-provided scale.
     //// Also, need x function for gridlines! so....?
-    //////// NEED TO MAKE THIS FLAG IN INPUT PLOTTING JSON
-    let flag_for_single_scale_or_independent_scales = "independent"
     //////////////  Calculate x domain extent for one or more than one curve, used in scaling =>////////////// 
     let mins = []
     let maxes = []
@@ -1025,10 +1031,11 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
               }
               if(template_curves["fill"][i]["fill_direction"] == "right"){
                   let start_from_right = template_overall["margin"]["right"]
+                  let start_from_left = template_overall["margin"]["left"]
                   area1
+                        .x1(d => width-start_from_right)
+                          .defined(d => ((d[curve_name1])>threshold))
                         .x0(d => x(d[curve_name1]))
-                        .x1(d => start_from_right)
-                          .defined(d => ((d[curve_name1])<threshold))
                         .y(d => y(d[depth_curve_name]));
               }
               if(template_curves["fill"][i]["fill_direction"] == "between"){
