@@ -22,11 +22,10 @@ The active notebook is noted in the README.
 
 These means the code in certain <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"> Observable notebooks</a> where I'm actively working with the code might be ahead of the master branch in private mode, but I try to only publish (share the changes to the notebook publically) once I have pushed to the github repository.
 
-#### Index.js & Observable notebook are almost always kept in sync. When they aren't, I'll let people know and put it in the README.
-#### The demo page is not kept in sync and will only be updated occasionally. 
-#### The docs are updated gradually. Sometimes there will be new or changing functions that aren't populated yet.
-
-
+- The code in master branch will always be in sync with code on NPM.
+- Index.js & Observable notebook are almost always kept in sync. When they aren't, I'll let people know and put it in the README.
+- The docs are updated gradually. Sometimes there will be new or changing functions that aren't populated yet.
+- The html demo page is not kept in sync and will only be updated occasionally. The Observable notebooks are better places to look for up-to-date demos. In particular, <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this</a> notebook, which pulls all its wellioviz code from NPM. You can change which version of wellioviz code is pulled from NPM by changing the cell towards the top that pulls in wellioviz for use.
 
 ## Ways to Contribute!
 
