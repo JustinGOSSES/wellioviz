@@ -57,13 +57,6 @@ Check out the Contributing <a href="https://github.com/JustinGOSSES/wellioviz/bl
 
 #### Organization of Issues on Kanban board here: https://github.com/JustinGOSSES/wellioviz/projects/1
 
-#### Theoretical Development Plan...
-- Build on Observable and sync to index.js file inside the dist folder.
-- Build stand alone demos and test in other non-Observable environments.
-- Build it into a vanilla front-end and node.js package.
-- Deploy to npm. 
-- Build several examples of production use-cases.
-
 #### Further Thinking...
 
 <a href="docs/BRAINSTORMS.md">BRAINSTORM.md</a>
