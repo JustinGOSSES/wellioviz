@@ -690,6 +690,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let gridlines = template_overall["gridlines"]
     let gridlines_color = template_overall["gridlines_color"]
     let gridlines_stroke_width = template_overall["gridlines_stroke_width"]
+    
+    let secondary_depth_exist = "no" // THIS IS NOT YET EXISTING IN PLOTTING INPUT JSON SO HARDCODING FOR NOW
+    
     //// Data is in d3.js form. An array of objects consisting of single level key:value pairs
     let data = template_curves["data"]
     //// Variables related to curves, these should all be arrays with one or more values!
@@ -739,31 +742,31 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 
      ///////// NEED TO FIX DEPTHS AS THERE ARE MULTIPLE DEPTH LIMITS AND THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 //       //// Calculate depth min and max if depth min and/or max is not given explicitly in the template
-//       let depth_min
-//       let depth_max
-//      if(!template_curves["depth_limits"] || template_curves["depth_limits"][0]["min"] == "autocalculate")
-//         {depth_min = d3.min(data, function(d) { return +d[depth_curve_name];})}
-//       else
-//         {depth_min = template_curves["depth_limits"][0]["min"]}
-//       //// max depth
-//       if(!template_curves["depth_limits"] || template_curves["depth_limits"][0]["max"] == "autocalculate")
-//         {depth_max = d3.max(data, function(d) { return +d[depth_curve_name];})}
-//       else
-//         {depth_max = template_curves["depth_limits"][0]["max"]}
+      let depth_min
+      let depth_max
+     if(!template_curves["depth_limits"] || template_curves["depth_limits"][0]["min"] == "autocalculate")
+        {depth_min = d3.min(data, function(d) { return +d[depth_curve_name];})}
+      else
+        {depth_min = template_curves["depth_limits"][0]["min"]}
+      //// max depth
+      if(!template_curves["depth_limits"] || template_curves["depth_limits"][0]["max"] == "autocalculate")
+        {depth_max = d3.max(data, function(d) { return +d[depth_curve_name];})}
+      else
+        {depth_max = template_curves["depth_limits"][0]["max"]}
 
 
-//       // [depth_max,depth_min]
-//       //// Apply depth min and max to incoming well log data
-//       //// To save time, we'll first check if the first object in the array had as depth that is smaller than min
-//       //// and check if the last object in the array has a depth that is larger than the max, if not. we do nothing.
+      // [depth_max,depth_min]
+      //// Apply depth min and max to incoming well log data
+      //// To save time, we'll first check if the first object in the array had as depth that is smaller than min
+      //// and check if the last object in the array has a depth that is larger than the max, if not. we do nothing.
 
-//       if(data[0][depth_curve_name] > depth_min && data[-1][depth_curve_name] < depth_max){}
-//       else{data = data.filter(function(objects){
-//   return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
-// })}
+      if(data[0][depth_curve_name] > depth_min && data[-1][depth_curve_name] < depth_max){}
+      else{data = data.filter(function(objects){
+  return objects[depth_curve_name] > depth_min && objects[depth_curve_name] < depth_max; 
+})}
   
-    let depth_min = -1000000
-    let depth_max = 1000000
+    // let depth_min = -1000000
+    // let depth_max = 1000000
   
     if(template_curves["min_depth"][0] == "autocalculate" || template_curves["min_depth"] == "autocalculate"){
       depth_min = data[0][depth_curve_name]
@@ -786,9 +789,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if (header_sep_svg_or_not == "yes"){
       
       svg_holder = d3.select("#"+div_id).append("div")
-        // .style("vertical-align","middle")
         .attr("class","svg_holder")
-        // .style('display',"flex")
         .style("overflow-x","auto")
 
       svg_header = d3.select("#"+div_id+" div.svg_holder").append("svg")
@@ -797,18 +798,43 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .attr("height",svg_header_height); ///// THIS SHOULD BE CHANGED TO A KEY:VALUE PAIR IN TEMPLATES!!!
       svg_header.append("g")
       svg_header.style("display","block");
+      
       let depth_string_on_top = ""
       if(depth_type_string == ""){
          depth_string_on_top = depth_curve_name
          }
-      else{depth_string_on_top = depth_type_string}
+      else{depth_string_on_top = depth_type_string.replace("- ","")}
+      
       svg_header.append("text")
           .attr("x", (margin.left)/2)          
-          .attr("y", 0 + margin.top/0.5)
+          .attr("y", "1em")
           .attr("text-anchor", "middle")  
           .style("font-size", "10px") 
           .style("text-decoration", "underline")  
+          .text(depth_curve_name); 
+      if(depth_type_string != ""){
+        let depth_type_string_x_pos = 0
+        let depth_type_string_x_pos_anch = "start"
+        if(secondary_depth_exist == "no"){
+          depth_type_string_x_pos = margin.left/2
+          depth_type_string_x_pos_anch = "middle"
+        }
+        svg_header.append("text")
+          .attr("x", depth_type_string_x_pos)          
+          .attr("y", "3em")
+          .attr("text-anchor", depth_type_string_x_pos_anch)  
+          .style("font-size", "8px") 
+          .style("text-decoration", "underline")  
           .text(depth_string_on_top); 
+      }
+      
+      //svg_header.append("text")
+      //     .attr("x", margin.left)          
+      //     .attr("y", "4em")
+      //     .attr("text-anchor", "end")  
+      //     .style("font-size", "6px") 
+      //     .style("text-decoration", "underline")  
+      //     .text("2nd TVD"); 
 
        ///////// change this!!!!!
       if(title !== "Elephants"){
@@ -897,7 +923,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
     //let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
-    // let yAxis2 = g => g.attr("transform", `translate(${margin.left-35},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
+    let yAxis2 = g => g.attr("transform", `translate(${margin.left-35},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
 
 
     //////////////  Building curvebox parts that aren't header. First define size & title =>////////////// 
@@ -926,6 +952,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("text-anchor", "end")
           .text(y_axis_text)
           .style("fill","#2b2929")
+  
+  
+  ////
     // svg.append("g")
     //     .call(yAxis2)
     //     .append("text")
@@ -936,7 +965,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //       .style("text-anchor", "end")
     //       .text(y_axis_text+"THIS IS THE SECOND ONE")
     //       .style("fill","#2b2929")
-    
+    ////
     
     
   
