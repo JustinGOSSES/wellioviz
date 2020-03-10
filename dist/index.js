@@ -106,6 +106,8 @@ help:function(){
        ////// Plotting things but need to be next to curve data or will be too confusing.
        "line_color": "rgb(205,0,0,1)", /// Test for string, if string use. If not string "black"
        "curve_stroke_dasharray":"5,5",
+       "stroke_linecap":"butt",
+       "stroke_width":0.5,
        "fill":{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""},
        "data_ID":"",
        "max_depth": "1607.3", /// should be number, if not number or doens't exit then "autocalculate" 
@@ -125,6 +127,7 @@ help:function(){
        "depth":1601.4, /// Should be Float or integer, attempt to convert to number if string. Otherwise skip this part entirely!
        "color":"blue", /// should be string, if not or doesn't exist use "black"
        "stroke_width":"3px", /// should be string, if not or doesn't exist use "1px"
+       "stroke_linecap":"butt",
        "stroke_style":"solid", /// should be string, if not or doesn't exist use "solid"
        "transparency":1.0 /// should be number between 0 and 1, if not or doesn't exist use 1.
       },
@@ -134,6 +137,7 @@ help:function(){
        "depth":1602.4, /// Should be Float or integer, attempt to convert to number if string. Otherwise skip this part entirely!
        "color":"orange", /// should be string, if not or doesn't exist use "black"
        "stroke_width":"5px", /// should be string, if not or doesn't exist use "1px"
+       "stroke_linecap":"butt",
        "stroke_style":"solid", /// should be string, if not or doesn't exist use "solid"
        "transparency":0.5 /// should be number between 0 and 1, if not or doesn't exist use 1.
       }
@@ -145,7 +149,8 @@ help:function(){
        "x_starting_upper_left_corner":0,
        "width":100, 
        "height":100,
-       "stroke-width":"2px",
+       "stroke_width":"2px",
+       "stroke_linecap":"butt",
        "fill":"red",
        "opacity":0.5,
        "label":"Core Example", // not built into plotting template yet
@@ -157,7 +162,8 @@ help:function(){
   }]
   }]
   return input_sparse_style
-},
+}
+  ,
 
   ///////////////////////////////
   //// Functions for getting data from LAS files and reformatting to a wellio.js style JSON. 
@@ -308,6 +314,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       "curve_names":["RHOB"],
       "curve_colors":["black"],
       "curve_stroke_dasharray":["solid"],
+     "stroke_linecap":["butt"],
+     "stroke_width":[1],
       "fill":[
                 {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
               ],
@@ -334,9 +342,10 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       "label":"example",  /// not built yet
      "depth":-999, /// not built yet
      "color":"red", /// not built yet
-     "stroke_width":"1px", /// not built yet
+     "stroke_width":"3px", /// not built yet
      "stroke_style":"solid", /// not built yet
-     "transparency":1.0 /// not built yet
+     "transparency":1.0, /// not built yet
+     "stroke_linecap":"butt"
     }
   ],
     "rectangles":[
@@ -346,7 +355,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
      "x_starting_upper_left_corner":0,
      "width":100, 
      "height":100,
-     "stroke-width":"2px",
+     "stroke_width":"2px",
+     "stroke_linecap":"butt",
      "fill":"red",
      "opacity":0.5,
      "label":"Core Example", // not built into plotting template yet
@@ -388,6 +398,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
       "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
      "curve_stroke_dasharray":"A style for the curve line. Can be solid or a string of integers separated by commas like '5,5' or '20,10,10,5,10,10'",
+      "stroke_width":"The width of the curve line. Example is '2px'. ",
+      "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
       "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
        "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
        "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
@@ -416,6 +428,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
      "color":"string for the color of the line in common color name or RGB format. If '' then black will be used.", 
      "stroke_width":"A string with of px value for stroke width, like: '1px'. Default if absent is '1px'.", 
      "stroke_style":'Should be string, if not or doesnt exist will be treated as "solid"',
+     "stroke_width":"The width of the line. Example is '2px'. ",
+     "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
      "transparency":'Should be float between 0.0 and 1.0. Otherwise default is 1.0.'
     }
   ],
@@ -426,7 +440,8 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
      "x_starting_upper_left_corner":"A number for the x axis value of the upper left corner of the rectangle",
      "width":"Width of rectangle as number", 
      "height":"Height of rectangle as number",
-     "stroke-width":"Stroke width of line that makes rectangle as a strike, like '2px'.",
+     "stroke_width":"The width of the line. Example is '2px'. ",
+     "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
      "fill":"String that represents the color of the rectangle fill in either common color name or RGB like, 'red'",
      "opacity":"Float between 0 and 1 that represents the opacity of the fill, default is 0.5",
      "label":"String that appears on end of line and likely represents a top name, like: 'Top Jurassic Final Final Final'", // not built into plotting template yet
@@ -442,8 +457,7 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
       "This is not yet populated!!!!"
     ]
   }
-}
-,
+},
 
 /** 
  * takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
@@ -556,6 +570,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     template[0]['components'][0]['curves'][0]["curve_names"] = []
     template[0]['components'][0]['curves'][0]["curve_colors"] = []
     template[0]['components'][0]['curves'][0]["curve_stroke_dasharray"] = []
+    template[0]['components'][0]['curves'][0]["stroke_width"] = []
+    template[0]['components'][0]['curves'][0]["stroke_linecap"] = []
     template[0]['components'][0]['curves'][0]["fill"] = []
     template[0]['components'][0]['curves'][0]["data_id"] = []
     template[0]['components'][0]['curves'][0]["well_names"] = []
@@ -578,6 +594,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       template[0]['components'][0]['curves'][0]["curve_names"].push(curve["curve_type"])
       template[0]['components'][0]['curves'][0]["curve_colors"].push(curve["line_color"])
       template[0]['components'][0]['curves'][0]["curve_stroke_dasharray"].push(curve["curve_stroke_dasharray"])
+      template[0]['components'][0]['curves'][0]["stroke_width"].push(curve["stroke_width"])
+      template[0]['components'][0]['curves'][0]["stroke_linecap"].push(curve["stroke_linecap"])
       template[0]['components'][0]['curves'][0]["fill"].push(curve["fill"])
       template[0]['components'][0]['curves'][0]["data_id"].push(curve["data_id"])
       template[0]['components'][0]['curves'][0]["well_names"].push(curve["well_name"])
@@ -587,7 +605,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       template[0]['components'][0]['curves'][0]["min_depth"].push(curve["min_depth"]) 
       template[0]['components'][0]['curves'][0]["null_value"].push(curve["null_value"]) 
       ////
-      let depth_array = module.exports.createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
+      let depth_array = createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
       let curve_array = curve["curve_values"]
       let curve_name = curve["curve_type"]
       let depth_curve_name = curve["depth_curve_name"]
@@ -1043,9 +1061,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", curve_colors[k])
-        .attr("stroke-width", 1.5)
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
+        .attr("stroke-width", template_curves["stroke_width"][k])
+        //.attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", template_curves["stroke_linecap"][k])
         .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
      }
@@ -1112,6 +1130,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                 .style("stroke-width", this_line["stroke_width"])
                 .style("stroke", this_line["color"])
                 .style("stroke-dasharray", this_line["stroke-dasharray"])
+                .style("stroke-linecap", this_line["stroke_linecap"])
                 .style("fill", "none");
 
             svg.append("text")
@@ -1136,7 +1155,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                 .attr("y", y(this_rectangle.depth_top))
                 .attr("width", this_rectangle.width)
                 .attr("height",this_rectangle.height)
-                .style("stroke-width", this_rectangle.stroke-width)
+                .style("stroke-width", this_rectangle.stroke_width)
+                .style("stroke-linecap", this_rectangle.stroke_linecap)
                 .style("stroke", "purple")
                 .style("fill", this_rectangle.fill)
                 .style("opacity", this_rectangle.opacity);
@@ -1215,11 +1235,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       downloadLink.click();
       document.body.removeChild(downloadLink);
   }
-
-
-
-  
-  
 }
 
 return module.exports});

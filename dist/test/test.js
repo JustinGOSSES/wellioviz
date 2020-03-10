@@ -47,6 +47,8 @@ input_sparse_style = [{
      ////// Plotting things but need to be next to curve data or will be too confusing.
      "line_color": "rgb(205,0,0,1)", /// Test for string, if string use. If not string "black"
      "curve_stroke_dasharray":"5,5",
+     "stroke_linecap":"butt",
+     "stroke_width":0.5,
      "fill":{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""},
      "data_ID":"",
      "max_depth": "1607.3", /// should be number, if not number or doens't exit then "autocalculate" 
@@ -66,6 +68,7 @@ input_sparse_style = [{
      "depth":1601.4, /// Should be Float or integer, attempt to convert to number if string. Otherwise skip this part entirely!
      "color":"blue", /// should be string, if not or doesn't exist use "black"
      "stroke_width":"3px", /// should be string, if not or doesn't exist use "1px"
+     "stroke_linecap":"butt",
      "stroke_style":"solid", /// should be string, if not or doesn't exist use "solid"
      "transparency":1.0 /// should be number between 0 and 1, if not or doesn't exist use 1.
     },
@@ -75,6 +78,7 @@ input_sparse_style = [{
      "depth":1602.4, /// Should be Float or integer, attempt to convert to number if string. Otherwise skip this part entirely!
      "color":"orange", /// should be string, if not or doesn't exist use "black"
      "stroke_width":"5px", /// should be string, if not or doesn't exist use "1px"
+     "stroke_linecap":"butt",
      "stroke_style":"solid", /// should be string, if not or doesn't exist use "solid"
      "transparency":0.5 /// should be number between 0 and 1, if not or doesn't exist use 1.
     }
@@ -86,7 +90,8 @@ input_sparse_style = [{
      "x_starting_upper_left_corner":0,
      "width":100, 
      "height":100,
-     "stroke-width":"2px",
+     "stroke_width":"2px",
+     "stroke_linecap":"butt",
      "fill":"red",
      "opacity":0.5,
      "label":"Core Example", // not built into plotting template yet
@@ -96,4 +101,4 @@ input_sparse_style = [{
    ]
  }]
 }]
-}]s
+}]
