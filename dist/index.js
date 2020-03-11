@@ -31,7 +31,7 @@ module.exports = {
    * Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults, 
    * such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
   */ 
- wellio:require("wellio"),
+//  wellio:require("wellio")
  d3:require("d3"),
 
 /**
@@ -208,18 +208,18 @@ help:function(){
   ///////////////////////////////
 
   /////// this require wellio!
-  fileToJSON:function (afile){
-    return module.exports.wellio.las2json(afile)
-  },
+  // fileToJSON:function (afile){
+  //   return module.exports.wellio.las2json(afile)
+  // },
   /////////
-  turnFilesIntoTextIntoWellioJSON:function (files_array){
-    //// For each well log file, turn into text, then convert text into wellio style JSON using wellio.js
-    let logs_in_json = []
-    for (let i = 0; i < files_array.length; i++) {
-      logs_in_json.push(module.exports.fileToJSON(files_array[i]))
-    }
-    return logs_in_json
-  },
+  // turnFilesIntoTextIntoWellioJSON:function (files_array){
+  //   //// For each well log file, turn into text, then convert text into wellio style JSON using wellio.js
+  //   let logs_in_json = []
+  //   for (let i = 0; i < files_array.length; i++) {
+  //     logs_in_json.push(module.exports.fileToJSON(files_array[i]))
+  //   }
+  //   return logs_in_json
+  // },
 
 
   /** 
@@ -495,31 +495,31 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
  * @param {*} height 
  */
 putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
-  const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
-  let logs_in_json = module.exports.turnFilesIntoTextIntoWellioJSON(logs)
-  let new_templates = []
-  for (let i = 0; i < logs_in_json.length; i++) {
-    let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
-    let new_data =three_things2["well_log_curves_reformatted_for_d3"]
-    let example_template_n = JSON.parse(JSON.stringify(example_template))
-    example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
-    example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
-    example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
-    example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
-    example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
-    example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
-    example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
-    let svg_holder =module.exports.d3.select("#"+div_id).append("div")
-    svg_holder.style("vertical-align","middle")
-      .attr("id",div_id+"svg_holder"+i)
-      .style("display","inline-block")
-    example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
-    example_template_n[0]["curve_box"]["width"] = width
-    example_template_n[0]["curve_box"]["height"] = height
-    new_templates.push(example_template_n)
-    module.exports.curveBox(example_template_n)
-  }
-  return new_templates
+  // const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
+  // let logs_in_json = module.exports.turnFilesIntoTextIntoWellioJSON(logs)
+  // let new_templates = []
+  // for (let i = 0; i < logs_in_json.length; i++) {
+  //   let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
+  //   let new_data =three_things2["well_log_curves_reformatted_for_d3"]
+  //   let example_template_n = JSON.parse(JSON.stringify(example_template))
+  //   example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
+  //   example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
+  //   example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
+  //   example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
+  //   example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
+  //   example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
+  //   example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
+  //   let svg_holder =module.exports.d3.select("#"+div_id).append("div")
+  //   svg_holder.style("vertical-align","middle")
+  //     .attr("id",div_id+"svg_holder"+i)
+  //     .style("display","inline-block")
+  //   example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
+  //   example_template_n[0]["curve_box"]["width"] = width
+  //   example_template_n[0]["curve_box"]["height"] = height
+  //   new_templates.push(example_template_n)
+  //   module.exports.curveBox(example_template_n)
+  // }
+  // return new_templates
 },
 
 /**
