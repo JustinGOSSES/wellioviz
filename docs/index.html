@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>wellioviz 0.0.10 | Documentation</title>
+  <title>wellioviz 0.0.15 | Documentation</title>
   <meta name='description' content='Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>wellioviz</h3>
-          <div class='mb1'><code>0.0.10</code></div>
+          <div class='mb1'><code>0.0.15</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -134,9 +134,9 @@
               
                 
                 <li><a
-                  href='#wellio'
+                  href='#d3'
                   class="">
-                  wellio
+                  d3
                   
                 </a>
                 
@@ -164,16 +164,6 @@
               
                 
                 <li><a
-                  href='#getexampletemplate'
-                  class="">
-                  getExampleTemplate
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#getfakeincomingsparsedataexample'
                   class="">
                   getFakeIncomingSparseDataExample
@@ -187,6 +177,16 @@
                   href='#convertwelljsontoobj'
                   class="">
                   convertWellJSONToObj
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#convertwelljsontoobjv2'
+                  class="">
+                  convertWellJSONToObjV2
                   
                 </a>
                 
@@ -658,17 +658,23 @@
 <h2>How I'm Keeping Things In Sync During Development.</h2>
 <p>The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! </p>
 <p>The active notebook is noted in the README. </p>
-<p><i>I try to sync changes to the index.js file in this code repository after each work session.</i> </p>
-<p>Potential code to keep in sync is in several locations: </p>
+<h4>How I try develop this repository now...</h4>
+<ol>
+<li>Make changes to <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">an Observable notebook</a> that has all the code. These changes are usually for one, or  maybe two issues, on the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. </li>
+<li>Create a branch for these changes on the git repo. </li>
+<li>When I'm happy with the changes in the Observable notebook, I copy them to the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/dist/index.js">index.js file</a> in the git repository.</li>
+<li>Merge the forked branch back into master. </li>
+<li>Change version in the package.json file. Push that change.</li>
+<li>Run npm publish. </li>
+<li>Clear issues that are fixed due to the version bump.</li>
+</ol>
+<p>These means the code in certain <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"> Observable notebooks</a> where I'm actively working with the code might be ahead of the master branch in private mode, but I try to only publish (share the changes to the notebook publically) once I have pushed to the github repository.</p>
 <ul>
-<li>An Observable notebook</li>
-<li>This code repository, particularly in the index.js file in the dist directory. </li>
-<li>Documentation as found in the docs folder in this code repository.</li>
-<li>The demo page found in the docs folder in this code repository.</li>
+<li>The code in master branch will always be in sync with code on NPM.</li>
+<li>Index.js &#x26; Observable notebook are almost always kept in sync. When they aren't, I'll let people know and put it in the README.</li>
+<li>The docs are updated gradually. Sometimes there will be new or changing functions that aren't populated yet.</li>
+<li>The html demo page is not kept in sync and will only be updated occasionally. The Observable notebooks are better places to look for up-to-date demos. In particular, <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this</a> notebook, which pulls all its wellioviz code from NPM. You can change which version of wellioviz code is pulled from NPM by changing the cell towards the top that pulls in wellioviz for use.</li>
 </ul>
-<h4>Index.js &#x26; Observable notebook are almost always kept in sync. When they aren't, I'll let people know and put it in the README.</h4>
-<h4>The demo page is not kept in sync and will only be updated occasionally.</h4>
-<h4>The docs are updated gradually. Sometimes there will be new or changing functions that aren't populated yet.</h4>
 <h2>Ways to Contribute!</h2>
 <h3>Documentation</h3>
 <p>Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.</p>
@@ -1056,8 +1062,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='wellio'>
-      wellio
+    <h3 class='fl m0' id='d3'>
+      d3
     </h3>
     
     
@@ -1075,7 +1081,7 @@ whole LAS 2.0 formatted well log file to JSON and send that whole JSON along wit
 <p>Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults,
 such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
 
-    <div class='pre p1 fill-light mt0'>wellio</div>
+    <div class='pre p1 fill-light mt0'>d3</div>
   
   
 
@@ -1229,66 +1235,6 @@ such that the end-user only has to understand what they want to change about the
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='getexampletemplate'>
-      getExampleTemplate
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>getExampleTemplate is a function that provides an example template for what to supply to the curveBox function further down.</p>
-
-    <div class='pre p1 fill-light mt0'>getExampleTemplate(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
-        returns an array that contains a single object that is the template for what will be given to the curveBox function for creating the SVG.
-EXAMPLE: = 
-[
-!!!!!!!!! THIS IS OUT OF DATE SO DELETING UNTIL IT STABLIZES !!!!!!!
-]
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
     <h3 class='fl m0' id='getfakeincomingsparsedataexample'>
       getFakeIncomingSparseDataExample
     </h3>
@@ -1297,7 +1243,8 @@ EXAMPLE: =
   </div>
   
 
-  <p>getFakeIncomingSparseDataExample is a function that takes nothing and returns a JSON of fake sparse incoming data. This is much less than the JSON wellio gives when it converts a LAS file into a JSON. This is one of the type examples of data input.
+  <p>getFakeIncomingSparseDataExample is a function that takes nothing and returns a JSON of fake sparse incoming data.
+This is much less than the JSON wellio gives when it converts a LAS file into a JSON. This is one of the type examples of data input. It is an alternative to wellio.js style JSON.
 It is used next by funtion _<strong><em> and </em></strong>.</p>
 
     <div class='pre p1 fill-light mt0'>getFakeIncomingSparseDataExample(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
@@ -1418,6 +1365,105 @@ and returns the data array of objects that D3.js likes for data used in plotting
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
         returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='convertwelljsontoobjv2'>
+      convertWellJSONToObjV2
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>convertWellJSONToObjV2 is a function that takes in sparse style JSON and other information and returns an array of that information properly packaged,
+array of curves names, and a string for UWI
+and returns the data array of objects that D3.js likes for data used in plotting.</p>
+
+    <div class='pre p1 fill-light mt0'>convertWellJSONToObjV2(depth: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, curve_data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, UWI: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, CurveNames: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>depth</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of strings that can be parsed into floats that represents the depth along the well log curves in a curvebox.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of arrays of strings that can be parsed into floats that represents each of the well log curves in a curvebox.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>UWI</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    A string for the well log UWI ID
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>CurveNames</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of strings that represent curvenames, one for each well log curve in curve_data
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        An array of objects properly formatted for next step ___.
 
       
     

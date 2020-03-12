@@ -179,7 +179,7 @@ help:function(){
    * @returns {array} returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
   */
   convertWellJSONToObj:function  (well_log_json,CurveNames,UWI,depth_curve_name){
-    let depth = well_log_json["CURVES"][depth_curve_name]
+  let depth = well_log_json["CURVES"][depth_curve_name]
   let curve_data = []
   for(let eachCr in CurveNames){
     curve_data.push(well_log_json["CURVES"][CurveNames[eachCr]])
@@ -198,6 +198,30 @@ help:function(){
   else{
   	console.log("depth didn't match curve length")
     array_of_obj.push("depth didn't match curve length")
+  }
+  return array_of_obj
+},
+/**
+ * convertWellJSONToObjV2 is a function that takes in sparse style JSON and other information and returns an array of that information properly packaged, 
+ * array of curves names, and a string for UWI 
+ * and returns the data array of objects that D3.js likes for data used in plotting.
+ * @param {array} depth An array of strings that can be parsed into floats that represents the depth along the well log curves in a curvebox.
+ * @param {array} curve_data An array of arrays of strings that can be parsed into floats that represents each of the well log curves in a curvebox.
+ * @param {string} UWI A string for the well log UWI ID
+ * @param {array} CurveNames An array of strings that represent curvenames, one for each well log curve in curve_data
+ * @returns {array} An array of objects properly formatted for next step ___.
+ */
+convertWellJSONToObjV2: function (depth, curve_data, UWI, CurveNames) {
+  depth = depth[0];
+  array_of_obj = []
+  for (eachPt in depth) {
+    obj = {}
+    obj["UWI"] = UWI
+    for (i in CurveNames) {
+      obj[CurveNames[i]] = parseFloat(curve_data[CurveNames[i]][eachPt])
+      obj["DEPTH"] = parseFloat(depth[eachPt])
+    }
+    array_of_obj.push(obj)
   }
   return array_of_obj
 },
