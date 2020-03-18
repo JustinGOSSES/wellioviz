@@ -34,7 +34,7 @@ The further one gets through the steps, the more there is one way to do things a
 
 
 ### Core Organization in Abstract Terms:
-- Central point of organizatin for API is curvebox. 
+- Central point of organization for API is curvebox.
 - Each curvebox is built from JSON template. The JSON includes information for what is plotted and how it is plotted. This will supply data, text, and styling choices for each curve box. Instead of calling d3.js code directly, inputs will be supplied via the template. 
 - Organization of input information is: 
     - CurveBox-wide information
@@ -45,7 +45,7 @@ The further one gets through the steps, the more there is one way to do things a
     1. default values to be used most of the time and new values to be easiely substituted via template.key = something calls. 
     2. Possible supplying of the JSON from not just JavaScript but other languages like Python. A similar organization is followed with Altair/Vega as seen in <a href="https://eitanlees.github.io/altair-stack/">this blog post</a>. 
 - There are multiple options for combining curveboxes. This will require the JavaScript code to generate not just SVGs, but also divs that are appended to divs created by other code. 
-    - At this time, it looks like the most flexible will be to intiate a html div with an given ID, then append SVGs to that div. 
+    - At this time, it looks like the most flexible will be to initiate a html div with an given ID, then append SVGs to that div.
     - Each curvebox is created and appended separately as a separate div. 
     - Inside this main curvebox div, header information and curves within curvebox are optionally separate divs or a single SVG. 
         - The former enables scrolling of the curves while still seeing the header. The later enable saving the curvebox as an actual SVG file.
