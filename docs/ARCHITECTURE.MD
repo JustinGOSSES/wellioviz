@@ -3,23 +3,34 @@
 
 ### Different Data Inputs
 
-      This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.
+This code is written with the assumption that different users will want to
+bring in well log data in different formats. Code will need to transform that
+data into an established template format.
 
-      Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. This is referred to elsewhere in the code and documentation as the sparse incoming data approach.
-      
-      Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.
-      
-      Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt for that purpose as the plotting function takes a standard JSON. End users should be able to provide their own functions to reformat their data & style choices into the template that is fed into the curveBox function.
-      
-      #### Code Organization:
-      Code is organized into 4 groups of functions: 
-        
-      <b>Loading, Transformation, Packaging, & Plotting.</b> 
-        
-      The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
-      - In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
-      - Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
-      - In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
+Some users will want to only send to the JavaScript the data they want to plot.
+They might want this to minimize the amount of data that has to be sent from
+backend server to the client's front-end website. This is referred to elsewhere
+in the code and documentation as the sparse incoming data approach.
+
+Others might use wellio.js to convert a whole LAS 2.0 formatted well log file
+to JSON on the front-end. They would then send that whole JSON along with
+instructions with how to plot some portion of it to wellioviz.
+
+Still others might want to bring in data in a format I don't know of. Ideally,
+it should be easy to adapt for that purpose as the plotting function takes a
+standard JSON. End users should be able to provide their own functions to
+reformat their data & style choices into the template that is fed into the
+curveBox function.
+
+#### Code Organization:
+Code is organized into 4 groups of functions: 
+  
+<b>Loading, Transformation, Packaging, & Plotting.</b> 
+  
+The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
+- In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
+- Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
+- In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
 
 
 ### Core Organization in Abstract Terms:
