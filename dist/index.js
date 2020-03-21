@@ -1036,6 +1036,20 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("stroke",gridlines_color)
           .style("stroke-width",gridlines_stroke_width) 
     }
+//   //// This will help save the x axis function for first curve if there are more than one curve 
+//   /// and they are at different scales. We need this in order to use the 'between' method of fill!
+//   let x_for_k_is_0 
+//   //// This will help save the x axis function for second curve if there are more than one curve 
+//   /// and they are at different scales. We need this in order to use the 'between' method of fill!
+//   let x_for_k_is_1
+//   //// This will help save the x axis function for third curve if there are more than one curve 
+//   /// and they are at different scales. We need this in order to use the 'between' method of fill!
+//   let x_for_k_is_2
+//   //// This will help save the x axis function for fourth curve if there are more than one curve 
+//   /// and they are at different scales. We need this in order to use the 'between' method of fill!
+//   let x_for_k_is_3
+  
+  let x_functions_for_each_curvename = {} //// populate with {"curvename":curvename,"x_func":func}
   
   //////////////  Building curves within curvebox =>////////////// 
   for (let k = 0; k < curve_names.length; k++) {
@@ -1061,6 +1075,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if(k==0){
         x_func == x
     }
+    //// This creates an object to hold multiple x axis scale functions 
+    //// that will be used if 'between' style fill is selected.
+    x_functions_for_each_curvename[curve_names[k]] = x  
+                     
     //////////////  Header text, two way depending on  =>////////////// 
     if (header_sep_svg_or_not == "yes"){
       let distance_from_top = (1+(k*2.7)).toString()+"em"
@@ -1086,7 +1104,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("fill", "none")
         .attr("stroke", curve_colors[k])
         .attr("stroke-width", template_curves["stroke_width"][k])
-        //.attr("stroke-linejoin", "round")
         .attr("stroke-linecap", template_curves["stroke_linecap"][k])
         .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
@@ -1125,10 +1142,15 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
               }
               if(template_curves["fill"][i]["fill_direction"] == "between"){
                   let between_2_curve = template_curves["fill"][i]["curve2"] 
+                  //// for through x_functions_for_each_curvename object and find the key that
+                  //// matches between_2_curve which should be a curvename
+                  //// get the x function for the second curve and the curve that is curvenames[k]
+                  let second_curve_x_func = x_functions_for_each_curvename[between_2_curve]
+                  let first_curve_x_func = x_functions_for_each_curvename[curve_name1] 
                   area1
-                    .x1(d => x(d[curve_name1]))
-                    .x0(d => x(d[between_2_curve]))
-                      .defined(d => ((d[curve_name1])>threshold))
+                    .x1(d => first_curve_x_func(d[curve_name1]))
+                    .x0(d => second_curve_x_func(d[between_2_curve]))
+                      // .defined(d => ((d[curve_name1])<=d[between_2_curve]))
                     .y(d => y(d[depth_curve_name]));
               }
               svg.append("path")      
@@ -1196,6 +1218,11 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       catch{
         console.log("could not do rectangle in curveBox function for some reason")
       }
+    /////////////// tool tip
+   
+  
+  
+
     //////////////  Calling node. Only returning svg node for saving single SVG file purposes =>////////////// 
     svg_holder.node()
     svg_header.node()
