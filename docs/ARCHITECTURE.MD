@@ -1,29 +1,40 @@
 ### Basic Sketch
-<a href="images/wellioviz_architecture.png"><img src="/images/wellioviz_architecture.png" style="max-width:800px;"></a>
+<a href="/images/wellioviz_architecture.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/wellioviz_architecture.png" style="max-width:800px;"></a>
 
 ### Different Data Inputs
 
-      This code is written with the assumption that different users will want to bring in well log data in different formats. Code will need to transform that data into an established template format.
+This code is written with the assumption that different users will want to
+bring in well log data in different formats. Code will need to transform that
+data into an established template format.
 
-      Some users will want to only send to the JavaScript the data they want to plot. They might want this to minimize the amount of data that has to be sent from backend server to the client's front-end website. This is referred to elsewhere in the code and documentation as the sparse incoming data approach.
-      
-      Others might use wellio.js to convert a whole LAS 2.0 formatted well log file to JSON on the front-end. They would then send that whole JSON along with instructions with how to plot some portion of it to wellioviz.
-      
-      Still others might want to bring in data in a format I don't know of. Ideally, it should be easy to adapt for that purpose as the plotting function takes a standard JSON. End users should be able to provide their own functions to reformat their data & style choices into the template that is fed into the curveBox function.
-      
-      #### Code Organization:
-      Code is organized into 4 groups of functions: 
-        
-      <b>Loading, Transformation, Packaging, & Plotting.</b> 
-        
-      The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
-      - In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
-      - Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
-      - In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
+Some users will want to only send to the JavaScript the data they want to plot.
+They might want this to minimize the amount of data that has to be sent from
+backend server to the client's front-end website. This is referred to elsewhere
+in the code and documentation as the sparse incoming data approach.
+
+Others might use wellio.js to convert a whole LAS 2.0 formatted well log file
+to JSON on the front-end. They would then send that whole JSON along with
+instructions with how to plot some portion of it to wellioviz.
+
+Still others might want to bring in data in a format I don't know of. Ideally,
+it should be easy to adapt for that purpose as the plotting function takes a
+standard JSON. End users should be able to provide their own functions to
+reformat their data & style choices into the template that is fed into the
+curveBox function.
+
+#### Code Organization:
+Code is organized into 4 groups of functions: 
+  
+<b>Loading, Transformation, Packaging, & Plotting.</b> 
+  
+The further one gets through the steps, the more there is one way to do things as opposed to multiple ways. 
+- In the loading & transformation steps, different functions will exist as incoming data is formatted in different ways initially.
+- Different functions will execute things differently in step 3 depending mostly on how things are being plotted, and no longer on the data format.
+- In the fourth step, where plotting occurs, everything uses the same function, CurveBox, and potentially additional functions if more than a single well bore is shown.
 
 
 ### Core Organization in Abstract Terms:
-- Central point of organizatin for API is curvebox. 
+- Central point of organization for API is curvebox.
 - Each curvebox is built from JSON template. The JSON includes information for what is plotted and how it is plotted. This will supply data, text, and styling choices for each curve box. Instead of calling d3.js code directly, inputs will be supplied via the template. 
 - Organization of input information is: 
     - CurveBox-wide information
@@ -34,7 +45,7 @@
     1. default values to be used most of the time and new values to be easiely substituted via template.key = something calls. 
     2. Possible supplying of the JSON from not just JavaScript but other languages like Python. A similar organization is followed with Altair/Vega as seen in <a href="https://eitanlees.github.io/altair-stack/">this blog post</a>. 
 - There are multiple options for combining curveboxes. This will require the JavaScript code to generate not just SVGs, but also divs that are appended to divs created by other code. 
-    - At this time, it looks like the most flexible will be to intiate a html div with an given ID, then append SVGs to that div. 
+    - At this time, it looks like the most flexible will be to initiate a html div with an given ID, then append SVGs to that div.
     - Each curvebox is created and appended separately as a separate div. 
     - Inside this main curvebox div, header information and curves within curvebox are optionally separate divs or a single SVG. 
         - The former enables scrolling of the curves while still seeing the header. The later enable saving the curvebox as an actual SVG file.
@@ -44,7 +55,7 @@
     - 3. For single curve multiple wells, an array of curveNames acceptable in order or preference, multiple wellio JSON datas objects is all that is required at minimum. 
 
 ### Where to Make Changes After A Visualization is Already Plotted Once
-<a href="images/wellioviz_architecture_data_change.png"><img src="/images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a>
+<a href="images/wellioviz_architecture_data_change.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a>
 
 
 ### Visualization Organization
@@ -53,8 +64,8 @@
 - CurveboxHolder aka a Cross-section: Made up of multiple curveboxes. Each curvebox can represent a different well or different curves (one per box) from the same well. Typically no plotting between curveboxes but there may be for tops in cross-sections. 
 
 #### Organization of CurveBoxes & Cross-sections
-<a href="images/curve_box_org.png"><img src="/images/curve_box_org.png" style="max-width:800px;"></a>
-<a href="images/cross_section_org.png"><img src="/images/cross_section_org.png" style="max-width:800px;"></a>
+<a href="images/curve_box_org.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/curve_box_org.png" style="max-width:800px;"></a>
+<a href="images/cross_section_org.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/cross_section_org.png" style="max-width:800px;"></a>
 
 
 
