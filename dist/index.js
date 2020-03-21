@@ -629,7 +629,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       template[0]['components'][0]['curves'][0]["min_depth"].push(curve["min_depth"]) 
       template[0]['components'][0]['curves'][0]["null_value"].push(curve["null_value"]) 
       ////
-      let depth_array = createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
+      let depth_array = module.exports.createDepthArray(curve["min_depth"],curve["max_depth"],curve["step"])
       let curve_array = curve["curve_values"]
       let curve_name = curve["curve_type"]
       let depth_curve_name = curve["depth_curve_name"]
