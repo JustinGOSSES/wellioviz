@@ -1,5 +1,5 @@
 ### Basic Sketch
-<a href="images/wellioviz_architecture.png"><img src="/images/wellioviz_architecture.png" style="max-width:800px;"></a>
+<a href="/images/wellioviz_architecture.png"><img src="/images/wellioviz_architecture.png" style="max-width:800px;"></a>
 
 ### Different Data Inputs
 
