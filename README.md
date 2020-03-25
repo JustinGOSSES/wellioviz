@@ -4,7 +4,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 
 [![NPM](https://nodei.co/npm/wellioviz.png?compact=true)](https://npmjs.org/package/wellioviz)
 
-<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="docs/images/well_log_screenshot.png"></a>
+<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="docs/images/well_log_screenshot_new.png"></a>
 
 ## IT IS IN PROGRESS.....
 
