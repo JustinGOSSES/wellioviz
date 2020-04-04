@@ -29,7 +29,12 @@ input_sparse_style = [{
     "gridlines":"yes",
     "gridlines_color":'#D3D3D3',
     "gridlines_stroke_width":0.20,
-    "grouped_or_independent_x_scales":"independent"
+    "grouped_or_independent_x_scales":"independent",
+    //// variables for how to draw mouseover of hover box
+    "mouseover_yes_or_no":"yes", //// "yes" or "no"
+    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
+    "mouseover_curvename":"default", //// default is first curve
+    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
     
 },
  "components":[{

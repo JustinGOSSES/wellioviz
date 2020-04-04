@@ -88,7 +88,12 @@ help:function(){
       "gridlines":"yes",
       "gridlines_color":'#D3D3D3',
       "gridlines_stroke_width":0.20,
-      "grouped_or_independent_x_scales":"independent"
+      "grouped_or_independent_x_scales":"independent",
+      //// variables for how to draw mouseover of hover box
+      "mouseover_yes_or_no":"yes", //// "yes" or "no"
+      "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
+      "mouseover_curvename":"default", //// default is first curve
+      "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
       
   },
    "components":[{
@@ -330,7 +335,12 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "gridlines":"yes",
     "gridlines_color":'#D3D3D3',
     "gridlines_stroke_width":0.20,
-    "grouped_or_independent_x_scales":"independent"
+    "grouped_or_independent_x_scales":"independent",
+    //// variables for how to draw mouseover of hover box
+    "mouseover_yes_or_no":"yes", //// "yes" or "no"
+    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
+    "mouseover_curvename":"default", //// default is first curve
+    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
 },
  "components":[{
    "curves":[
@@ -414,7 +424,12 @@ curveBoxTemplateExamples: function (string_of_either__help_example_definitions_m
     "gridlines":"yes or no as strings. Default is 'yes'",
     "gridlines_color":"Can be gray or any color in hex or rgb format. Default is ''#D3D3D3'",
     "gridlines_stroke_width":"thickness of the line. Default is 0.20",
-    "grouped_or_independent_x_scales":"independent or grouped as exceptable answers as strings. When 'independent' the min and max value of each curve in a curvebox is used for x scale unless explicitly given for that curve. When 'grouped' is given, the max and min of all curves is calculated and used to create the x axis scale."
+    "grouped_or_independent_x_scales":"independent or grouped as exceptable answers as strings. When 'independent' the min and max value of each curve in a curvebox is used for x scale unless explicitly given for that curve. When 'grouped' is given, the max and min of all curves is calculated and used to create the x axis scale.",
+    //// variables for how to draw mouseover of hover box
+    "mouseover_yes_or_no":"yes", //// "yes" or "no"
+    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
+    "mouseover_curvename":"default", //// default is first curve
+    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
 },
  "components":[{
    "curves":[
@@ -708,7 +723,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
     // default values might be defined here for cases where they are accidentally not defined
-
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
@@ -732,6 +746,11 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let gridlines = template_overall["gridlines"]
     let gridlines_color = template_overall["gridlines_color"]
     let gridlines_stroke_width = template_overall["gridlines_stroke_width"]
+    //// variables for how to draw mouseover of hover box
+    let mouseover_yes_or_no = template_overall["mouseover_yes_or_no"]
+    let mouseover_depth_or_depth_and_curve = template_overall["mouseover_depth_or_depth_and_curve"]
+    let mouseover_curvename = template_overall["mouseover_curvename"] //// default is first curve
+    let mouseover_color_or_default_which_is_curve_color = template_overall["mouseover_color_or_default_which_is_curve_color"]
     
     let secondary_depth_exist = "no" // THIS IS NOT YET EXISTING IN PLOTTING INPUT JSON SO HARDCODING FOR NOW
     
@@ -820,7 +839,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     else{depth_max = template_curves["max_depth"]}
 
     // let depth_min = template_curves["min_depth"][0]
-    //  let depth_max = template_curves["max_depth"][0]
+    // let depth_max = template_curves["max_depth"][0]
   
     /////////  <=== NEED TO FIX DEPTHS. THEY NEED TO BE CALCULATED PROPERLY !!!!! //////////////////////////
 
@@ -995,7 +1014,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .text(y_axis_text)
           .style("fill","#2b2929")
   
-  
   ////
     // svg.append("g")
     //     .call(yAxis2)
@@ -1009,8 +1027,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //       .style("fill","#2b2929")
     ////
     
-    
-  
     //svg.append("g")
     //// Code that assumes multiple curves are plotted in same curvebox  
     let distance_from_top = -15
@@ -1022,7 +1038,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("font-size", template_overall["title"]["title_font_size"])  
           .text(title);
      }
-
   
   if(gridlines == "yes"){
       var gridlines_obj = d3.axisTop()
@@ -1036,6 +1051,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("stroke",gridlines_color)
           .style("stroke-width",gridlines_stroke_width) 
     }
+  
+
 //   //// This will help save the x axis function for first curve if there are more than one curve 
 //   /// and they are at different scales. We need this in order to use the 'between' method of fill!
 //   let x_for_k_is_0 
@@ -1108,6 +1125,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         .attr("stroke-dasharray",curve_stroke_dasharray[k])
         .attr("d", another_line);
      }
+
+     
     //////////////   define the area filled under the curve =>////////////// 
     
       for (let i = 0; i < template_curves["fill"].length; i++) {
@@ -1160,10 +1179,106 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                     .attr("stroke", "none")
                     .attr("fill",fill_color)
                     .attr("fill-opacity",0.8);
-              }
-        }
+          }
+      }
     }
   
+  ////////////////      TOOLTIP Part 1       ///////////////////
+  if(mouseover_yes_or_no == "no"){
+    console.log("mouseover_yes_or_no = 'no' so no mouseover or hover of depth or curve value will be shown")
+  }
+  else{
+    //// statements to make sure the mouseover_curvename is a present curve and if not use first curve
+    if(mouseover_curvename == "default"){mouseover_curvename = curve_names[0]}
+    else if (curve_names.includes(mouseover_curvename)){mouseover_curvename = mouseover_curvename}
+    else{mouseover_curvename = curve_names[0]}
+    
+    //// statement to handle color of curve text and circle on hover
+    let curve_on_mouseover_color = curve_colors[0]
+    if(mouseover_color_or_default_which_is_curve_color != "default"){
+      curve_on_mouseover_color = mouseover_color_or_default_which_is_curve_color
+    }
+    
+    //// appends start of mouseover rectange used for showing hover content
+    var focus = svg.append("g")                                
+      .style("display", "none"); 
+    
+    var bisectDate = d3.bisector(function(d) { return d[depth_curve_name]; }).left; // **
+  
+    //// function called to change hover style & contents when mouseover rectangle appended to svg svg
+    function mousemove() {                                 
+        var y0 = y.invert(d3.mouse(this)[1]),              
+            i = bisectDate(data, y0, 1),                
+            d0 = data[i - 1],                              
+            d1 = data[i],                                
+            d = y0 - d0[depth_curve_name] > d1[depth_curve_name] - y0 ? d1 : d0;    
+      
+        //// depth value
+        focus.select("text.y2")
+            .attr("transform",
+                  "translate(" + x(d[mouseover_curvename]) + "," +
+                                 y(d[depth_curve_name]) + ")")
+            .text(d[depth_curve_name]);
+        
+        //// curve value
+        focus.select("text.y4")
+            .attr("transform",
+                  "translate(" + x(d[mouseover_curvename]) + "," +
+                                 y(d[depth_curve_name]) + ")")
+            .text(d[curve_names[0]]);
+
+        focus.select(".x")
+            .attr("transform",
+                  "translate(" + x(d[mouseover_curvename]) + "," +
+                                 y(d[depth_curve_name]) + ")")
+                       .attr("y2", height - y(d.close));
+        //// circle y class part 2
+        focus.select(".y")
+            .attr("transform",
+                  "translate(" + x(d[mouseover_curvename]) + "," +
+                                 y(d[depth_curve_name]) + ")")
+            .text(d[mouseover_curvename]);
+    }             
+  
+    // append the circle at the intersection         
+    focus.append("circle")                                
+        .attr("class", "y")                               
+        .style("fill", "none")                             
+        .style("stroke", curve_on_mouseover_color)                          
+        .attr("r", 3);       
+
+     //// depth value on hover
+     if(mouseover_depth_or_depth_and_curve == "depth" || mouseover_depth_or_depth_and_curve == "depth_and_curve"){
+       focus.append("text")
+            .attr("class", "y2")
+            .attr("dx", 6)
+            .attr("dy", "-.3em")
+            .style("font-size","0.55em")
+     }
+     
+     //// curve value on hover
+     if(mouseover_depth_or_depth_and_curve == "curve" || mouseover_depth_or_depth_and_curve == "depth_and_curve"){
+       focus.append("text")
+            .attr("class", "y4")
+            .attr("dx", 1)
+            .attr("dy", "0.5em")
+            .style("font-size","0.55em")
+            .style("fill", "black") 
+            .style("stroke", curve_on_mouseover_color) 
+            .style("stroke-width", "0.5px");
+     }
+ 
+     // append the rectangle to capture mouse               // **********
+     svg.append("rect")                                     // **********
+            .attr("width", width)                              // **********
+            .attr("height", height)                            // **********
+            .style("fill", "none")                             // **********
+            .style("pointer-events", "all")                    // **********
+            .on("mouseover", function() { focus.style("display", null); })
+            .on("mouseout", function() { focus.style("display", "none"); })
+            .on("mousemove", mousemove);                       // **********
+  }
+        
     //////////////  Horizontal Lines AKA tops =>////////////// 
     try {
         for (let i = 0; i < template_lines.length; i++) {
@@ -1193,7 +1308,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
   
       //////////////  Rectangles for things like cores & sample locations =>////////////// 
       try {
-        
         for (let i = 0; i < template_rectangles.length; i++) {
            let this_rectangle = template_rectangles[i]
             svg.append('rect')
@@ -1218,10 +1332,6 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       catch{
         console.log("could not do rectangle in curveBox function for some reason")
       }
-    /////////////// tool tip
-   
-  
-  
 
     //////////////  Calling node. Only returning svg node for saving single SVG file purposes =>////////////// 
     svg_holder.node()
