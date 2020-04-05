@@ -522,7 +522,7 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
 
 /**
  * THE FUNCTION putArrayOfLogsIntoSection NEEDS DOCUMENTATION!
- * @param {*} logs 
+ * @param {*} logs_in_json 
  * @param {*} div_id 
  * @param {*} example_template 
  * @param {*} curve_name 
@@ -533,32 +533,32 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
  * @param {*} width 
  * @param {*} height 
  */
-putArrayOfLogsIntoSection: function (logs,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
-  // const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
+putArrayOfLogsIntoSection: function (logs_in_json,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
+  const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
   // let logs_in_json = module.exports.turnFilesIntoTextIntoWellioJSON(logs)
-  // let new_templates = []
-  // for (let i = 0; i < logs_in_json.length; i++) {
-  //   let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
-  //   let new_data =three_things2["well_log_curves_reformatted_for_d3"]
-  //   let example_template_n = JSON.parse(JSON.stringify(example_template))
-  //   example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
-  //   example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
-  //   example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
-  //   example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
-  //   example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
-  //   example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
-  //   example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
-  //   let svg_holder =module.exports.d3.select("#"+div_id).append("div")
-  //   svg_holder.style("vertical-align","middle")
-  //     .attr("id",div_id+"svg_holder"+i)
-  //     .style("display","inline-block")
-  //   example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
-  //   example_template_n[0]["curve_box"]["width"] = width
-  //   example_template_n[0]["curve_box"]["height"] = height
-  //   new_templates.push(example_template_n)
-  //   module.exports.curveBox(example_template_n)
-  // }
-  // return new_templates
+  let new_templates = []
+  for (let i = 0; i < logs_in_json.length; i++) {
+    let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
+    let new_data =three_things2["well_log_curves_reformatted_for_d3"]
+    let example_template_n = JSON.parse(JSON.stringify(example_template))
+    example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
+    example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
+    example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
+    example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
+    example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
+    example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
+    example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
+    let svg_holder =module.exports.d3.select("#"+div_id).append("div")
+    svg_holder.style("vertical-align","middle")
+      .attr("id",div_id+"svg_holder"+i)
+      .style("display","inline-block")
+    example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
+    example_template_n[0]["curve_box"]["width"] = width
+    example_template_n[0]["curve_box"]["height"] = height
+    new_templates.push(example_template_n)
+    module.exports.curveBox(example_template_n)
+  }
+  return new_templates
 },
 
 /**
