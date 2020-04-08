@@ -723,6 +723,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //// These parts of the function establish variables from the config JSON in shorter variable names
     //// If they are necessary for plotting & there is a chance the template might not include them, then default values might be defined here for cases where they are accidentally not defined
     // default values might be defined here for cases where they are accidentally not defined
+    
     let template_overall = template_for_plotting[0]["curve_box"]
     let template_components = template_for_plotting[0]["components"]
     let template_curves = template_components[0]["curves"][0]
@@ -1229,17 +1230,39 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
 
         focus.select(".x")
             .attr("transform",
-                  "translate(" + x(d[mouseover_curvename]) + "," +
-                                 y(d[depth_curve_name]) + ")")
-                       .attr("y2", height - y(d.close));
+                  "translate(" + x(d[mouseover_curvename]) + "," + 0+
+                                  ")")
+                       .attr("y2", height);
         //// circle y class part 2
         focus.select(".y")
             .attr("transform",
                   "translate(" + x(d[mouseover_curvename]) + "," +
                                  y(d[depth_curve_name]) + ")")
             .text(d[mouseover_curvename]);
+      focus.select(".yl")
+            .attr("transform",
+                  "translate(" + 0 + "," +
+                                 y(d[depth_curve_name]) + ")")
+            .text(d[mouseover_curvename]);
     }             
-  
+    // append the x line
+    focus.append("line")
+        .attr("class", "x")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("y1", 0)
+        .attr("y2", width);
+
+    // append the y line
+    focus.append("line")
+        .attr("class", "yl")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("x1", 0)
+        .attr("x2", height);
+    
     // append the circle at the intersection         
     focus.append("circle")                                
         .attr("class", "y")                               
@@ -1356,7 +1379,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         let curvebox_holder = d3.select("#"+div_id).append("div")
         curvebox_holder.style("vertical-align","middle")
           .attr("id",div_id+"curvebox_holder"+i)
-        //// to control view of plots on site, user can show-hide by triggering action here
+        //// to control view of plots on site, user can show-hide by triggering action here. However, if show_all = false then none will show, so developer will need to change CSS with another function one by one!
         if(show_all){
           curvebox_holder.style("display","inline-block")
         }
