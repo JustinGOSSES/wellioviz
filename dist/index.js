@@ -1344,9 +1344,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     /**
      * This function is used to plot multiple curveboxes in a row. AKA makes a cross-section. It calls curveBox multiple times.
      * @param {string} div_id a string that represents the div ID that the multiple curveboxes will be appended to
-     * @param {Object} templates An array of CurveBox input templates
+     * @param {object} templates An array of CurveBox input templates
+     * @param {boolean} show_all is a boolean value that decides whether or not multiple plots are shown in a multiple log plot div. If show_all is false however, the developer must switch their CSS to be "inline-block" one at a time via some other means. If they don't,none will appear!
      */
-    multipleLogPlot:function(div_id,templates){
+    multipleLogPlot:function(div_id,templates,show_all=true){
       let d3 = module.exports.d3
       let noDIV = d3.select("#"+div_id).selectAll("div").remove()
       let noSVG = d3.select("#"+div_id).selectAll("svg").remove()
@@ -1355,12 +1356,17 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         let curvebox_holder = d3.select("#"+div_id).append("div")
         curvebox_holder.style("vertical-align","middle")
           .attr("id",div_id+"curvebox_holder"+i)
-          .style("display","inline-block")
-          
+        //// to control view of plots on site, user can show-hide by triggering action here
+        if(show_all){
+          curvebox_holder.style("display","inline-block")
+        }
+        else{
+          curvebox_holder.style("display","none")
+        }
         templates[i][0]["curve_box"]["div_id"] = div_id+"curvebox_holder"+i
         new_templates.push(templates[i])
         let template = templates[i]
-        let check = module.exports.curveBox(template)
+        let check = curveBox(template)
       }
       return new_templates
     },
