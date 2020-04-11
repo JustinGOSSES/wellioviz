@@ -1325,8 +1325,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
               .text(this_line["label"]);
         }
       }
-      catch{
-        console.log("could not do lines for tops in curveBox function")
+      catch (err){
+        console.log("could not do lines for tops in curveBox function, error: ",err)
       }
   
       //////////////  Rectangles for things like cores & sample locations =>////////////// 
@@ -1352,8 +1352,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
               .text(this_rectangle.label);
         }
       }
-      catch{
-        console.log("could not do rectangle in curveBox function for some reason")
+      catch (err){
+        console.log("could not do rectangle in curveBox function for some reason. error= ",err)
       }
 
     //////////////  Calling node. Only returning svg node for saving single SVG file purposes =>////////////// 
