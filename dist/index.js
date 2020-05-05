@@ -1389,7 +1389,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         templates[i][0]["curve_box"]["div_id"] = div_id+"curvebox_holder"+i
         new_templates.push(templates[i])
         let template = templates[i]
-        let check = curveBox(template)
+        let check = module.exports.curveBox(template)
       }
       return new_templates
     },
