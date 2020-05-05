@@ -982,7 +982,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
       }
              
     //////////////////// define y scale, aka the one for the depth  ////////////////////
-    let y = d3.scaleLinear().domain([depth_max, depth_min]).nice().range([height - margin.bottom,margin.top])
+    let y = d3.scaleLinear().domain([depth_max, depth_min]).range([height - margin.bottom,margin.top])
     //let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain").remove())
     let yAxis = g => g.attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
     let yAxis2 = g => g.attr("transform", `translate(${margin.left-35},0)`).call(d3.axisLeft(y)).call(g => g.select(".domain"))
