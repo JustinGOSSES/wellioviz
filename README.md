@@ -18,6 +18,9 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 - ###### Additionally, there is this similar demo that uses the most up to date code that has been pushed to NPM. 
 - Status: Code is pulled from NPM, so this reflects the latest code that has been published to NPM. This may lag slightly compared to the code on this github repository, but not by a lot. 
 - Link: <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm</a>
+- ##### Hello Wellioviz smallest unit demo
+- Status: Up to date.
+- Link: https://observablehq.com/@justingosses/hello-wellioviz
 
 
 #### 2. HTML demo as github pages page in this repository
