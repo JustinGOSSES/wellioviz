@@ -743,6 +743,7 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let height_components = template_overall["height"]
     let margin = template_overall["margin"]
     let header_sep_svg_or_not = template_overall["header_sep_svg_or_not"]
+	let header_complex = template_overall["header_complex"]
     let svg_header_height = template_overall["svg_header_height"]
     let gridlines = template_overall["gridlines"]
     let gridlines_color = template_overall["gridlines_color"]
@@ -771,6 +772,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     //////// NEED TO MAKE THIS FLAG IN INPUT PLOTTING JSON
     let flag_for_single_scale_or_independent_scales = template_overall["grouped_or_independent_x_scales"]
     let grouped_or_independent_x_scale = template_overall["grouped_or_independent_x_scales"]
+	
+	// crossection check
+	let is_depth_track = template_overall["is_depth_track"]
     
     
     //// The depth_curve_name needs to be the same for all curves plotted! 
@@ -799,6 +803,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     let div_id = template_overall["div_id"]
     if(template_overall["div_id"]){div_id = template_overall["div_id"]}
     else{return "there_was_no_div_id_in_the_template"}
+	
+	let well_id = template_overall["well_id"];
   
     d3.select("#"+div_id).selectAll("*").remove();
 
@@ -914,15 +920,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .attr("height",height_components+"px")
           .attr("class","component_outter")
           .style('display','flex')
+		  .style("height",height_components+"px")
           .style('position','relative')
           .style('box-sizing','border-box')
    
       const curveBox_sub_div = d3.select("#"+div_id+" div.component_outter").append("div")
       curveBox_sub_div
           .attr("class","component_inner")
-          .style('overflow-y',"auto")
           .style('position','absolute')
-          .style('max-height',height_components+"px")
       
       svg = d3.select("#"+div_id+" div.component_outter div.component_inner").append("svg")
     }
@@ -1004,7 +1009,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
        }
   
     let y_axis_text = depth_curve_name+" "+depth_units_string+" "+depth_type_string
-    svg.append("g")
+    
+	if(is_depth_track == "yes"){
+		
+		svg.append("g")
         .call(yAxis)
         .append("text")
           .attr("transform", "rotate(-90)")
@@ -1014,6 +1022,9 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
           .style("text-anchor", "end")
           .text(y_axis_text)
           .style("fill","#2b2929")
+		  
+	}
+	
   
   ////
     // svg.append("g")
@@ -1078,8 +1089,12 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
     if (curve_units[k]){curveUnit = curve_units[k]}   
     let min = mins[k]
     let max = maxes[k]
-    
-    let header_text_line = min.toFixed(1)+" - "+curve_names[k]+"  "+curveUnit+" - "+max.toFixed(1)
+	let header_text_line = "";
+    if(header_complex == "yes"){
+		header_text_line = min.toFixed(1)+" - "+curve_names[k]+"  "+curveUnit+" - "+max.toFixed(1);
+	} else {
+		header_text_line = curve_names[k]+"  "+curveUnit;
+	}
     let min_this = d3.min(data, function(d) { return +d[curve_names[k]]})
     let max_this = d3.max(data, function(d) { return +d[curve_names[k]]})
     let x = d3.scaleLinear().domain([min_this,max_this]).nice().range([margin.left, width - margin.right])
@@ -1099,20 +1114,91 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                      
     //////////////  Header text, two way depending on  =>////////////// 
     if (header_sep_svg_or_not == "yes"){
-      let distance_from_top = (1+(k*2.7)).toString()+"em"
+	  let d_cuts = (1+(k*2.7));
+      let distance_from_top = d_cuts.toString()+"em";
+	  
+	  if(k == 0){
+		  // svg_header.append("text")
+          // .attr("x", (margin.left+width)/2)          
+          // .attr("y", (d_cuts - 5)+"em")
+          // .attr("text-anchor", "middle")  
+          // .style("font-size", "11px") 
+          // //.style("text-decoration", "underline")  
+          // .style('fill',curve_colors[k])
+          // .text("Track# 1");
+	  }
+	  
       svg_header.append("text")
           .attr("x", (margin.left+width)/2)          
           .attr("y", 0 + distance_from_top)
           .attr("text-anchor", "middle")  
           .style("font-size", "11px") 
-          .style("text-decoration", "underline")  
+          //.style("text-decoration", "underline")  
           .style('fill',curve_colors[k])
           .text(header_text_line); 
-      let translate_string = "translate(0,"+(45-(30*k)).toString()+")"
-      xAxis_header = g => g.attr("transform", translate_string).call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/25).tickSizeOuter(0))
+		  
+	  if(header_complex == "yes"){
+		  
+		  let translate_string = "translate(0,"+(30+(30*k)).toString()+")";
+      xAxis_header = g => g.attr("transform", translate_string).call(d3.axisBottom(x).ticks((width-margin.left-margin.right)/75).tickSizeOuter(0)) ; //ticks (width-margin.left-margin.right)/25
       svg_header.append("g")
         .call(xAxis_header)
           .append("text")
+      
+	  } else {
+		  
+		let translate_string = "translate(0,"+(20+(30*k)).toString()+")"; // "translate(0,"+(45-(30*k)).toString()+")";
+		previous_translate_value = 15+(k*2.7) 
+		svg_header.append("line")
+		.attr("x1", 0+margin.left) 
+		.attr("y1", y(distance_from_top + 50))
+		.attr("x2", width-margin.right)
+		.attr("y2", y(distance_from_top + 50))
+		.attr("transform", translate_string)
+		.style("stroke-width", "1px")
+		.style("stroke", curve_colors[k])
+		.style("fill", "none");
+		
+		svg_header.append("line")
+		.attr("x1", 0+margin.left) 
+		.attr("y1", (20+(30*k)) - 8)
+		.attr("x2", 0+margin.left)
+		.attr("y2", 20+(30*k))
+		.style("stroke-width", "1px")
+		.style("stroke", curve_colors[k])
+		.style("fill", "none");
+		
+		svg_header.append("text")
+          .attr("x", 7+margin.left)          
+          .attr("y", distance_from_top)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "11px") 
+          //.style("text-decoration", "underline")  
+          .style('fill',curve_colors[k])
+          .text(Number(min_this).toFixed(1));
+		
+		
+		svg_header.append("line")
+		.attr("x1", width - margin.right) 
+		.attr("y1", (20+(30*k)) - 8)
+		.attr("x2", width - margin.right)
+		.attr("y2", 20+(30*k))
+		.style("stroke-width", "1px")
+		.style("stroke", curve_colors[k])
+		.style("fill", "none");
+		
+		svg_header.append("text")
+          .attr("x", width - margin.right - 15)          
+          .attr("y", distance_from_top)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "11px") 
+          //.style("text-decoration", "underline")  
+          .style('fill',curve_colors[k])
+          .text(Number(max_this).toFixed(1));
+		
+		  
+	  }
+      
       
     }
     let another_line = d3.line().x(d => x(d[curve_names[k]])).y(d => y(d[depth_curve_name]));
@@ -1219,14 +1305,14 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
             .attr("transform",
                   "translate(" + x(d[mouseover_curvename]) + "," +
                                  y(d[depth_curve_name]) + ")")
-            .text(d[depth_curve_name]);
+            .text( "Depth " + d[depth_curve_name]);
         
         //// curve value
         focus.select("text.y4")
             .attr("transform",
                   "translate(" + x(d[mouseover_curvename]) + "," +
                                  y(d[depth_curve_name]) + ")")
-            .text(d[curve_names[0]]);
+            .text("Value " + d[curve_names[0]]);
 
         focus.select(".x")
             .attr("transform",
@@ -1244,7 +1330,20 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
                   "translate(" + 0 + "," +
                                  y(d[depth_curve_name]) + ")")
             .text(d[mouseover_curvename]);
-    }             
+    }     
+
+//// function called to change hover style & contents when mouseover rectangle appended to svg svg
+    function mouseclick(ev) {  	
+        var y0 = y.invert(d3.mouse(this)[1]),              
+            i = bisectDate(data, y0, 1),                
+            d0 = data[i - 1],                              
+            d1 = data[i],                                
+            d = y0 - d0[depth_curve_name] > d1[depth_curve_name] - y0 ? d1 : d0;    
+			if(d && d[depth_curve_name]){
+				var event = new CustomEvent('addtop', { detail: {"depth":d[depth_curve_name],"well_id":well_id} });		
+				window.dispatchEvent(event);
+			}
+    } 	
     // append the x line
     focus.append("line")
         .attr("class", "x")
@@ -1276,7 +1375,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
             .attr("class", "y2")
             .attr("dx", 6)
             .attr("dy", "-.3em")
-            .style("font-size","0.55em")
+            .style("font-size","0.9em")
+			.style("text-shadow","rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) 1px 1px 0px");
      }
      
      //// curve value on hover
@@ -1285,9 +1385,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
             .attr("class", "y4")
             .attr("dx", 1)
             .attr("dy", "0.5em")
-            .style("font-size","0.55em")
+            .style("font-size","0.9em")
             .style("fill", "black") 
             .style("stroke", curve_on_mouseover_color) 
+			.style("text-shadow","rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) 1px 1px 0px")
             .style("stroke-width", "0.5px");
      }
  
@@ -1299,7 +1400,8 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
             .style("pointer-events", "all")                    // **********
             .on("mouseover", function() { focus.style("display", null); })
             .on("mouseout", function() { focus.style("display", "none"); })
-            .on("mousemove", mousemove);                       // **********
+            .on("mousemove", mousemove)    // **********
+			.on("click",mouseclick);
   }
         
     //////////////  Horizontal Lines AKA tops =>////////////// 
@@ -1307,21 +1409,27 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         for (let i = 0; i < template_lines.length; i++) {
            let this_line = template_lines[i]
             svg.append("line")
+				.attr("class", this_line["id"]) 
                 .attr("x1", 0+margin.left) 
                 .attr("y1", y(this_line["depth"]))
-                .attr("x2", width*0.75)
+                .attr("x2", width*0.95)
                 .attr("y2", y(this_line["depth"]))
+				.on("mouseover", function() { d3.selectAll("line." + this_line["id"]).attr("fill", "red") }) 
+				.on("mouseout", function() { d3.selectAll("line." + this_line["id"]).attr("fill", this_line["color"]) })
                 .style("stroke-width", this_line["stroke_width"])
                 .style("stroke", this_line["color"])
                 .style("stroke-dasharray", this_line["stroke-dasharray"])
                 .style("stroke-linecap", this_line["stroke_linecap"])
                 .style("fill", "none");
+			svg	
 
             svg.append("text")
-              .attr("x", width*0.75)             
-              .attr("y", y(this_line["depth"]))
+              .attr("x", width*0.35)             
+              .attr("y", y(this_line["depth"] - 15))
               .attr("text-anchor", "start")  
               .style("font-size", "12px")  
+			  .style("fill", "rgb(70, 130, 180)")
+			  .style("text-shadow","rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) 1px 1px 0px")
               .text(this_line["label"]);
         }
       }
@@ -1331,29 +1439,46 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
   
       //////////////  Rectangles for things like cores & sample locations =>////////////// 
       try {
+		let random = 0.25;
         for (let i = 0; i < template_rectangles.length; i++) {
            let this_rectangle = template_rectangles[i]
-            svg.append('rect')
-                .attr("x", 50+margin.left) 
-                .attr("y", y(this_rectangle.depth_top))
-                .attr("width", this_rectangle.width)
-                .attr("height",this_rectangle.height)
-                .style("stroke-width", this_rectangle.stroke_width)
+		   svg.append("line")
+			.attr("x1", width*random)  //RANDOM FROM LEFT TO RIGHT
+			.attr("y1", y(this_rectangle.depth_top)) // from depth
+			.attr("x2", width*random)  //RANDOM FROM LEFT TO RIGHT
+			.attr("y2", y(this_rectangle.depth_top + this_rectangle.height)) // to depth
+			.style("stroke-width", 40)
+			.style("stroke", "red")
+			.style("fill", "none")
                 .style("stroke-linecap", this_rectangle.stroke_linecap)
                 .style("stroke", "purple")
                 .style("fill", this_rectangle.fill)
                 .style("opacity", this_rectangle.opacity);
 
+
             svg.append("text")
-              .attr("x", width*0.75)             
+              .attr("x", width*random - 18)             
               .attr("y", y(this_rectangle.depth_top))
               .attr("text-anchor", "start")  
               .style("font-size", "12px")  
-              .text(this_rectangle.label);
+			  .style("fill", this_rectangle.fill)
+			  .style("text-shadow","rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) 1px 1px 0px")
+              .text(this_rectangle.label+"-"+this_rectangle.depth_top);
+			
+			svg.append("text")
+              .attr("x", width*random - 18)             
+              .attr("y", y(this_rectangle.depth_top + this_rectangle.height - 20))
+              .attr("text-anchor", "start")  
+              .style("font-size", "12px")  
+			  .style("fill", this_rectangle.fill)
+			  .style("text-shadow","rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) 1px 1px 0px")
+              .text("("+this_rectangle.depth_top +")");
+			  
+			random = random == 0.85 ? random = 0.25 : random = random + 0.30;
         }
       }
-      catch (err){
-        console.log("could not do rectangle in curveBox function for some reason. error= ",err)
+      catch{
+        console.log("could not do rectangle in curveBox function for some reason")
       }
 
     //////////////  Calling node. Only returning svg node for saving single SVG file purposes =>////////////// 
@@ -1379,11 +1504,10 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
         let curvebox_holder = d3.select("#"+div_id).append("div")
         curvebox_holder.style("vertical-align","middle")
           .attr("id",div_id+"curvebox_holder"+i)
-        //// to control view of plots on site, user can show-hide by triggering action here. However, if show_all = false then none will show, so developer will need to change CSS with another function one by one!
+        
         if(show_all){
           curvebox_holder.style("display","inline-block")
-        }
-        else{
+		} else {
           curvebox_holder.style("display","none")
         }
         templates[i][0]["curve_box"]["div_id"] = div_id+"curvebox_holder"+i
