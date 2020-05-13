@@ -1214,17 +1214,21 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
             d1 = data[i],                                
             d = y0 - d0[depth_curve_name] > d1[depth_curve_name] - y0 ? d1 : d0;    
       
+        //// fixed value along y axis
+        let fixed_x_value = width*0.8
+        
         //// depth value
         focus.select("text.y2")
             .attr("transform",
-                  "translate(" + x(d[mouseover_curvename]) + "," +
+                  // "translate(" + x(d[mouseover_curvename]) + "," +
+                  "translate(" +  fixed_x_value + "," +
                                  y(d[depth_curve_name]) + ")")
             .text(d[depth_curve_name]);
         
         //// curve value
         focus.select("text.y4")
             .attr("transform",
-                  "translate(" + x(d[mouseover_curvename]) + "," +
+                    "translate(" + fixed_x_value + "," +
                                  y(d[depth_curve_name]) + ")")
             .text(d[curve_names[0]]);
 
