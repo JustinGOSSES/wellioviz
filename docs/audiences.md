@@ -1,4 +1,13 @@
 ### Who:
+- websites that want an entirely front-end, JavaScript way to visualize well data
+- People without coding skills who want a simple web GUI to visualize wells
+
+### Who not:
+- Python first developers who want to control fine details of visualization via Python
+
+### Who Maybe?:
+- Python developers who want a visualization tool with real interaction and extensibility and willing to get into JavaScript for some things.
+- Python developers who want to export visualizations of well logs to HTML or SVG.
 
 
 ### Skill level:
