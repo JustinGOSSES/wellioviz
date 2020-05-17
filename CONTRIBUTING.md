@@ -35,6 +35,12 @@ Anything confusing or absent in documentation as well. Inline documentation, doc
 #### How to Edit & Generate the Docs
 There is Documentation on how to make the docs in the docs folder<a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/MakingDocs.md"> here</a>
 
+To regenerate the bundle.js script in docs/js used in the demo.html page:
+- install npm
+- use npm to install: browserify, wellio.js, and d3.js
+- navigate in terminal to docs/js folder
+- run `browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js`
+
 ### Contributing Code
 Code contributions are always welcome, whether it be small modifications or entire features. 
 

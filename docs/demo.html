@@ -41,10 +41,9 @@
 		<script src="./js/bundle.js"></script>
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js.map"></script> -->
 	</head>
-	<body>			
+	<body>
 		<div>
-			<h1>Barebones Demo Page for <a href="https://github.com/JustinGOSSES/wellioviz">Wellioviz</a></h1>
-			<h2>THIS IS OUT OF DATE WITH REST OF REPOSITORY CURRENTLY. WILL UPDATE ONCE OTHER CODE CHANGES SLOW DOWN!</h2>
+			<h1>Barebones Demo Page for <a href="https://github.com/JustinGOSSES/wellio.js">Wellioviz.js</a></h1>
 		</div>
 		<div class="well_step">
 			<h4>Upload local LAS files using a file loader & turn them into json using wellio.js.</h4>
@@ -52,61 +51,75 @@
 		<div class="well_step">
 			<p><b>First</b>: use either of these buttons to load a LAS files.</p>
 			<div class="well_pos_relative">
-        		<a class='btn btn-primary' href='javascript:;'>
-            	from your computer
-            	<input type="file" id="files" multiple class='well_file_upload' name="file_source" size="40" onchange='$("#upload-file-info").html($(this).val());readInFilesFunction()'>
-        		</a>
-        		&nbsp;
-        		<span class='label label-info' id="upload-file-info"></span>
-        		<button onclick="readInLASFromASSETS()" class='btn btn-primary'>from Assets folder of this webpage</button><span class='label label-info' id="upload-success"></span>
+				<a class='btn btn-primary' href='javascript:;'>
+					from your computer
+					<input type="file" id="files" multiple class='well_file_upload' name="file_source" size="40" onchange='$("#upload-file-info").html($(this).val());readInFilesFunction()'>
+				</a>
+	
+				<span class='label label-info' id="upload-file-info"></span>
+				<button onclick="readInLASFromASSETS()" class='btn btn-primary'>from Assets folder of this webpage</button><span class='label label-info' id="upload-success"></span>
 			</div>
 			<output id="list"></output>
 		</div>
-		
+	
 		<div class="well_step">
 			<p><b>Second</b>: convert .las text into JSON. If you selected more than one las, the first will be used.</p>
 			<button onclick="convert_and_startHelpers()" class='btn btn-primary'>convert</button>
 			<p id="which_well"><i>no well selection</i></p>
 		</div>
 		<div class="well_step">
-			<h4>Display Results as original text (A), converted JSON (B), or visual curves using wellioviz (C)</h4>
+			<h4>Display Results as original text (A), converted JSON (B), or visual curves using Wellio.js (C)</h4>
 		</div>
 		<div class="well_step">
 			<p><b>A.</b> Display of .las files as text</p>
 			<button onclick="displayFileFunction() " class='btn btn-secondary'>display text</button>
 			<button onclick="removeTextLAS()" class='btn btn-secondary'>remove text</button>
 		</div>
-    <div class="well_step_left">
-        <p><b>B.</b> Print well in wellio.js JSON format</p>
-        <button onclick="print_well()" class='btn btn-secondary'>print json</button>
-        <button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-secondary'>remove json</button>
-    </div>
-		<div class="well_step">
-				<p><b>C.</b>Buttons to draw each curve in the select well will appear below after the <b>CONVERT</b> step. Cuve fill currently has single Xmas theme.</p>
-				
-				<div id="curveButtons_holder"></div>
-        <p>Remove all curves</p><button onclick="remove_DOM_children()" class='btn btn-secondary'>remove</button>
+	
+		<div class="well_step_left">
+			<p><b>B.</b>Buttons to draw each curve in the select well will appear below after the <b>CONVERT</b> step</p>
+	
+			<div id="curveButtons_holder"></div>
+			<p>Remove all curves</p><button onclick="remove_DOM_children()" class='btn btn-secondary'>remove</button>
 		</div>
-		
-	</br>
+	
+		<div style="float:left;width:100%" class="step">
+			<p><b>C.</b> Print well in wellio.js JSON format</p>
+			<button onclick="print_well()" class='btn btn-secondary'>print json</button>
+			<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-secondary'>remove json</button>
+		</div>
+	
+		</br>
+		<!-- <div>
+			<p>Remove all curves</p>
+			<button onclick="remove_DOM_children()">remove</button>
+		</div> -->
 		<div id="fileContents"></div>
 		<div class="plot_holder">
-    		<div id="log_plot_div" class="log_plot_div box"></div>
-    		<div class="log_plot_div2 box"></div>
-    </div>
-</br>
-</br>
-	<div class="well_left_full_width">
-		<pre id="well_json_prettyprint" class="prettyprint">
-		</pre>
-	</div>
-</br>	
-	<div class="well_left">
-		<div class="well_step">
-			<h3>Download well as JSON file</h3>
-			<button id="download_button" onclick="download_test()" class='btn btn-secondary'>download</button>
+			<div id="log_plot_div" class="log_plot_div box"></div>
+			<div class="log_plot_div2 box"></div>
 		</div>
-  </div>
-</br>
-</body>
+		</br>
+	<div style="float:left"></div>
+		</br>
+		<!-- <div style="float:left;width:100%">
+			<span>
+				<button onclick="print_well()" class='btn btn-secondary'>Print well in wellio.js JSON format</button>
+			<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-secondary'>remove json</button>
+			</span>
+		</div> -->
+		</br>
+		<div class="well_left_full_width">
+			<pre id="well_json_prettyprint" class="prettyprint">
+			</pre>
+		</div>
+		</br>
+		<div class="well_left">
+			<div class="well_step">
+				<h3>Download well as JSON file</h3>
+				<button id="download_button" onclick="download_test()" class='btn btn-secondary'>download</button>
+			</div>
+		</div>
+		</br>
+	</body>
 </html>
