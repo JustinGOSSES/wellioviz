@@ -12,6 +12,7 @@ If you want to bring in a specific version, you can add the version on the end l
 
 You would then call wellioviz functions in other cells by adding the function name on the end of wellioviz like: `example_template = wellioviz.curveBoxTemplateExamples("example")`.
 
+You can find an example of this in the <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz"</a> notebook on ObservableHQ.com.
 
 ### Install for Use on Front-end Website
 As mentionted above, if you haven't used npm modules in an HTML page before, you probably want to reach a little about them. 

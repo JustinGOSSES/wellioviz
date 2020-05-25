@@ -13,38 +13,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+  // ///////////////////////////////
+  // /** 
+  //  * "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, 
+  //  * particularly those already converted to JSON, using the d3.js visualization library."
+  //  * 
+  //  * It is designed with a single central function curveBox, that returns SVGs. 
+  //  * A variety of helper functions take in differently formatted JSONs of information about the well
+  //  *  log curves to plot and how to plot them.
+  //  * 
+  //  * The idea is that end users can provide their own functions to reformat their data into the template that is fed into curveBox.
+  //  * 
+  //  * Some users would wnat to only send to the JavaScript the data they want to plot. Others might use wellio.js to convert a
+  //  *  whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it. 
+  //  * 
+  //  * Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults, 
+  //  * such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
+  // */ 
+
 module.exports = {
-  ///////////////////////////////
-  /** 
-   * "WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, 
-   * particularly those already converted to JSON, using the d3.js visualization library."
-   * 
-   * It is designed with a single central function curveBox, that returns SVGs. 
-   * A variety of helper functions take in differently formatted JSONs of information about the well
-   *  log curves to plot and how to plot them.
-   * 
-   * The idea is that end users can provide their own functions to reformat their data into the template that is fed into curveBox.
-   * 
-   * Some users would wnat to only send to the JavaScript the data they want to plot. Others might use wellio.js to convert a
-   *  whole LAS 2.0 formatted well log file to JSON and send that whole JSON along with instructions with how to plot some portion of it. 
-   * 
-   * Central to this idea is that how to plot and what to plot be put into a JSON template that has sensible defaults, 
-   * such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
-  */ 
+
 //  wellio:require("wellio")
+
+/**
+ * This brings in d3.js as a dependency used by wellioviz. It returns the d3.js object and all its functions as a module that is called like "module.exports.d3.[insert a d3.js function here]"
+ * @returns {obj} It returns the d3.js object and all its functions as a module. 
+ */
  d3:require("d3"),
 
 /**
  * A function that directs users to the docs if they need help.
- * @returns {string} It says = I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.
+ * @returns {string} It says = I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. \n If you would like to know what wellioviz does, try wellioviz.define(). \n If you would like to see an example template, try wellioviz.curveBoxTemplateExamples('example') \n If you would like to see an example template defintions, try wellioviz.curveBoxTemplateExamples('definitions') Best of luck.
  */
 help:function(){
-  return "I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck."
+  return "I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. \n If you would like to know what wellioviz does, try wellioviz.define(). \n If you would like to see an example template, try wellioviz.curveBoxTemplateExamples('example') \n If you would like to see an example template defintions, try wellioviz.curveBoxTemplateExamples('definitions') "
 },
 
 
  /**
-  * A definition of what the wellioviz library is all about. 
+  * A function that returns a short description of what the wellioviz library is all about. 
   * @returns {string} Returns a string that defines wellioviz.
   */
  define_wellioviz: function(){
@@ -52,6 +59,203 @@ help:function(){
  },
   ///////////////////////////////
  
+/**
+ * curveBoxTemplateExamples gives an example of the template giving to the plotting functions and definitions of the fields.
+ * A string of either "help" "example" or "definitions" is given as function argument and either a string or Object is returned depending on string provided as input parameter. 
+ * This is used to help construct the JSON object that is given to the curveBox plotting function.
+ * Someone might run this function with "example" as the parameter, give back the JSON template, replace a few pieces with their own data or format choices and then pass it as the argument into the curveBox function.
+ * @param {string} string_of_either__help_example_definitions_mandatories A string of either "help" "example" or "definitions" 
+ */
+curveBoxTemplateExamples: function (string_of_either__help_example_definitions_mandatories){
+  let request_string = string_of_either__help_example_definitions_mandatories
+  if(request_string=="help"){
+    return "The curveBoxTemplateExamples function returns example templates based on an input argument. Possible argument values are 'example' 'defintions' or 'mandatories'" 
+  }
+  if(request_string=="example"){
+    return [{
+  "curve_box":{
+    "show_well_name":"yes", /// not built yet
+    "show_depth_type":"no", /// not built yet
+    "show_curve_units":"yes", /// not built yet
+    "curve_box_depth_min":-999, /// not built yet
+    "curve_box_depth_max":-999, /// not built yet
+    "take_out_null_or_visualize":"no", /// not built yet
+    "show_title":"no", 
+    "width": 260, 
+    "height": 500, 
+    "height_multiplier_components":2,
+    "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
+    "title": {"text": "", "title_font_size": "10px"}, /// not built yet
+    "div_id": "well_holder_3", /// Should be skip-able // default=random str? What happens if div doesn't exist?
+    "order_of_component":["curves","rectanges","lines"], /// not built yet
+    "lines_connected_across_curveboxes":"no", /// not built yet
+    "header_sep_svg_or_not":"yes",
+    "svg_header_height":"4em",
+    "gridlines":"yes",
+    "gridlines_color":'#D3D3D3',
+    "gridlines_stroke_width":0.20,
+    "grouped_or_independent_x_scales":"independent",
+    //// variables for how to draw mouseover of hover box
+    "mouseover_yes_or_no":"yes", //// "yes" or "no"
+    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
+    "mouseover_curvename":"default", //// default is first curve
+    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
+},
+ "components":[{
+   "curves":[
+    { "data_type":"curve", 
+      "curve_names":["RHOB"],
+      "curve_colors":["black"],
+      "curve_stroke_dasharray":["solid"],
+     "stroke_linecap":["butt"],
+     "stroke_width":[1],
+      "fill":[
+                {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
+              ],
+       "curve_units":["g/cm3"],
+       "depth_limits":[{"min":"autocalculate","max":"autocalculate"}],
+       "curve_limits":[{"curve_name":"","min":-10000000,"max":3}],
+        "data":[{"depth":1598.3,"RHOB":2.2322},{"depth":1598.4,"RHOB":2.0513},{"depth":1598.5,"RHOB":2.2548},{"depth":1598.6,"RHOB":2.9445},{"depth":1598.7,"RHOB":2.2223},{"depth":1598.8,"RHOB":2.447},{"depth":1598.9,"RHOB":2.598},{"depth":1599,"RHOB":2.8088},{"depth":1599.1,"RHOB":2.2248},{"depth":1599.2,"RHOB":2.2399},{"depth":1599.3,"RHOB":2.251},{"depth":1599.4,"RHOB":2.255},{"depth":1599.5,"RHOB":2.2526},{"depth":1599.6,"RHOB":2.2322},{"depth":1599.7,"RHOB":2.2513},{"depth":1599.8,"RHOB":2.2548},{"depth":1599.9,"RHOB":2.2445},{"depth":1600,"RHOB":2.2223},{"depth":1600.1,"RHOB":2.2047},{"depth":1600.2,"RHOB":2.198}], /// not built yet
+       "depth_curve_name":"DEPT",/// not built yet
+      //////
+     "data_id":["placeholder_data_id",], /// not built yet
+     "well_names":[""], /// not built yet
+     "scale_linear_log_or_yours":["linear"],
+     "line_color": ["red"], /// not built yet
+     "max_depth": "autocalculate", /// not built yet
+     "min_depth": "autocalculate", /// not built yet
+     "depth_type_string":[""], 
+     "depth_units_string":[""],
+     "null_value": [""], /// not built yet
+    }
+ ],
+  "lines":[
+    {
+     "data_type":"line",  /// not built yet
+      "label":"example",  /// not built yet
+     "depth":-999, /// not built yet
+     "color":"red", /// not built yet
+     "stroke_width":"3px", /// not built yet
+     "stroke_style":"solid", /// not built yet
+     "transparency":1.0, /// not built yet
+     "stroke_linecap":"butt"
+    }
+  ],
+    "rectangles":[
+       {
+     "data_type":"rectangle", 
+     "depth_top":0,  
+     "x_starting_upper_left_corner":0,
+     "width":100, 
+     "height":100,
+     "stroke_width":"2px",
+     "stroke_linecap":"butt",
+     "fill":"red",
+     "opacity":0.5,
+     "label":"Core Example", // not built into plotting template yet
+     "label_orientation":"horizontal", // not built into plotting template yet
+     "lable_position":"right" // not built into plotting template yet
+    }
+   ]
+ }]
+}]
+  }
+  else if(request_string=="defintions"){
+    return [{
+  "curve_box":{
+    "show_well_name":"yes or no. If '' is no", // not built yet
+    "show_depth_type":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
+    "show_curve_units":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
+    "curve_box_depth_min":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet 
+    "curve_box_depth_max":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet
+    "take_out_null_or_visualize":"yes or no. If '' is no", // not built yet 
+    "show_title":"yes or no. If '' is no", // not built yet 
+    "width": "number, if blank default is 250", 
+    "height": "number, if blank default is 500", 
+    "height_multiplier_components":"An interger or float that multiplies the height to get the height of the curves inside the curvebox. If curves height is greater than height, then scroll behavior will result.",
+    "margin": ' should be an object like {"top": 10, "right": 10, "bottom": 30, "left": 60} if missing will default to these values', 
+    "title": 'object like:{"text": "", "title_font_size": "10px"} if default, an empty string, "" will skill', 
+    "div_id": "should be a string that equals a div id like: 'well_holder' Do not include the #",  ///What happens if div doesn't exist?
+    "order_of_component":'Should be an array of strings that correlate to component types like:["curves","rectangles","lines"]', // not built yet
+    "lines_connected_across_curveboxes":"yes or no. If '' is no", // not built yet
+    "header_sep_svg_or_not":"yes or no. 'no' will build the curvebox as a single SVG. 'yes' will build it as two SVGs within nested divs. The later better helps enable scrolling curves and stationary header",
+    "svg_header_height":"Example = 3em; A string representing the height of the header part of the curvebox when header & components part of curvebox are separate SVGs.",
+    "gridlines":"yes or no as strings. Default is 'yes'",
+    "gridlines_color":"Can be gray or any color in hex or rgb format. Default is ''#D3D3D3'",
+    "gridlines_stroke_width":"thickness of the line. Default is 0.20",
+    "grouped_or_independent_x_scales":"independent or grouped as exceptable answers as strings. When 'independent' the min and max value of each curve in a curvebox is used for x scale unless explicitly given for that curve. When 'grouped' is given, the max and min of all curves is calculated and used to create the x axis scale.",
+    //// variables for how to draw mouseover of hover box
+    "mouseover_yes_or_no":"yes", //// "yes" or "no"
+    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
+    "mouseover_curvename":"default", //// default is first curve
+    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
+},
+ "components":[{
+   "curves":[
+    { "data_type":"requires one of possible strings: curve, line, rectangle if not one of acceptable string it just skips it.", // not built yet
+      "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
+      "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
+     "curve_stroke_dasharray":"A style for the curve line. Can be solid or a string of integers separated by commas like '5,5' or '20,10,10,5,10,10'",
+      "stroke_width":"The width of the curve line. Example is '2px'. ",
+      "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
+      "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
+       "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
+       "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
+       "curve_limits":'An array of objects that hold the min and max curve values allow to cut off spurious value spikes, like: [{"curve_name":"GR","min":0,"max":100},{"curve_name":"PDF","min":0,"max":100}]',
+        "data":'Should be an array of objects where the keys in key:value pairs in each object are curve_names or UWI like: [{"UWI":"111aa","DEPTH":4140.5,"GR":0},{"UWI":"111aa","DEPTH":4141,"GR":0}] for the entire depth of the well being showin the curve_box', 
+       "depth_curve_name":"A string of the curve that is the depth being plotted, like: 'DEPT'. Should be the same name as the depth curve in the array of objects in the data key above.",
+      //////
+      "data_id":["array of strings whose length must equal curve_units, curve_names, etc."], // not built yet
+      "well_names":"An array of strings that represent well names if multiple curves shown in same curve_box. If only one well name, only one is required.", // not built yet /// 
+     "scale_linear_log_or_yours": "An array of either 'linear' or 'log' or {'yours':scale_obj} where scale_obj might be something like: scale_obj = d3.scaleLog().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right]) that uses any of the d3.js scales methods https://github.com/d3/d3/blob/master/API.md#scales-d3-scale", 
+     
+     ////// Plotting things but need to be next to curve data or will be too confusing.
+     "line_color": "An array of strings that establish the color of the line of the curve. RGB or common color name, like 'red'. If absent, default is black", 
+     "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
+     "min_depth": "Any array of numbers where each represents the min depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the min depth is autocalculated from the min depth of the input data in the data field. This is default behavior.", 
+     "depth_type_string":"All the curves should be calculated and populated vs. this curve. Takes a string, like: 'DEPT'",
+     "depth_units_string":"units of depth, examples are meters,m., cm., feet, etc.",
+     "null_value": "An array of null values used for each curve. Default is no null values considered, but could be something like: ['-999.25','-999.25','-999.25','NA']"
+    }
+ ],
+  "lines":[
+    {
+     "data_type":'must be string, will be ignored if not "line", "curve", or "rectangle"', 
+     "label":"The label for horiztonal line in string form",
+     "depth":"number for the depth at which the line is placed", 
+     "color":"string for the color of the line in common color name or RGB format. If '' then black will be used.", 
+     "stroke_width":"A string with of px value for stroke width, like: '1px'. Default if absent is '1px'.", 
+     "stroke_style":'Should be string, if not or doesnt exist will be treated as "solid"',
+     "stroke_width":"The width of the line. Example is '2px'. ",
+     "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
+     "transparency":'Should be float between 0.0 and 1.0. Otherwise default is 1.0.'
+    }
+  ],
+    "rectangles":[
+       {
+     "data_type":"rectangle", 
+     "depth_top":"A number for the depth of the upper left corner of the rectangle", // 
+     "x_starting_upper_left_corner":"A number for the x axis value of the upper left corner of the rectangle",
+     "width":"Width of rectangle as number", 
+     "height":"Height of rectangle as number",
+     "stroke_width":"The width of the line. Example is '2px'. ",
+     "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
+     "fill":"String that represents the color of the rectangle fill in either common color name or RGB like, 'red'",
+     "opacity":"Float between 0 and 1 that represents the opacity of the fill, default is 0.5",
+     "label":"String that appears on end of line and likely represents a top name, like: 'Top Jurassic Final Final Final'", // not built into plotting template yet
+     "label_orientation":"A string that is either 'horizontal' or 'vertical'. If other values, will treat as horizontal label orientation", // not built into plotting template yet
+     "lable_position":"Exceptable strings are top, center, right, left, bottom. Default right." // not built into plotting template yet
+    }
+   ]
+ }]
+}]
+  }
+  else if(request_string=="mandatories"){
+    return [
+      "This is not yet populated!!!!"
+    ]
+  }
+},
 
   /** 
    * getFakeIncomingSparseDataExample is a function that takes nothing and returns a JSON of fake sparse incoming data. 
@@ -300,203 +504,6 @@ convertWellJSONToObjV2: function (depth, curve_data, UWI, CurveNames) {
   }
   return depth},
 
-/**
- * curveBoxTemplateExamples gives an example of the template giving to the plotting functions and definitions of the fields.
- * A string of either "help" "example" or "definitions" is given as function argument and either a string or Object is returned depending on string provided as input parameter. 
- * This is used to help construct the JSON object that is given to the curveBox plotting function.
- * Someone might run this function with "example" as the parameter, give back the JSON template, replace a few pieces with their own data or format choices and then pass it as the argument into the curveBox function.
- * @param {string} string_of_either__help_example_definitions_mandatories A string of either "help" "example" or "definitions" 
- */
-curveBoxTemplateExamples: function (string_of_either__help_example_definitions_mandatories){
-  let request_string = string_of_either__help_example_definitions_mandatories
-  if(request_string=="help"){
-    return "The curveBoxTemplateExamples function returns example templates based on an input argument. Possible argument values are 'example' 'defintions' or 'mandatories'" 
-  }
-  if(request_string=="example"){
-    return [{
-  "curve_box":{
-    "show_well_name":"yes", /// not built yet
-    "show_depth_type":"no", /// not built yet
-    "show_curve_units":"yes", /// not built yet
-    "curve_box_depth_min":-999, /// not built yet
-    "curve_box_depth_max":-999, /// not built yet
-    "take_out_null_or_visualize":"no", /// not built yet
-    "show_title":"no", 
-    "width": 260, 
-    "height": 500, 
-    "height_multiplier_components":2,
-    "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
-    "title": {"text": "", "title_font_size": "10px"}, /// not built yet
-    "div_id": "well_holder_3", /// Should be skip-able // default=random str? What happens if div doesn't exist?
-    "order_of_component":["curves","rectanges","lines"], /// not built yet
-    "lines_connected_across_curveboxes":"no", /// not built yet
-    "header_sep_svg_or_not":"yes",
-    "svg_header_height":"4em",
-    "gridlines":"yes",
-    "gridlines_color":'#D3D3D3',
-    "gridlines_stroke_width":0.20,
-    "grouped_or_independent_x_scales":"independent",
-    //// variables for how to draw mouseover of hover box
-    "mouseover_yes_or_no":"yes", //// "yes" or "no"
-    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
-    "mouseover_curvename":"default", //// default is first curve
-    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
-},
- "components":[{
-   "curves":[
-    { "data_type":"curve", 
-      "curve_names":["RHOB"],
-      "curve_colors":["black"],
-      "curve_stroke_dasharray":["solid"],
-     "stroke_linecap":["butt"],
-     "stroke_width":[1],
-      "fill":[
-                {"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}
-              ],
-       "curve_units":["g/cm3"],
-       "depth_limits":[{"min":"autocalculate","max":"autocalculate"}],
-       "curve_limits":[{"curve_name":"","min":-10000000,"max":3}],
-        "data":[{"depth":1598.3,"RHOB":2.2322},{"depth":1598.4,"RHOB":2.0513},{"depth":1598.5,"RHOB":2.2548},{"depth":1598.6,"RHOB":2.9445},{"depth":1598.7,"RHOB":2.2223},{"depth":1598.8,"RHOB":2.447},{"depth":1598.9,"RHOB":2.598},{"depth":1599,"RHOB":2.8088},{"depth":1599.1,"RHOB":2.2248},{"depth":1599.2,"RHOB":2.2399},{"depth":1599.3,"RHOB":2.251},{"depth":1599.4,"RHOB":2.255},{"depth":1599.5,"RHOB":2.2526},{"depth":1599.6,"RHOB":2.2322},{"depth":1599.7,"RHOB":2.2513},{"depth":1599.8,"RHOB":2.2548},{"depth":1599.9,"RHOB":2.2445},{"depth":1600,"RHOB":2.2223},{"depth":1600.1,"RHOB":2.2047},{"depth":1600.2,"RHOB":2.198}], /// not built yet
-       "depth_curve_name":"DEPT",/// not built yet
-      //////
-     "data_id":["placeholder_data_id",], /// not built yet
-     "well_names":[""], /// not built yet
-     "scale_linear_log_or_yours":["linear"],
-     "line_color": ["red"], /// not built yet
-     "max_depth": "autocalculate", /// not built yet
-     "min_depth": "autocalculate", /// not built yet
-     "depth_type_string":[""], 
-     "depth_units_string":[""],
-     "null_value": [""], /// not built yet
-    }
- ],
-  "lines":[
-    {
-     "data_type":"line",  /// not built yet
-      "label":"example",  /// not built yet
-     "depth":-999, /// not built yet
-     "color":"red", /// not built yet
-     "stroke_width":"3px", /// not built yet
-     "stroke_style":"solid", /// not built yet
-     "transparency":1.0, /// not built yet
-     "stroke_linecap":"butt"
-    }
-  ],
-    "rectangles":[
-       {
-     "data_type":"rectangle", 
-     "depth_top":0,  
-     "x_starting_upper_left_corner":0,
-     "width":100, 
-     "height":100,
-     "stroke_width":"2px",
-     "stroke_linecap":"butt",
-     "fill":"red",
-     "opacity":0.5,
-     "label":"Core Example", // not built into plotting template yet
-     "label_orientation":"horizontal", // not built into plotting template yet
-     "lable_position":"right" // not built into plotting template yet
-    }
-   ]
- }]
-}]
-  }
-  else if(request_string=="defintions"){
-    return [{
-  "curve_box":{
-    "show_well_name":"yes or no. If '' is no", // not built yet
-    "show_depth_type":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
-    "show_curve_units":"yes or no. If '' is no", // not built yet /// Should be skip-able /// default=No
-    "curve_box_depth_min":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet 
-    "curve_box_depth_max":"Should be a number. If string or -999, will be skipped and autocalculate used", // not built yet
-    "take_out_null_or_visualize":"yes or no. If '' is no", // not built yet 
-    "show_title":"yes or no. If '' is no", // not built yet 
-    "width": "number, if blank default is 250", 
-    "height": "number, if blank default is 500", 
-    "height_multiplier_components":"An interger or float that multiplies the height to get the height of the curves inside the curvebox. If curves height is greater than height, then scroll behavior will result.",
-    "margin": ' should be an object like {"top": 10, "right": 10, "bottom": 30, "left": 60} if missing will default to these values', 
-    "title": 'object like:{"text": "", "title_font_size": "10px"} if default, an empty string, "" will skill', 
-    "div_id": "should be a string that equals a div id like: 'well_holder' Do not include the #",  ///What happens if div doesn't exist?
-    "order_of_component":'Should be an array of strings that correlate to component types like:["curves","rectangles","lines"]', // not built yet
-    "lines_connected_across_curveboxes":"yes or no. If '' is no", // not built yet
-    "header_sep_svg_or_not":"yes or no. 'no' will build the curvebox as a single SVG. 'yes' will build it as two SVGs within nested divs. The later better helps enable scrolling curves and stationary header",
-    "svg_header_height":"Example = 3em; A string representing the height of the header part of the curvebox when header & components part of curvebox are separate SVGs.",
-    "gridlines":"yes or no as strings. Default is 'yes'",
-    "gridlines_color":"Can be gray or any color in hex or rgb format. Default is ''#D3D3D3'",
-    "gridlines_stroke_width":"thickness of the line. Default is 0.20",
-    "grouped_or_independent_x_scales":"independent or grouped as exceptable answers as strings. When 'independent' the min and max value of each curve in a curvebox is used for x scale unless explicitly given for that curve. When 'grouped' is given, the max and min of all curves is calculated and used to create the x axis scale.",
-    //// variables for how to draw mouseover of hover box
-    "mouseover_yes_or_no":"yes", //// "yes" or "no"
-    "mouseover_depth_or_depth_and_curve":"depth_and_curve", /// options= "depth_and_curve", "depth", or "curve"
-    "mouseover_curvename":"default", //// default is first curve
-    "mouseover_color_or_default_which_is_curve_color":"default" /// default is default, which then uses curve color or black
-},
- "components":[{
-   "curves":[
-    { "data_type":"requires one of possible strings: curve, line, rectangle if not one of acceptable string it just skips it.", // not built yet
-      "curve_names":"array of strings representing curve_names like: ['GR','RESD']",
-      "curve_colors":'array of strings representing colors using common names or rgb style like:["black","rgb(205,0,0,1)"]',
-     "curve_stroke_dasharray":"A style for the curve line. Can be solid or a string of integers separated by commas like '5,5' or '20,10,10,5,10,10'",
-      "stroke_width":"The width of the curve line. Example is '2px'. ",
-      "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
-      "fill": 'an array of objects one for each curve like: [{"curve_name":"RHOB","fill":"yes","fill_direction":"left","cutoffs":[0.21,2.23,2.24],"fill_colors":["gray","beige","white"],"curve2":""}]',
-       "curve_units":'an array of strings that are curve units like: ["g/cm2","API",""] must equal length other curve fields',
-       "depth_limits":'An array of objects that contains the min and max depth for each curve like: [{"min":"autocalculate","max":"autocalculate"}]',
-       "curve_limits":'An array of objects that hold the min and max curve values allow to cut off spurious value spikes, like: [{"curve_name":"GR","min":0,"max":100},{"curve_name":"PDF","min":0,"max":100}]',
-        "data":'Should be an array of objects where the keys in key:value pairs in each object are curve_names or UWI like: [{"UWI":"111aa","DEPTH":4140.5,"GR":0},{"UWI":"111aa","DEPTH":4141,"GR":0}] for the entire depth of the well being showin the curve_box', 
-       "depth_curve_name":"A string of the curve that is the depth being plotted, like: 'DEPT'. Should be the same name as the depth curve in the array of objects in the data key above.",
-      //////
-      "data_id":["array of strings whose length must equal curve_units, curve_names, etc."], // not built yet
-      "well_names":"An array of strings that represent well names if multiple curves shown in same curve_box. If only one well name, only one is required.", // not built yet /// 
-     "scale_linear_log_or_yours": "An array of either 'linear' or 'log' or {'yours':scale_obj} where scale_obj might be something like: scale_obj = d3.scaleLog().domain([min_all_curves,max_all_curves]).nice().range([margin.left, width - margin.right]) that uses any of the d3.js scales methods https://github.com/d3/d3/blob/master/API.md#scales-d3-scale", 
-     
-     ////// Plotting things but need to be next to curve data or will be too confusing.
-     "line_color": "An array of strings that establish the color of the line of the curve. RGB or common color name, like 'red'. If absent, default is black", 
-     "max_depth": "Any array of numbers where each represents the max depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the max depth is autocalculated from the max depth of the input data in the data field. This is default behavior.",
-     "min_depth": "Any array of numbers where each represents the min depth each curve is allowed to have. If a string of 'autocalculate' is used instead of a number then the min depth is autocalculated from the min depth of the input data in the data field. This is default behavior.", 
-     "depth_type_string":"All the curves should be calculated and populated vs. this curve. Takes a string, like: 'DEPT'",
-     "depth_units_string":"units of depth, examples are meters,m., cm., feet, etc.",
-     "null_value": "An array of null values used for each curve. Default is no null values considered, but could be something like: ['-999.25','-999.25','-999.25','NA']"
-    }
- ],
-  "lines":[
-    {
-     "data_type":'must be string, will be ignored if not "line", "curve", or "rectangle"', 
-     "label":"The label for horiztonal line in string form",
-     "depth":"number for the depth at which the line is placed", 
-     "color":"string for the color of the line in common color name or RGB format. If '' then black will be used.", 
-     "stroke_width":"A string with of px value for stroke width, like: '1px'. Default if absent is '1px'.", 
-     "stroke_style":'Should be string, if not or doesnt exist will be treated as "solid"',
-     "stroke_width":"The width of the line. Example is '2px'. ",
-     "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
-     "transparency":'Should be float between 0.0 and 1.0. Otherwise default is 1.0.'
-    }
-  ],
-    "rectangles":[
-       {
-     "data_type":"rectangle", 
-     "depth_top":"A number for the depth of the upper left corner of the rectangle", // 
-     "x_starting_upper_left_corner":"A number for the x axis value of the upper left corner of the rectangle",
-     "width":"Width of rectangle as number", 
-     "height":"Height of rectangle as number",
-     "stroke_width":"The width of the line. Example is '2px'. ",
-     "stroke_linecap":"Style of ending of line as a string. Options are 'butt' which is no ending, 'round', and 'square' as defined here: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap Default is butt.",
-     "fill":"String that represents the color of the rectangle fill in either common color name or RGB like, 'red'",
-     "opacity":"Float between 0 and 1 that represents the opacity of the fill, default is 0.5",
-     "label":"String that appears on end of line and likely represents a top name, like: 'Top Jurassic Final Final Final'", // not built into plotting template yet
-     "label_orientation":"A string that is either 'horizontal' or 'vertical'. If other values, will treat as horizontal label orientation", // not built into plotting template yet
-     "lable_position":"Exceptable strings are top, center, right, left, bottom. Default right." // not built into plotting template yet
-    }
-   ]
- }]
-}]
-  }
-  else if(request_string=="mandatories"){
-    return [
-      "This is not yet populated!!!!"
-    ]
-  }
-},
 
 /** 
  * takeInArraysAndGetObjectOfCurveDataForPlotting is a function used to reformt arrays of curve values into a form that d3.js likes better, an array of objects.
@@ -520,66 +527,9 @@ takeInArraysAndGetObjectOfCurveDataForPlotting: function (arraysOfCurvesAndNames
   return curveObj
 },
 
-/**
- * THE FUNCTION putArrayOfLogsIntoSection NEEDS DOCUMENTATION!
- * @param {*} logs_in_json 
- * @param {*} div_id 
- * @param {*} example_template 
- * @param {*} curve_name 
- * @param {*} curve_color 
- * @param {*} curve_unit 
- * @param {*} fill 
- * @param {*} depth_name 
- * @param {*} width 
- * @param {*} height 
- */
-putArrayOfLogsIntoSection: function (logs_in_json,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
-  const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
-  // let logs_in_json = module.exports.turnFilesIntoTextIntoWellioJSON(logs)
-  let new_templates = []
-  for (let i = 0; i < logs_in_json.length; i++) {
-    let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
-    let new_data =three_things2["well_log_curves_reformatted_for_d3"]
-    let example_template_n = JSON.parse(JSON.stringify(example_template))
-    example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
-    example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
-    example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
-    example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
-    example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
-    example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
-    example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
-    let svg_holder =module.exports.d3.select("#"+div_id).append("div")
-    svg_holder.style("vertical-align","middle")
-      .attr("id",div_id+"svg_holder"+i)
-      .style("display","inline-block")
-    example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
-    example_template_n[0]["curve_box"]["width"] = width
-    example_template_n[0]["curve_box"]["height"] = height
-    new_templates.push(example_template_n)
-    module.exports.curveBox(example_template_n)
-  }
-  return new_templates
-},
-
-/**
- * minimumDataIntoTemplateFunc
- * @param 
- */
-minimumDataIntoTemplateFunc: function (example_template,data,well_names,curve_names,curve_colors,curve_units,fill,div_id,width,height,depth_curve_name){
-  //// remember that all curve components should be an array, even if one item!
-  let example_template_n = JSON.parse(JSON.stringify(example_template))
-  example_template_n[0]["components"][0]["curves"][0]["data"] = data
-  example_template_n[0]["components"][0]["curves"][0]["well_names"] = well_names
-  example_template_n[0]["components"][0]["curves"][0]["curve_names"] = curve_names
-  example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = curve_colors
-  example_template_n[0]["components"][0]["curves"][0]["curve_units"] = curve_units
-  example_template_n[0]["components"][0]["curves"][0]["fill"] = fill
-  example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_curve_name
-  example_template_n[0]["curve_box"]["div_id"] = div_id
-  example_template_n[0]["curve_box"]["width"] = width
-  example_template_n[0]["curve_box"]["height"] = height
-  return example_template_n
-},
+  ///////////////////////////////
+  //// Functions that take in incoming sparse style JSON and a template and handle all the transformation into the JSON for plotting that is given to curveBox function.
+  ///////////////////////////////
 
 /**
  * This function is used to put the incoming sparse style JSON information into the plotting tempalte JSON that is given to curveBox which then handles the plotting.
@@ -705,6 +655,73 @@ putIncomingSparseJsonIntoPlottingTemplate: function (incoming_sparse,template){
    
   }
 },
+
+
+  ///////////////////////////////
+  //// Functions that take Wellio.js style JSON and handle everything from transformation to plotting
+  ///////////////////////////////
+
+/**
+ * THE FUNCTION putArrayOfLogsIntoSection NEEDS DOCUMENTATION!
+ * @param {*} logs_in_json 
+ * @param {*} div_id 
+ * @param {*} example_template 
+ * @param {*} curve_name 
+ * @param {*} curve_color 
+ * @param {*} curve_unit 
+ * @param {*} fill 
+ * @param {*} depth_name 
+ * @param {*} width 
+ * @param {*} height 
+ */
+putArrayOfLogsIntoSection: function (logs_in_json,div_id,example_template,curve_name,curve_color,curve_unit,fill,depth_name, width, height){
+  const noSVG =module.exports.d3.select("#"+div_id).selectAll("svg").remove()
+  // let logs_in_json = module.exports.turnFilesIntoTextIntoWellioJSON(logs)
+  let new_templates = []
+  for (let i = 0; i < logs_in_json.length; i++) {
+    let three_things2 = module.exports.fromJSONofWEllGetThingsForPlotting(logs_in_json[i],depth_name)
+    let new_data =three_things2["well_log_curves_reformatted_for_d3"]
+    let example_template_n = JSON.parse(JSON.stringify(example_template))
+    example_template_n[0]["components"][0]["curves"][0]["data"] = new_data
+    example_template_n[0]["components"][0]["curves"][0]["well_names"] = [three_things2["uwi"]]
+    example_template_n[0]["components"][0]["curves"][0]["curve_names"] = [curve_name]
+    example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = [curve_color]
+    example_template_n[0]["components"][0]["curves"][0]["curve_units"] = [curve_unit]
+    example_template_n[0]["components"][0]["curves"][0]["fill"] = [fill]
+    example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_name
+    let svg_holder =module.exports.d3.select("#"+div_id).append("div")
+    svg_holder.style("vertical-align","middle")
+      .attr("id",div_id+"svg_holder"+i)
+      .style("display","inline-block")
+    example_template_n[0]["curve_box"]["div_id"] = div_id+"svg_holder"+i
+    example_template_n[0]["curve_box"]["width"] = width
+    example_template_n[0]["curve_box"]["height"] = height
+    new_templates.push(example_template_n)
+    module.exports.curveBox(example_template_n)
+  }
+  return new_templates
+},
+
+/**
+ * minimumDataIntoTemplateFunc
+ * @param 
+ */
+minimumDataIntoTemplateFunc: function (example_template,data,well_names,curve_names,curve_colors,curve_units,fill,div_id,width,height,depth_curve_name){
+  //// remember that all curve components should be an array, even if one item!
+  let example_template_n = JSON.parse(JSON.stringify(example_template))
+  example_template_n[0]["components"][0]["curves"][0]["data"] = data
+  example_template_n[0]["components"][0]["curves"][0]["well_names"] = well_names
+  example_template_n[0]["components"][0]["curves"][0]["curve_names"] = curve_names
+  example_template_n[0]["components"][0]["curves"][0]["curve_colors"] = curve_colors
+  example_template_n[0]["components"][0]["curves"][0]["curve_units"] = curve_units
+  example_template_n[0]["components"][0]["curves"][0]["fill"] = fill
+  example_template_n[0]["components"][0]["curves"][0]["depth_curve_name"] = depth_curve_name
+  example_template_n[0]["curve_box"]["div_id"] = div_id
+  example_template_n[0]["curve_box"]["width"] = width
+  example_template_n[0]["curve_box"]["height"] = height
+  return example_template_n
+},
+
 
 
   ///////////////////////////////
