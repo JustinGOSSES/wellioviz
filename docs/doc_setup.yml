@@ -4,20 +4,31 @@ toc:
       ### WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
       Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
   
-  - name: Installation, Usage, Architecture, and Contributing
+  - name: Installation
     children:
-    - name: Installation
+    - name: Installation Instructions for Various Settings
       file: docs/INSTALLATION.md
 
-    - name: Usage
+  - name: Usage
+    children:
+    - name: How to use Wellioviz
       file: docs/USAGE.md
-    
-    - name: Architecture
+
+  - name: Architecture
+    children:
+    - name: with Pictures!
       file: docs/ARCHITECTURE.MD
 
-    - name: Contributing
+  - name: Contributing
+    children:
+    - name: Different Ways to Contribute
       file: CONTRIBUTING.md
-  
+
+
+    
+    
+    
+
   - name: API
     children:
 
