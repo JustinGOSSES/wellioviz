@@ -1,5 +1,3 @@
-
-
 ## What Type of Contributions Are Welcome?
 All contributions welcome! Big, small, code, documentation, or questions.
 
@@ -13,21 +11,6 @@ Check the <a href="https://github.com/JustinGOSSES/wellioviz/issues">Issues</a> 
 
 ## Ways to Contribute!
 
-### Documentation
-Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.
-
-#### How to Edit & Generate the Docs
-There is Documentation on how to make the docs in the docs folder<a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/MakingDocs.md"> here</a>
-
-#### How to Edit & Generate Demo.html
-The tricky part is probably the bundle.js script. Everything else works like vanilla JavaScript.
-To regenerate the bundle.js script in docs/js used in the demo.html page:
-- install npm
-- use npm to install: browserify, wellio.js, and d3.js
-- navigate in terminal to docs/js folder
-- run `browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js`
-This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.
-
 ### Issues, Features, and Bug Reports
 
 Add a feature request or bug report issue <a href="https://github.com/JustinGOSSES/wellioviz/issues/new/choose">here</a> When you add an issue, there will be two choices for issues templates to use, one for bug reports and another for feature requests.
@@ -39,6 +22,29 @@ If you've fixed an issue in the code, please consider submitting a pull request,
 3. We don't have tests yet, so in lieu of that, please fork the active Observable notebook noted in the README add in your changed functions and make sure everything still works with your changes. If there are changes needed to be made to get things to work that are not in index.js but only in the Observable notebook, please note that in your pull request. This is unlikely but theoretically possible.
 - Please consider other use-cases and make sure your code changes aren't narrowing the scope of wellioviz to only your use case.
 - Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a>
+
+### Documentation
+Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.
+
+#### How to Make the Docs
+- Add new markdown files to the docs by making changes to docs/doc_setup.yml or the documentation between /** **/ in the index.js file.
+- Install locally <a href="https://github.com/documentationjs/documentation#documentation">documentation.js</a>
+- Run in the home directory of wellioviz:    
+  `documentation build ./dist/index.js --config docs/doc_setup.yml -f html -o docs`
+- go to the docs directory. Run: `python3 -m http.server` Please note, that if you run the server from anywhere except the docs directory, the image links won't work. The docs page on the github.com repository runs from the docs folder on the master branch as well.
+- Go to a browser and open http://localhost:8000/index.html . You should see the docs.
+
+
+### How to Edit & Generate Demo.html
+The tricky part is probably the bundle.js script. Everything else works like vanilla JavaScript.
+To regenerate the bundle.js script in docs/js used in the demo.html page:
+- install npm
+- use npm to install: browserify, wellio.js, and d3.js
+- navigate in terminal to docs/js folder
+- run `browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js`
+This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.
+
+
 
 ## How I'm Keeping Things In Sync During Development.
 The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! 

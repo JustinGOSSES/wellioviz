@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>wellioviz 0.0.21 | Documentation</title>
+  <title>wellioviz 0.0.25 | Documentation</title>
   <meta name='description' content='Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>wellioviz</h3>
-          <div class='mb1'><code>0.0.21</code></div>
+          <div class='mb1'><code>0.0.25</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -379,17 +379,68 @@
 
   
 
-  <h3>Installation Instructions for Various Environments</h3>
-<h4>Jupyter Notebook with JavaScript Kernal</h4>
+  <h2>Installation Instructions for Various Environments</h2>
+<h4>Intro to node.js modules</h4>
+<p>Wellioviz is a node.js module. If you've only brought JavaScript into an HTML project via a <script></script> tag, you probably want to learn a little bit about how to use npm (node package manager) to get JavaScript modules into your front-end code. <a href="https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072">This</a> is a short demo that only covers the minimum you need to know.</p>
+<h3>Observable Notebook - JavaScript</h3>
+<h5>(easiest way to get started)</h5>
+<p>To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says <code>wellioviz = require('https://bundle.run/wellioviz)</code> </p>
+<p>If you want to bring in a specific version, you can add the version on the end like so <code>wellioviz = require('https://bundle.run/wellioviz@0.0.25')</code>.</p>
+<p>You would then call wellioviz functions in other cells by adding the function name on the end of wellioviz like: <code>example_template = wellioviz.curveBoxTemplateExamples("example")</code>.</p>
+<h3>Install for Use on Front-end Website</h3>
+<p>As mentionted above, if you haven't used npm modules in an HTML page before, you probably want to reach a little about them. </p>
+<p>There is more than one way to get npm modules into a front-end project. Wellioviz doesn't have anyting about it that requires very advanced ways. For example, <a href="https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072">here</a> and <a href="https://www.agiliq.com/blog/2019/01/using-npm-to-manage-frontend-libraries/">here</a> are two different blog posts to walk you through installing a npm JavaScript module into a front-end project. </p>
+<h4>One possible way to use wellioviz in a website:</h4>
+<ol>
+<li>Install <a href="https://nodejs.org/en/download/">node.js</a></li>
+<li>Install <a href="https://www.npmjs.com/get-npm">npm</a></li>
+<li>Navigate to the directory of your new project.</li>
+<li>Create a package.json file that looks like this:
+<code>{ "dependencies": { "wellioviz": "0.0.25" } }</code>
+Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other modules you need would go in here too after wellioviz line separated by a comma.</li>
+<li>From the same folder that has the package.json run <code>npm install</code>. This will create a folder called "node_modules" and there should be another folder called wellioviz.</li>
+<li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code>&#x3C;script src="node_modules/wellioviz/dist/index.js">&#x3C;/script></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
+</ol>
+<h4>A second possible way to use wellioviz in a website:</h4>
+<p>This way is slightly cleaner in terms of namespace. Additionally, you may not want to include your entire node modules folder if that gets big!</p>
+<ol>
+<li>Install <a href="https://nodejs.org/en/download/">node.js</a></li>
+<li>Install <a href="https://www.npmjs.com/get-npm">npm</a></li>
+<li>Install <a href="http://browserify.org/">browserify</a></li>
+<li>Navigate to the directory of your new project.</li>
+<li>Run <code>npm install wellioviz</code></li>
+<li>Create a directory called <code>JS</code>. </li>
+<li>Navigate into <code>JS</code> directory and create a file called <code>main.js</code>.</li>
+<li>In main.js include a line <code>wellio = require('wellioviz');</code>.</li>
+<li>If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command <code>browserify main.js other.js more.js -o bundle.js</code>. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.</li>
+<li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code>&#x3C;script src="JS/bundle.js">&#x3C;/script></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
+</ol>
+<h3>Node.js backend</h3>
+<p>You're probably not going to use wellioviz on the backend. The one exception is if you wanted to create a large number of static SVGs of well logs from your LAS files.</p>
+<ol>
+<li>Install <a href="https://nodejs.org/en/download/">node.js</a></li>
+<li>Install <a href="https://www.npmjs.com/get-npm">npm</a></li>
+<li>Run <code>npm install wellioviz</code>.</li>
+<li>To use wellioviz from the command line run <code>node --require wellioviz</code>. This should start the node console with wellioviz included. You should see a <code>></code> on the next console line.</li>
+<li>Now run <code>var wellio = require('wellioviz')</code></li>
+<li>The console output should be <code>undefined</code>, which is a big scary, sorry. </li>
+<li>However, if you run <code>wellioviz.help</code> you'll now see returned on the next line =<code>'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'</code>.</li>
+<li>Further wellioviz functions are just the variable name you created <code>wellioviz</code> + <code>.</code> + function name with arguments included inside the <code>()</code>.</li>
+</ol>
+<h3>Jupyter Notebook with JavaScript Kernal</h3>
 <p>-- IN PROGRESS --</p>
-<h4>Jupyter Notebook with Python Kernal</h4>
+<h3>Jupyter Notebook with Python Kernal</h3>
 <p>-- IN PROGRESS --</p>
-<h4>Observable Notebook - JavaScript</h4>
-<p>-- IN PROGRESS --</p>
-<h4>Website</h4>
-<p>-- IN PROGRESS --</p>
-<h4>Node.js backend</h4>
-<p>-- IN PROGRESS --</p>
+<h3>Install Wellioviz for Contributing to Wellioviz</h3>
+<ol>
+<li>Fork the repository <a href="https://github.com/JustinGOSSES/wellioviz.git">https://github.com/JustinGOSSES/wellioviz.git</a> on github.com to your own account. </li>
+<li>Clone your fork of repository that is now on your github page <code>git clone https://github.com/</code>+yourUserName+<code>/wellioviz.git</code>.</li>
+<li>Navigate inside <code>cd wellioviz</code>.</li>
+<li>Make changes</li>
+<li>To see Wellioviz changes appear in the demo.html page, make sure to run browserify after any changes as described in the second option for install under "Install for Use on Front-end Website".</li>
+<li>When you are ready to merge changes back, push the changes back to your account on github.com. </li>
+<li>On the repository page of your fork, you'll see a button called "new pull request" on the left side to the right of the "branch" button. Click that to start a pull request. And follow the prompts.r</li>
+</ol>
 
     <div class='pre p1 fill-light mt0'>Installation</div>
   
@@ -436,8 +487,16 @@
 
   
 
-  <p>Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. Therefore, most of the demos used something else to load the well log curves and get them into something that is either JSON or JSON like.</p>
-<h4>Hellow World Using a Well Log coming in as a sparse JSON and plotted with Wellioviz.</h4>
+  <h3>Usage context</h3>
+<p>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js version 5 visualization library.</p>
+<p>Central to wellioviz is the concept that what to plot and how to plot it can be put into a JSON template of instructions. That template will already has sensible defaults filled in, such that the end-user only has to understand what they want to change about the plotting, not all possible changes or the d3.js code itself.</p>
+<p>Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. Therefore, most of the demos use something else to load the well log curves and get them into JSON. The companion library, Wellio, is the standard option for converting LAS 2.0 files into JSON, but wellioviz is built with the idea that developers will write adaptors to transform their data into the wellioviz template before passing it to the curveBox function.</p>
+<p>The curveBox function takes in information about what to plot and how to plot it from the standardized template and draws a curvebox. The curvebox can have one or more on curves within it. </p>
+<p>There are a variety of help functions for certain tasks like plotting all the curves in a well, but the only mandetory parts of wellioviz really are (1) the template given to the curveBox() function and (2) the curveBox function. Everything else is optional depending on need. </p>
+<p>For context on usage, it is probably worthwhile to also check out the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/ARCHITECTURE.MD">Architecture</a> section and examples listed in the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/README.md">README</a>.md.</p>
+<h4>Hellow World Using a Well Log coming in as a las2.0 and plotted with Wellioviz.</h4>
+<p><a href="https://observablehq.com/@justingosses/hello-wellioviz">https://observablehq.com/@justingosses/hello-wellioviz</a></p>
+<h4>Demo Showing Some of The Variables In the Plotting Template Via a Well Log coming in as a las2.0 and plotted with Wellioviz.</h4>
 <p>-- IN PROGRESS --</p>
 <h4>Hello World Using a Well Log in LAS 2.0 &#x26; JavaScript Notebook  (Wellio &#x26; Wellioviz)</h4>
 <p>-- IN PROGRESS --</p>
@@ -497,7 +556,7 @@
   
 
   <h3>Basic Sketch</h3>
-<p><a href="/images/wellioviz_architecture.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/wellioviz_architecture.png" style="max-width:800px;"></a></p>
+<p><a href="docs/images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png" style="max-width:800px;"></a></p>
 <h3>Different Data Inputs</h3>
 <p>This code is written with the assumption that different users will want to
 bring in well log data in different formats. Code will need to transform that
@@ -578,7 +637,7 @@ curveBox function.</p>
 </li>
 </ul>
 <h3>Where to Make Changes After A Visualization is Already Plotted Once</h3>
-<p><a href="images/wellioviz_architecture_data_change.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a></p>
+<p><a href="images/wellioviz_architecture_data_change.png"><img src="/images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a></p>
 <h3>Visualization Organization</h3>
 <ul>
 <li>Curvebox: The central unit of visualization. Can contain either a single Curve or multiple curves, typically from one well.</li>
@@ -586,8 +645,8 @@ curveBox function.</p>
 <li>CurveboxHolder aka a Cross-section: Made up of multiple curveboxes. Each curvebox can represent a different well or different curves (one per box) from the same well. Typically no plotting between curveboxes but there may be for tops in cross-sections. </li>
 </ul>
 <h4>Organization of CurveBoxes &#x26; Cross-sections</h4>
-<p><a href="images/curve_box_org.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/curve_box_org.png" style="max-width:800px;"></a>
-<a href="images/cross_section_org.png"><img src="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/images/cross_section_org.png" style="max-width:800px;"></a></p>
+<p><a href="images/curve_box_org.png"><img src="/images/curve_box_org.png" style="max-width:800px;"></a>
+<a href="images/cross_section_org.png"><img src="/images/cross_section_org.png" style="max-width:800px;"></a></p>
 <h3>Initial List of Curvebox Visualization Visual Parts</h3>
 <p>These will all be generated by the curveBox() function according to the explicity instructions within the plotting JSON given to the curveBox() function.</p>
 <ul>
@@ -658,9 +717,45 @@ curveBox function.</p>
   
 
   <h2>What Type of Contributions Are Welcome?</h2>
-<p>All contributions welcome! </p>
+<p>All contributions welcome! Big, small, code, documentation, or questions.</p>
+<p>If you’d like to contribute, but you’re not so experienced with JavaScript, look for good first issue tags or email the maintainer for suggestions.</p>
 <h2>Code of Conduct</h2>
 <p><a href="CODE_OF_CONDUCT.md">Code of Conduct</a></p>
+<h3>What Issues Exist</h3>
+<p>Check the <a href="https://github.com/JustinGOSSES/wellioviz/issues">Issues</a> for outstanding issues &#x26; features under development. There is an attempt at organizing the issues using the project board <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">here</a>. For the most part, the issues board contains all the issues.. just in an organization to make it clear what is being worked on now.</p>
+<h2>Ways to Contribute!</h2>
+<h3>Issues, Features, and Bug Reports</h3>
+<p>Add a feature request or bug report issue <a href="https://github.com/JustinGOSSES/wellioviz/issues/new/choose">here</a> When you add an issue, there will be two choices for issues templates to use, one for bug reports and another for feature requests.</p>
+<h3>Pull Requests</h3>
+<p>If you've fixed an issue in the code, please consider submitting a pull request, which is basically a fork or branch of this repository submitted back to it with a specific change.
+1. State why you are proposing this change.
+2. When you make a pull request, please try to keep the changes to one feature at a time if possible (not always possible).
+3. We don't have tests yet, so in lieu of that, please fork the active Observable notebook noted in the README add in your changed functions and make sure everything still works with your changes. If there are changes needed to be made to get things to work that are not in index.js but only in the Observable notebook, please note that in your pull request. This is unlikely but theoretically possible.</p>
+<ul>
+<li>Please consider other use-cases and make sure your code changes aren't narrowing the scope of wellioviz to only your use case.</li>
+<li>Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a></li>
+</ul>
+<h3>Documentation</h3>
+<p>Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.</p>
+<h4>How to Make the Docs</h4>
+<ul>
+<li>Add new markdown files to the docs by making changes to docs/doc_setup.yml or the documentation between /** **/ in the index.js file.</li>
+<li>Install locally <a href="https://github.com/documentationjs/documentation#documentation">documentation.js</a></li>
+<li>Run in the home directory of wellioviz:<br>
+<code>documentation build ./dist/index.js --config docs/doc_setup.yml -f html -o docs</code></li>
+<li>go to the docs directory. Run: <code>python3 -m http.server</code> Please note, that if you run the server from anywhere except the docs directory, the image links won't work. The docs page on the github.com repository runs from the docs folder on the master branch as well.</li>
+<li>Go to a browser and open <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a> . You should see the docs.</li>
+</ul>
+<h3>How to Edit &#x26; Generate Demo.html</h3>
+<p>The tricky part is probably the bundle.js script. Everything else works like vanilla JavaScript.
+To regenerate the bundle.js script in docs/js used in the demo.html page:</p>
+<ul>
+<li>install npm</li>
+<li>use npm to install: browserify, wellio.js, and d3.js</li>
+<li>navigate in terminal to docs/js folder</li>
+<li>run <code>browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js</code>
+This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.</li>
+</ul>
 <h2>How I'm Keeping Things In Sync During Development.</h2>
 <p>The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! </p>
 <p>The active notebook is noted in the README. </p>
@@ -681,26 +776,7 @@ curveBox function.</p>
 <li>The docs are updated gradually. Sometimes there will be new or changing functions that aren't populated yet.</li>
 <li>The html demo page is not kept in sync and will only be updated occasionally. The Observable notebooks are better places to look for up-to-date demos. In particular, <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this</a> notebook, which pulls all its wellioviz code from NPM. You can change which version of wellioviz code is pulled from NPM by changing the cell towards the top that pulls in wellioviz for use.</li>
 </ul>
-<h2>Ways to Contribute!</h2>
-<h3>Documentation</h3>
-<p>Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.</p>
-<h4>How to Edit &#x26; Generate the Docs</h4>
-<p>There is Documentation on how to make the docs in the docs folder<a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/MakingDocs.md"> here</a></p>
-<h3>Contributing Code</h3>
-<p>Code contributions are always welcome, whether it be small modifications or entire features. </p>
-<p>As the project gains momentum, check the <a href="https://github.com/JustinGOSSES/wellioviz/issues">Issues</a> for outstanding issues &#x26; features under development. There is an attempt at organizing the issues using the project board <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">here</a>. For the most part, the issues board contains all the issues.. just in an organization to make it clear what is being worked on now.</p>
-<p>If you’d like to contribute, but you’re not so experienced with JavaScript, look for good first issue tags or email the maintainer for suggestions.</p>
-<h3>Issues, Features, and Bug Reports</h3>
-<p>Add a feature request or bug report issue <a href="https://github.com/JustinGOSSES/wellioviz/issues/new/choose">here</a> When you add an issue, there will be two choices for issues templates to use, one for bug reports and another for feature requests.</p>
-<h3>Pull Requests</h3>
-<p>If you've fixed an issue in the code, please consider submitting a pull request, which is basically a fork or branch of this repository submitted back to it with a specific change.
-1. State why you are proposing this change.
-2. When you make a pull request, please try to keep the changes to one feature at a time if possible (not always possible).
-3. We don't have tests yet, so in lieu of that, please fork the active Observable notebook noted in the README add in your changed functions and make sure everything still works with your changes. If there are changes needed to be made to get things to work that are not in index.js but only in the Observable notebook, please note that in your pull request. This is unlikely but theoretically possible.</p>
-<ul>
-<li>Please consider other use-cases and make sure your code changes aren't narrowing the scope of wellioviz to only your use case.</li>
-<li>Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a></li>
-</ul>
+<h2>And lastly</h2>
 <p>If anything is confusing, open an issue.</p>
 
     <div class='pre p1 fill-light mt0'>Contributing</div>
@@ -803,7 +879,8 @@ curveBox function.</p>
   
 
   <h3>Functions used to get data in.</h3>
-<p>As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  </p>
+<p>As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.
+If you're going to use LAS 2.0 files and want to convert them JSON, the best way is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. </p>
 
     <div class='pre p1 fill-light mt0'>loading functions</div>
   

@@ -24,7 +24,8 @@ toc:
     - name: loading functions
       description: |
         ### Functions used to get data in. 
-        As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too.  
+        As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too. 
+        If you're going to use LAS 2.0 files and want to convert them JSON, the best way is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. 
     - name: Transformation funtions
       description: |
         Data is reformatted into a form that wellioviz can used.
