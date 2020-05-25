@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "unpkg": "dist/index.js",
   "scripts": {
-    "test": "dist/test/test.js"
+    "test": "dist/test/test.js",
+    "make_bundle": "cd docs/js && browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js"
   },
   "files": [
     "dist/test/test.js",
@@ -45,6 +46,7 @@
     "wellio": "^0.1.7"
   },
   "devDependencies": {
+    "browserify": "^16.5.1",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
