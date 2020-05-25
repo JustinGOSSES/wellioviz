@@ -1,3 +1,4 @@
+
 .plot_holder{
 	margin-top: 10px;
 	float:left;
@@ -13,10 +14,6 @@
 	margin: 10px 5px 0 0;
 }
 
-body{
-	margin-left:3%;
-	padding-bottom: 50px;
-}
 
 [hidden] {
   display: none !important;
