@@ -1,31 +1,37 @@
 ### Usage context
 
-WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js version 5 visualization library.
+For context on usage, it is probably worthwhile to quickly check out the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/ARCHITECTURE.MD">Architecture</a> section and examples listed in the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/README.md">README</a>.md then come back here.
 
-Central to wellioviz is the concept that what to plot and how to plot it can be put into a JSON template of instructions. That template will already has sensible defaults filled in, such that the end-user only has to understand what they want to change about the plotting, not all possible changes or the d3.js code itself.
+WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs using the d3.js version 5 visualization library.
 
-Wellioviz doesn't have any native well log file loading capabilities. It is only visualization. Therefore, most of the demos use something else to load the well log curves and get them into JSON. The companion library, Wellio, is the standard option for converting LAS 2.0 files into JSON, but wellioviz is built with the idea that developers will write adaptors to transform their data into the wellioviz template before passing it to the curveBox function.
 
-The curveBox function takes in information about what to plot and how to plot it from the standardized template and draws a curvebox. The curvebox can have one or more on curves within it. 
+#### Key Concepts on Usage
+##### Sensible Defaults the Developer Doesn't Have to Mess With
+<b>Central to wellioviz is the concept that what to plot and how to plot it can be put into a JSON template of instructions.</b> That template will already has sensible defaults filled in, such that the end-user only has to understand what they want to change about the plotting, not all possible changes or the d3.js code itself.
 
-There are a variety of help functions for certain tasks like plotting all the curves in a well, but the only mandatory parts of wellioviz really are (1) the template given to the curveBox() function and (2) the curveBox function. Everything else is optional depending on need. 
+##### Wellioviz handles the visualization. It does not handle loading of well logs or a graphic user interface
+Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. 
 
-For context on usage, it is probably worthwhile to also check out the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/ARCHITECTURE.MD">Architecture</a> section and examples listed in the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/README.md">README</a>.md.
 
-#### Hello World Using a Well Log coming in as a las2.0 and plotted with Wellioviz.
-https://observablehq.com/@justingosses/hello-wellioviz
+Therefore, most of the demos use something else to load the well log curves and get them into JSON. The companion library, Wellio.js, is the standard option for converting LAS 2.0 files into JSON entirely with JavaScript. However, wellioviz is built with the idea that developers will write adaptors to transform their data into the wellioviz template before passing it to the curveBox function. 
 
-#### Demo Showing Some of The Variables In the Plotting Template Via a Well Log coming in as a las2.0 and plotted with Wellioviz.
+One example of this is the sparse input data transformation functions Wellioviz has that are built around the idea that some people want to strip out the parts of the well log you aren't plotting and only send to Wellioviz on the front-end the minimal amount of data needed. This speeds things up by shrinking the data you need to send from a backend system to the front-end.
+
+
+##### Installation
+Check out the installation section of the docs for more information on how to get wellioviz working in different settings.
+
+##### Wellioviz has some functions you will never use and a few that will be always used!
+</b>The only mandatory parts of wellioviz really are (1) the plotting JSON template given to the curveBox() function that contains information about what to plot and how to plot it and (2) the curveBox function. Everything else is optional depending on need.</b>
+
+##### Hello Wellioviz: Easy Way to Get Started
+The absolutely quickest way to get started (no installation) is to try it out on ObservableHQ. There is a <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz demo</a> that shows how to bring wellioviz into Observable and uses a small number of functions to quickly plot an example LAS 2.0 well log. You can also load your own LAS 2.0 well logs file from your computer into the browser and try it.  
+
+##### GUI that introduces all the configurable variables in Wellioviz
 -- IN PROGRESS --
 
-#### Hello World Using a Well Log in LAS 2.0 & JavaScript Notebook  (Wellio & Wellioviz)
+##### Hello World Using a Well Log in LAS 2.0 & JavaScript Notebook  (Wellio & Wellioviz)
 -- IN PROGRESS --
 
-#### Hello World Using a Well Log in LAS 2.0 & both Python (LASIO) and JavaScript (Wellio & Wellioviz)
--- IN PROGRESS --
-
-### Examples:
-#### Observable Demos:
-- <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2</a>
-#### Website Demos:
+##### Hello World Using a Well Log in LAS 2.0 & both Python (LASIO) and JavaScript (Wellio & Wellioviz)
 -- IN PROGRESS --

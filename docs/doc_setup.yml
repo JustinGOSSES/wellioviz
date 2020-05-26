@@ -5,38 +5,28 @@ toc:
       Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
   
   - name: Installation
-    children:
-    - name: Installation Instructions for Various Settings
-      file: docs/INSTALLATION.md
+    file: INSTALLATION.md
 
   - name: Usage
-    children:
-    - name: How to use Wellioviz
-      file: docs/USAGE.md
+    file: USAGE.md
 
   - name: Architecture
-    children:
-    - name: with Pictures!
-      file: docs/ARCHITECTURE.MD
+    file: ARCHITECTURE.MD
 
   - name: Contributing
-    children:
-    - name: Different Ways to Contribute
-      file: CONTRIBUTING.md
+    file: CONTRIBUTING.md
 
-
-    
-    
-    
-
-  - name: API
+  - name: Wellioviz Function Types
     children:
 
     - name: loading functions
       description: |
         ### Functions used to get data in. 
-        As people are going to bring in data in different formats from different places, there will be mulitiple functions. Multiple functions for different wants to get data in and differently formatted data. Users can use their own functions for this too. 
-        If you're going to use LAS 2.0 files and want to convert them JSON, the best way is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. 
+        Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. 
+        
+        If you're going to use LAS 2.0 files and don't mind loading the entire file and then converting it all to JSON on the front-end, the best way to do that is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. 
+
+        If you're not using wellio.js, getting the data into the front-end for JavaScript is done by functions you write.s
     - name: Transformation funtions
       description: |
         Data is reformatted into a form that wellioviz can used.
@@ -62,3 +52,4 @@ toc:
         - {@link #define_wellioviz}
         - {@link #getexampletemplate}
         - {@link #getfakeincomingsparsedataexample}
+  - name: Wellioviz Functions
