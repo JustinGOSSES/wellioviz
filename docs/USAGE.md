@@ -10,7 +10,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 <b>Central to wellioviz is the concept that what to plot and how to plot it can be put into a JSON template of instructions.</b> That template will already has sensible defaults filled in, such that the end-user only has to understand what they want to change about the plotting, not all possible changes or the d3.js code itself.
 
 ##### Wellioviz handles the visualization. It does not handle loading of well logs or a graphic user interface
-Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. 
+Wellioviz doesn't have any native well log file loading capabilities. It is only visualization.
 
 
 Therefore, most of the demos use something else to load the well log curves and get them into JSON. The companion library, Wellio.js, is the standard option for converting LAS 2.0 files into JSON entirely with JavaScript. However, wellioviz is built with the idea that developers will write adaptors to transform their data into the wellioviz template before passing it to the curveBox function. 
