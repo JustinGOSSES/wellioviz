@@ -7,7 +7,9 @@ Central to wellioviz is the concept that how to plot and what to plot can be put
 [![NPM](https://nodei.co/npm/wellioviz.png?compact=true)](https://npmjs.org/package/wellioviz)
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="images/well_log_screenshot_new.png" style="width:75%"></a>
 
-
+##### Github Repository: https://github.com/JustinGOSSES/wellioviz
+##### Documentation: https://justingosses.github.io/wellioviz/#introduction
+##### Observable Notebook Demo: https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm
 
 ## Why?
 
