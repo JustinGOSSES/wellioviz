@@ -16,6 +16,9 @@ toc:
   - name: Contributing
     file: CONTRIBUTING.md
 
+  - name: SWUNG Hackathon
+    file: HACKATHON.md
+
   - name: Wellioviz Function Types
     children:
 
