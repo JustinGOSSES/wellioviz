@@ -10,6 +10,9 @@
 - Add new variable to plotting template and main plotting function curveBox()  <=== need to write instructions for this!
 
 ### 2. Larger more complicating Issues "from the pile"
+- Issue boards:
+    - Prime Issue Board: https://github.com/JustinGOSSES/wellioviz/projects/1
+    - Userfriendliness Issue Board: https://github.com/JustinGOSSES/wellioviz/projects/2
 ### 3. Build GUIs for the visualization library
 
 
