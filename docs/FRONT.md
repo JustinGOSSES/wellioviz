@@ -6,7 +6,7 @@ Central to wellioviz is the concept that how to plot and what to plot can be put
 
 [![NPM](https://nodei.co/npm/wellioviz.png?compact=true)](https://npmjs.org/package/wellioviz)
 
-<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="/images/well_log_screenshot_new.png" style="width:75%"></a>
+<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="images/well_log_screenshot_new.png" style="width:75%"></a>
 
 
 ## Why?
