@@ -310,13 +310,19 @@
 <h5>Documentation: <a href="https://justingosses.github.io/wellioviz/#introduction">https://justingosses.github.io/wellioviz/#introduction</a></h5>
 <h5>Observable Notebook Demo: <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm</a></h5>
 <h2>Why?</h2>
-<p>Most geologists who make charts of well logs via code seem to do so in Python, often working in Jupyter notebooks. Very often, they will use matplotlib. This is fine for a lot of things, but there are some use-cases where having a JavaScript visualization library makes for a better option.</p>
+<p>Most geologists who make charts of well logs via code seem to do so in Python, often working in Jupyter notebooks. This is fine for a lot of things, but there are some use-cases where having a JavaScript visualization library makes for a better option.</p>
 <ol>
-<li><b>Websites that provide well logs in LAS format to audiences on the web.</b> Storing PNGs created with matplotlib is less than ideal as all the images have to be created, stored, and loaded before the user needs them. This takes a lot of storage space. Visualizing the logs on the fly in JavaScript is a better option.</li>
-<li><b>GUIs for well correlation.</b> Although this is slightl out of scope for wellioviz, it could be extended to do this. This could be web-based or built with web tools but running locally. Currently, there really isn't a free open-source application for well log correlation, at least to the best of my knowledge. This means if you don't have Enterprise scale money, (academics, non-profits, hobbyest, students, people in between jobs, etc.) you're often limited to correlating a handfull of wells at most using paper and pencil. Wellio (something to convert LAS files to JSON) and Wellioviz (something to visualize well logs as JSON into SVGs on a webpage) are critical pieces for this to exist.</li>
-<li><b>Interactive well plotting with export into SVG or full HTML Pages from inside Jupyter Notebook</b> Matplotlib is very limited in terms of true interactivity. Other python visualization packages are better but not as powerful as JavaScript visualizations running in a Jupyter notebook. Building the visualization in JavaScript also opens up the possibility of working in a Jupyter notebook and exporting wells as SVGs or full HTML webpages.</li>
+<li>
+<p><b>GUIs for well correlation.</b> Currently, there really isn't a free open-source application for well log correlation, at least to the best of my knowledge. This means if you don't have Enterprise scale money, (academics, non-profits, hobbyest, students, people in between jobs, etc.) you're often limited to correlating a handfull of wells at most using paper and pencil. Wellio (something to convert LAS files to JSON) and Wellioviz (something to visualize well logs as JSON into SVGs on a webpage) are critical pieces for a free non-code web-based well log visualization to exist. Although a full GUI (graphic user interface) is slightly out of scope for wellioviz, wellioviz could be extended to do this. </p>
+</li>
+<li>
+<p><b>Websites that provide well logs to audiences on the web.</b> Although PNG images of well logs could be created and stored on server before being sent on demand to the front-end, this is less than ideal as all the images have to be created, stored, and loaded before the user needs them. This takes a lot of storage space. Additionally, it prevents scrolling, zooming, and overlays. Visualizing the logs on the fly in JavaScript is a better option for websites that want to given users an idea what a well log contains.</p>
+</li>
+<li>
+<p><b>Interactive well plotting with export into SVG or full HTML Pages from inside Jupyter Notebook</b>  Building the visualization in JavaScript also opens up the possibility of working in a Jupyter notebook and exporting wells as SVGs or full HTML webpages. Additionally, there aren't any limits on interactivity that you might hit in a python visualization package that is wrapping JavaScript behind the scenes. Kepler.gl in Jupyter is an example of this functionality where beautiful maps get created inside Jupyter notebook and get published as self-contained front-end only full HTML/CS/JS pages.</p>
+</li>
 </ol>
-<p><i>Point of Caution: To some of extent, all of these are not completely in scope of the project. Wellioviz is a visualization library. 1,2,&#x26;3 also require graphic user interfaces and other things built on top of wellioviz.</i></p>
+<p><i>Point of Caution: To some of extent, all of these are not completely in scope of the project. Wellioviz is a visualization library. 1,2,&#x26;3 also require graphic user interfaces and other things that are better to be built as projects that utilize wellioviz.</i></p>
 <h4>Further Thinking...</h4>
 <p><a href="docs/BRAINSTORMS.md">BRAINSTORM.md</a>
 <a href="docs/audiences.md">AUDIENCES.md</a></p>
@@ -336,7 +342,7 @@
     <h2>Installation Instructions for Various Environments</h2>
 <h4>Intro to node.js modules</h4>
 <p>Wellioviz is a node.js module. If you've only brought JavaScript into an HTML project via a <script></script> tag, you probably want to learn a little bit about how to use npm (node package manager) to get JavaScript modules into your front-end code. <a href="https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072">This</a> is a short demo that only covers the minimum you need to know.</p>
-<h3>Observable Notebook - JavaScript</h3>
+<h3>Install in an Observable Notebook - JavaScript</h3>
 <h5>(easiest way to get started)</h5>
 <p>To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says <code>wellioviz = require('https://bundle.run/wellioviz)</code> </p>
 <p>If you want to bring in a specific version, you can add the version on the end like so <code>wellioviz = require('https://bundle.run/wellioviz@0.0.25')</code>.</p>
@@ -370,7 +376,7 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <li>If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command <code>browserify main.js other.js more.js -o bundle.js</code>. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.</li>
 <li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code>&#x3C;script src="JS/bundle.js">&#x3C;/script></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
 </ol>
-<h3>Node.js backend</h3>
+<h3>Install Locally and Use Via Node.js backend</h3>
 <p>You're probably not going to use wellioviz on the backend. The one exception is if you wanted to create a large number of static SVGs of well logs from your LAS files.</p>
 <ol>
 <li>Install <a href="https://nodejs.org/en/download/">node.js</a></li>
@@ -382,9 +388,9 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <li>However, if you run <code>wellioviz.help</code> you'll now see returned on the next line =<code>'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'</code>.</li>
 <li>Further wellioviz functions are just the variable name you created <code>wellioviz</code> + <code>.</code> + function name with arguments included inside the <code>()</code>.</li>
 </ol>
-<h3>Jupyter Notebook with JavaScript Kernal</h3>
+<h3>Install in a Jupyter Notebook with JavaScript Kernal</h3>
 <p>-- IN PROGRESS --</p>
-<h3>Jupyter Notebook with Python Kernal</h3>
+<h3>Install in a Jupyter Notebook with Python Kernal</h3>
 <p>-- IN PROGRESS --</p>
 <h3>Install Wellioviz for Contributing to Wellioviz</h3>
 <ol>
@@ -409,20 +415,21 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
   </h2>
 
   
-    <h3>Usage context</h3>
+    <h2>Usage context</h2>
 <p>For context on usage, it is probably worthwhile to quickly check out the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/ARCHITECTURE.MD">Architecture</a> section and examples listed in the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/README.md">README</a>.md then come back here.</p>
 <p>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs using the d3.js version 5 visualization library.</p>
-<h4>Key Concepts on Usage</h4>
-<h5>Sensible Defaults the Developer Doesn't Have to Mess With</h5>
+<h3>Key Concepts on Usage</h3>
+<h4>Sensible Defaults the Developer Doesn't Have to Mess With</h4>
 <p><b>Central to wellioviz is the concept that what to plot and how to plot it can be put into a JSON template of instructions.</b> That template will already has sensible defaults filled in, such that the end-user only has to understand what they want to change about the plotting, not all possible changes or the d3.js code itself.</p>
-<h5>Wellioviz handles the visualization. It does not handle loading of well logs or a graphic user interface</h5>
+<h4>Wellioviz handles the visualization. It does not handle loading of well logs or a graphic user interface</h4>
 <p>Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. </p>
 <p>Therefore, most of the demos use something else to load the well log curves and get them into JSON. The companion library, Wellio.js, is the standard option for converting LAS 2.0 files into JSON entirely with JavaScript. However, wellioviz is built with the idea that developers will write adaptors to transform their data into the wellioviz template before passing it to the curveBox function. </p>
 <p>One example of this is the sparse input data transformation functions Wellioviz has that are built around the idea that some people want to strip out the parts of the well log you aren't plotting and only send to Wellioviz on the front-end the minimal amount of data needed. This speeds things up by shrinking the data you need to send from a backend system to the front-end.</p>
-<h5>Installation</h5>
-<p>Check out the installation section of the docs for more information on how to get wellioviz working in different settings.</p>
-<h5>Wellioviz has some functions you will never use and a few that will be always used!</h5>
+<h4>Installation</h4>
+<p>Check out the <a href="/installation">installation section</a> of the docs for more information on how to get wellioviz working in different settings.</p>
+<h4>Wellioviz has some functions you will never use and a few that will be always used!</h4>
 <p></b>The only mandatory parts of wellioviz really are (1) the plotting JSON template given to the curveBox() function that contains information about what to plot and how to plot it and (2) the curveBox function. Everything else is optional depending on need.</b></p>
+<h3>Examples of How to Use</h3>
 <h5>Hello Wellioviz: Easy Way to Get Started</h5>
 <p>The absolutely quickest way to get started (no installation) is to try it out on ObservableHQ. There is a <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz demo</a> that shows how to bring wellioviz into Observable and uses a small number of functions to quickly plot an example LAS 2.0 well log. You can also load your own LAS 2.0 well logs file from your computer into the browser and try it.  </p>
 <h5>GUI that introduces all the configurable variables in Wellioviz</h5>
