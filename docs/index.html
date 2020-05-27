@@ -26,9 +26,9 @@
               
                 
                 <li><a
-                  href='#wellioviz'
+                  href='#introduction'
                   class="h5 bold black caps">
-                  wellioviz
+                  Introduction
                   
                 </a>
                 
@@ -87,60 +87,18 @@
                 
                 <li><a
                   href='#wellioviz-function-types'
-                  class="h5 bold black caps toggle-sibling">
+                  class="h5 bold black caps">
                   Wellioviz Function Types
-                  <span class='icon'>▸</span>
+                  
                 </a>
-                
-                <div class='toggle-target display-none'>
-                  
-                  <ul class='list-reset py1-ul pl1'>
-                    <li class='h5'><span>Static members</span></li>
-                    
-                      <li><a
-                        href='#loading-functions'
-                        class='regular pre-open'>
-                        .loading functions
-                      </a></li>
-                    
-                      <li><a
-                        href='#transformation-funtions'
-                        class='regular pre-open'>
-                        .Transformation funtions
-                      </a></li>
-                    
-                      <li><a
-                        href='#packaging-functions'
-                        class='regular pre-open'>
-                        .Packaging functions
-                      </a></li>
-                    
-                      <li><a
-                        href='#plotting-functions'
-                        class='regular pre-open'>
-                        .Plotting functions
-                      </a></li>
-                    
-                      <li><a
-                        href='#helper-functions'
-                        class='regular pre-open'>
-                        .Helper Functions
-                      </a></li>
-                    
-                    </ul>
-                  
-                  
-                  
-                  
-                </div>
                 
                 </li>
               
                 
                 <li><a
-                  href='#wellioviz-functions'
+                  href='#-------------'
                   class="h5 bold black caps">
-                  Wellioviz Functions
+                  -------------
                   
                 </a>
                 
@@ -218,16 +176,6 @@
               
                 
                 <li><a
-                  href='#convertwelljsontoobjv2'
-                  class="">
-                  convertWellJSONToObjV2
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#fromjsonofwellgetthingsforplotting'
                   class="">
                   fromJSONofWEllGetThingsForPlotting
@@ -251,6 +199,16 @@
                   href='#takeinarraysandgetobjectofcurvedataforplotting'
                   class="">
                   takeInArraysAndGetObjectOfCurveDataForPlotting
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#convertwelljsontoobjv2'
+                  class="">
+                  convertWellJSONToObjV2
                   
                 </a>
                 
@@ -338,13 +296,27 @@
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='wellioviz' class='mt0'>
-    wellioviz
+  <h2 id='introduction' class='mt0'>
+    Introduction
   </h2>
 
   
-    <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
+    <h1>wellio_Viz.js</h1>
+<h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
 <p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
+<p><a href="https://npmjs.org/package/wellioviz"><img src="https://nodei.co/npm/wellioviz.png?compact=true" alt="NPM"></a></p>
+<p><a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="/images/well_log_screenshot_new.png" style="width:75%"></a></p>
+<h2>Why?</h2>
+<p>Most geologists who make charts of well logs via code seem to do so in Python, often working in Jupyter notebooks. Very often, they will use matplotlib. This is fine for a lot of things, but there are some use-cases where having a JavaScript visualization library makes for a better option.</p>
+<ol>
+<li><b>Websites that provide well logs in LAS format to audiences on the web.</b> Storing PNGs created with matplotlib is less than ideal as all the images have to be created, stored, and loaded before the user needs them. This takes a lot of storage space. Visualizing the logs on the fly in JavaScript is a better option.</li>
+<li><b>GUIs for well correlation.</b> Although this is slightl out of scope for wellioviz, it could be extended to do this. This could be web-based or built with web tools but running locally. Currently, there really isn't a free open-source application for well log correlation, at least to the best of my knowledge. This means if you don't have Enterprise scale money, (academics, non-profits, hobbyest, students, people in between jobs, etc.) you're often limited to correlating a handfull of wells at most using paper and pencil. Wellio (something to convert LAS files to JSON) and Wellioviz (something to visualize well logs as JSON into SVGs on a webpage) are critical pieces for this to exist.</li>
+<li><b>Interactive well plotting with export into SVG or full HTML Pages from inside Jupyter Notebook</b> Matplotlib is very limited in terms of true interactivity. Other python visualization packages are better but not as powerful as JavaScript visualizations running in a Jupyter notebook. Building the visualization in JavaScript also opens up the possibility of working in a Jupyter notebook and exporting wells as SVGs or full HTML webpages.</li>
+</ol>
+<p><i>Point of Caution: To some of extent, all of these are not completely in scope of the project. Wellioviz is a visualization library. 1,2,&#x26;3 also require graphic user interfaces and other things built on top of wellioviz.</i></p>
+<h4>Further Thinking...</h4>
+<p><a href="docs/BRAINSTORMS.md">BRAINSTORM.md</a>
+<a href="docs/audiences.md">AUDIENCES.md</a></p>
 
   
 </section></div>
@@ -727,109 +699,31 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
           
         
           
-          <section class='p2 mb2 clearfix bg-white minishadow'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='wellioviz-function-types' class='mt0'>
+    Wellioviz Function Types
+  </h2>
 
   
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='wellioviz-function-types'>
-      Wellioviz Function Types
-    </h3>
-    
-    
-  </div>
-  
-
-  
-
-    <div class='pre p1 fill-light mt0'>Wellioviz Function Types</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Static Members</div>
-    <div class="clearfix">
-  
-    <div class='border-bottom' id='loading-functions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>loading functions</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <h3>Functions used to get data in.</h3>
+    <hr>
+<h2>Loading Function</h2>
+<h4>(spoiler, there are none)</h4>
 <p>Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. </p>
 <p>If you're going to use LAS 2.0 files and don't mind loading the entire file and then converting it all to JSON on the front-end, the best way to do that is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. </p>
 <p>If you're not using wellio.js, getting the data into the front-end for JavaScript is done by functions you write.s</p>
-
-    <div class='pre p1 fill-light mt0'>loading functions</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='transformation-funtions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>Transformation funtions</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Data is reformatted into a form that wellioviz can used.</p>
+<hr>
+<h2>Template functions</h2>
+<h4>Functions that give you templates back</h4>
+<p>Wellioviz works with JSON templates. </p>
+<p>These functions give you examples templates that you can simply add your data into. </p>
+<ul>
+<li><a href="#curveBoxTemplateExamples">#curveBoxTemplateExamples</a> Takes a string of either "example" or "definitions". Depending which one you provide, it either returns an example of the JSON template you'll give to curveBox() function to plot the curvebox filled out with sensible defaults or it has "definitions" of what is a valid value for each key. You might use this function to get an example template than run it as an argument with the JSON version of your well log you recently got from wellio.js and some other arguments as in the function putArrayOfLogsIntoSection().</li>
+<li><a href="#getFakeIncomingSparseDataExample">#getFakeIncomingSparseDataExample</a> Is a function that returns an example of the "sparse input style" JSON that is loaded as the first step in wellioviz if you'r using the sparse input style of data ingest. You wouldn't use this at all if you're getting your LAS 2.0 files into JSON using wellio.js. Check out the architecture diagrams if this doesn't make sense.</li>
+</ul>
+<hr>
+<h2>Transformation funtions</h2>
+<h4>Data is reformatted into a form that wellioviz can used.</h4>
 <h4>Transformation functions for data that comes in as Wellio.js style JSON</h4>
 <ul>
 <li><a href="#convertwelljsontoobj">#convertwelljsontoobj</a> </li>
@@ -840,212 +734,37 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 <ul>
 <li><a href="#createdeptharray">#createdeptharray</a></li>
 </ul>
-
-    <div class='pre p1 fill-light mt0'>Transformation funtions</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='packaging-functions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>Packaging functions</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
+<hr>
+<h2>Packaging functions</h2>
+<p>Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.</p>
 <ul>
 <li><a href="#multiplelogplot">#multiplelogplot</a></li>
 </ul>
-
-    <div class='pre p1 fill-light mt0'>Packaging functions</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='plotting-functions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>Plotting functions</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
+<hr>
+<h2>Plotting functions</h2>
+<p>How the data should be plotted and what data should be plotted is turned into an SVG.</p>
 <ul>
 <li><a href="#curvebox">#curvebox</a></li>
 <li><a href="#savesvg">#savesvg</a></li>
 </ul>
 <hr>
-
-    <div class='pre p1 fill-light mt0'>Plotting functions</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='helper-functions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>Helper Functions</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
+<h2>Helper Functions</h2>
+<p>In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.</p>
 <ul>
 <li><a href="#define_wellioviz">#define_wellioviz</a></li>
 <li><a href="#getexampletemplate">#getexampletemplate</a></li>
 <li><a href="#getfakeincomingsparsedataexample">#getfakeincomingsparsedataexample</a></li>
 </ul>
 
-    <div class='pre p1 fill-light mt0'>Helper Functions</div>
   
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-</div>
-
-  
-
-  
-
-  
-
-  
-</section>
-
+</section></div>
           
         
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='wellioviz-functions' class='mt0'>
-    Wellioviz Functions
+  <h2 id='-------------' class='mt0'>
+    -------------
   </h2>
 
   
@@ -1510,105 +1229,6 @@ and returns the data array of objects that D3.js likes for data used in plotting
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='convertwelljsontoobjv2'>
-      convertWellJSONToObjV2
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>convertWellJSONToObjV2 is a function that takes in sparse style JSON and other information and returns an array of that information properly packaged,
-array of curves names, and a string for UWI
-and returns the data array of objects that D3.js likes for data used in plotting.</p>
-
-    <div class='pre p1 fill-light mt0'>convertWellJSONToObjV2(depth: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, curve_data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, UWI: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, CurveNames: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>depth</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
-	    An array of strings that can be parsed into floats that represents the depth along the well log curves in a curvebox.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>curve_data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
-	    An array of arrays of strings that can be parsed into floats that represents each of the well log curves in a curvebox.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>UWI</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    A string for the well log UWI ID
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>CurveNames</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
-	    An array of strings that represent curvenames, one for each well log curve in curve_data
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
-        An array of objects properly formatted for next step ___.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
     <h3 class='fl m0' id='fromjsonofwellgetthingsforplotting'>
       fromJSONofWEllGetThingsForPlotting
     </h3>
@@ -1836,6 +1456,105 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='convertwelljsontoobjv2'>
+      convertWellJSONToObjV2
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>convertWellJSONToObjV2 is a function that takes in sparse style JSON and other information and returns an array of that information properly packaged,
+array of curves names, and a string for UWI
+and returns the data array of objects that D3.js likes for data used in plotting.</p>
+
+    <div class='pre p1 fill-light mt0'>convertWellJSONToObjV2(depth: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, curve_data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, UWI: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, CurveNames: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>depth</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of strings that can be parsed into floats that represents the depth along the well log curves in a curvebox.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of arrays of strings that can be parsed into floats that represents each of the well log curves in a curvebox.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>UWI</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    A string for the well log UWI ID
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>CurveNames</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of strings that represent curvenames, one for each well log curve in curve_data
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        An array of objects properly formatted for next step ___.
+
+      
+    
   
 
   

@@ -1,9 +1,8 @@
 toc:
-  - name: wellioviz
-    description: |
-      ### WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
-      Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
   
+  - name: Introduction
+    file: FRONT.md
+
   - name: Installation
     file: INSTALLATION.md
 
@@ -18,41 +17,52 @@ toc:
 
   - name: SWUNG Hackathon
     file: HACKATHON.md
-
+    
   - name: Wellioviz Function Types
-    children:
-
-    - name: loading functions
-      description: |
-        ### Functions used to get data in. 
+    description: |
+        ----  
+        ## Loading Function
+        #### (spoiler, there are none)
         Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. 
         
         If you're going to use LAS 2.0 files and don't mind loading the entire file and then converting it all to JSON on the front-end, the best way to do that is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. 
 
         If you're not using wellio.js, getting the data into the front-end for JavaScript is done by functions you write.s
-    - name: Transformation funtions
-      description: |
-        Data is reformatted into a form that wellioviz can used.
+        ----  
+        ## Template functions
+        #### Functions that give you templates back 
+        Wellioviz works with JSON templates. 
+        
+        These functions give you examples templates that you can simply add your data into. 
+        - {@link #curveBoxTemplateExamples} Takes a string of either "example" or "definitions". Depending which one you provide, it either returns an example of the JSON template you'll give to curveBox() function to plot the curvebox filled out with sensible defaults or it has "definitions" of what is a valid value for each key. You might use this function to get an example template than run it as an argument with the JSON version of your well log you recently got from wellio.js and some other arguments as in the function putArrayOfLogsIntoSection().
+        - {@link #getFakeIncomingSparseDataExample} Is a function that returns an example of the "sparse input style" JSON that is loaded as the first step in wellioviz if you'r using the sparse input style of data ingest. You wouldn't use this at all if you're getting your LAS 2.0 files into JSON using wellio.js. Check out the architecture diagrams if this doesn't make sense.
+
+        ----  
+        ## Transformation funtions
+        #### Data is reformatted into a form that wellioviz can used.
+        
         #### Transformation functions for data that comes in as Wellio.js style JSON
         - {@link #convertwelljsontoobj} 
         - {@link #fromjsonofwellgetthingsforplotting}
         - {@link #takeinarraysandgetobjectofcurvedataforplotting}
         #### Transformation functions for data that comes in as sparse style JSON
         - {@link #createdeptharray}
-    - name: Packaging functions
-      description: |
+        
+        ----  
+        ## Packaging functions
         Sensible defaults in a pre-packaged template that comes with wellioviz are combined with the reformatted data from the transformation step.
         - {@link #multiplelogplot}
-    - name: Plotting functions
-      description: |
+        
+        ----  
+        ## Plotting functions
         How the data should be plotted and what data should be plotted is turned into an SVG.
         - {@link #curvebox}
         - {@link #savesvg}
-        --------------------------------------------------------------------------------
-    - name: Helper Functions
-      description: |
+       
+        ----  
+        ## Helper Functions
         In addition to the 4 main groups of functions above, there are some odds and ends helper functions, mostly for getting templates and examples.
         - {@link #define_wellioviz}
         - {@link #getexampletemplate}
         - {@link #getfakeincomingsparsedataexample}
-  - name: Wellioviz Functions
+  - name: -------------

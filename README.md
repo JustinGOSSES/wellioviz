@@ -44,8 +44,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 2. <b>GUIs for well correlation.</b> Although this is slightl out of scope for wellioviz, it could be extended to do this. This could be web-based or built with web tools but running locally. Currently, there really isn't a free open-source application for well log correlation, at least to the best of my knowledge. This means if you don't have Enterprise scale money, (academics, non-profits, hobbyest, students, people in between jobs, etc.) you're often limited to correlating a handfull of wells at most using paper and pencil. Wellio (something to convert LAS files to JSON) and Wellioviz (something to visualize well logs as JSON into SVGs on a webpage) are critical pieces for this to exist.
 3. <b>Interactive well plotting with export into SVG or full HTML Pages from inside Jupyter Notebook</b> Matplotlib is very limited in terms of true interactivity. Other python visualization packages are better but not as powerful as JavaScript visualizations running in a Jupyter notebook. Building the visualization in JavaScript also opens up the possibility of working in a Jupyter notebook and exporting wells as SVGs or full HTML webpages.
 
-<i>Point of Caution: The last two are out of scope of this project. Wellioviz is built with the concept that those are possible ways wellioviz could be used.</i>
-
+<i>Point of Caution: To some of extent, all of these are not completely in scope of the project. Wellioviz is a visualization library. 1,2,&3 also require graphic user interfaces and other things built on top of wellioviz.</i>
 
 ## Architecture 
 <a href="images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png"></a>
