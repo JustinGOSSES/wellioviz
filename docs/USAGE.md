@@ -29,6 +29,9 @@ Check out the <a href="/installation">installation section</a> of the docs for m
 ##### Hello Wellioviz: Easy Way to Get Started
 The absolutely quickest way to get started (no installation) is to try it out on ObservableHQ. There is a <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz demo</a> that shows how to bring wellioviz into Observable and uses a small number of functions to quickly plot an example LAS 2.0 well log. You can also load your own LAS 2.0 well logs file from your computer into the browser and try it.  
 
+##### Observable Demo with Single Well & Multiple Well & Sparse Style Input Usage Examples
+https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm
+
 ##### GUI that introduces all the configurable variables in Wellioviz
 -- IN PROGRESS --
 
