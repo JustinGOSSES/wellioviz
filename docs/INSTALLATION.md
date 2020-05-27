@@ -4,7 +4,7 @@
 Wellioviz is a node.js module. If you've only brought JavaScript into an HTML project via a <script></script> tag, you probably want to learn a little bit about how to use npm (node package manager) to get JavaScript modules into your front-end code. <a href="https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072">This</a> is a short demo that only covers the minimum you need to know.
 
 
-### Observable Notebook - JavaScript 
+### Install in an Observable Notebook - JavaScript 
 ##### (easiest way to get started)
 To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says `wellioviz = require('https://bundle.run/wellioviz)` 
 
@@ -47,7 +47,7 @@ This way is slightly cleaner in terms of namespace. Additionally, you may not wa
 9. If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command `browserify main.js other.js more.js -o bundle.js`. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.
 10. Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag `<script src="JS/bundle.js"></script>`. You should be able to call wellioviz functions in your other JavaScript files now.
 
-### Node.js backend
+### Install Locally and Use Via Node.js backend
 You're probably not going to use wellioviz on the backend. The one exception is if you wanted to create a large number of static SVGs of well logs from your LAS files.
 
 1. Install <a href="https://nodejs.org/en/download/">node.js</a>
@@ -60,10 +60,10 @@ You're probably not going to use wellioviz on the backend. The one exception is 
 8. Further wellioviz functions are just the variable name you created `wellioviz` + `.` + function name with arguments included inside the `()`.
 
 
-### Jupyter Notebook with JavaScript Kernal
+### Install in a Jupyter Notebook with JavaScript Kernal
 -- IN PROGRESS --
 
-### Jupyter Notebook with Python Kernal
+### Install in a Jupyter Notebook with Python Kernal
 -- IN PROGRESS --
 
 ### Install Wellioviz for Contributing to Wellioviz

@@ -1,5 +1,5 @@
 ### Basic Sketch
-<a href="docs/images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png" style="max-width:800px;"></a>
+<a href="images/wellioviz_architecture.png"><img src="images/wellioviz_architecture.png" style="max-width:800px;"></a>
 
 ### Different Data Inputs
 
@@ -55,7 +55,7 @@ The further one gets through the steps, the more there is one way to do things a
     - 3. For single curve multiple wells, an array of curveNames acceptable in order or preference, multiple wellio JSON datas objects is all that is required at minimum. 
 
 ### Where to Make Changes After A Visualization is Already Plotted Once
-<a href="images/wellioviz_architecture_data_change.png"><img src="/images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a>
+<a href="images/wellioviz_architecture_data_change.png"><img src="images/wellioviz_architecture_data_change.png" style="max-width:800px;"></a>
 
 
 ### Visualization Organization
@@ -64,8 +64,8 @@ The further one gets through the steps, the more there is one way to do things a
 - CurveboxHolder aka a Cross-section: Made up of multiple curveboxes. Each curvebox can represent a different well or different curves (one per box) from the same well. Typically no plotting between curveboxes but there may be for tops in cross-sections. 
 
 #### Organization of CurveBoxes & Cross-sections
-<a href="images/curve_box_org.png"><img src="/images/curve_box_org.png" style="max-width:800px;"></a>
-<a href="images/cross_section_org.png"><img src="/images/cross_section_org.png" style="max-width:800px;"></a>
+<a href="images/curve_box_org.png"><img src="images/curve_box_org.png" style="max-width:800px;"></a>
+<a href="images/cross_section_org.png"><img src="images/cross_section_org.png" style="max-width:800px;"></a>
 
 
 
