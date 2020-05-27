@@ -1,4 +1,4 @@
-# wellio_Viz.js
+# wellioviz.js
 
 ### WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.
 
