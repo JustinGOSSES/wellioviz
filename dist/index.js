@@ -32,8 +32,11 @@
   // */ 
 
 module.exports = {
-
-//  wellio:require("wellio")
+/**
+ * This brings in wellio.js as a dependency used by wellioviz. It returns the object that contains all its functions as a module that is called like "module.exports.wellio.[insert a wellio.js function here]"
+ * @returns {obj} It returns the wellio.js object and all its functions as a module. 
+ */
+wellio:require("wellio")
 
 /**
  * This brings in d3.js as a dependency used by wellioviz. It returns the d3.js object and all its functions as a module that is called like "module.exports.d3.[insert a d3.js function here]"
