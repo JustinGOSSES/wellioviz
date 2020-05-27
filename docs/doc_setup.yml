@@ -21,6 +21,7 @@ toc:
   - name: Wellioviz Function Types
     description: |
         ----  
+        Loading, Templating, Transformation, Packaging, Plotting, Helping
         ## Loading Function
         #### (spoiler, there are none)
         Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. 

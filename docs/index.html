@@ -304,13 +304,8 @@
     <h1>wellioviz.js</h1>
 <h3>WELLIOVIZ is a JavaScript library that provides functionality to visualize well logs, particularly those already converted to JSON, using the d3.js visualization library.</h3>
 <p>Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.</p>
-<<<<<<< HEAD
 <p><a href="https://npmjs.org/package/wellioviz"><img src="https://nodei.co/npm/wellioviz.png?compact=true" alt="NPM"></a>
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="images/well_log_screenshot_new.png" style="width:75%"></a></p>
-=======
-<p><a href="https://npmjs.org/package/wellioviz"><img src="https://nodei.co/npm/wellioviz.png?compact=true" alt="NPM"></a></p>
-<p><a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="images/well_log_screenshot_new.png" style="width:75%"></a></p>
->>>>>>> 06339cab0d2e6f54670e5cbc73bb8bdea75abf39
 <h2>Why?</h2>
 <p>Most geologists who make charts of well logs via code seem to do so in Python, often working in Jupyter notebooks. Very often, they will use matplotlib. This is fine for a lot of things, but there are some use-cases where having a JavaScript visualization library makes for a better option.</p>
 <ol>
@@ -712,6 +707,7 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 
   
     <hr>
+<p>Loading, Templating, Transformation, Packaging, Plotting, Helping</p>
 <h2>Loading Function</h2>
 <h4>(spoiler, there are none)</h4>
 <p>Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. </p>
