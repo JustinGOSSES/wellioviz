@@ -421,8 +421,8 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <h3>Key Concepts on Usage</h3>
 <h4>Sensible Defaults the Developer Doesn't Have to Mess With</h4>
 <p><b>Central to wellioviz is the concept that what to plot and how to plot it can be put into a JSON template of instructions.</b> That template will already has sensible defaults filled in, such that the end-user only has to understand what they want to change about the plotting, not all possible changes or the d3.js code itself.</p>
-<h4>Wellioviz handles the visualization. It does not handle loading of well logs or a graphic user interface</h4>
-<p>Wellioviz doesn't have any native well log file loading capbilities. It is only visualization. </p>
+<h5>Wellioviz handles the visualization. It does not handle loading of well logs or a graphic user interface</h5>
+<p>Wellioviz doesn't have any native well log file loading capabilities. It is only visualization.</p>
 <p>Therefore, most of the demos use something else to load the well log curves and get them into JSON. The companion library, Wellio.js, is the standard option for converting LAS 2.0 files into JSON entirely with JavaScript. However, wellioviz is built with the idea that developers will write adaptors to transform their data into the wellioviz template before passing it to the curveBox function. </p>
 <p>One example of this is the sparse input data transformation functions Wellioviz has that are built around the idea that some people want to strip out the parts of the well log you aren't plotting and only send to Wellioviz on the front-end the minimal amount of data needed. This speeds things up by shrinking the data you need to send from a backend system to the front-end.</p>
 <h4>Installation</h4>
@@ -718,6 +718,7 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 </li>
 </ul>
 <h3>3. Build GUIs for the visualization library</h3>
+<p>This is more of a full hackathon project. What exists currently is best demonstrated by <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this Observable notebook</a> and this <a href="https://justingosses.github.io/wellioviz/demo.html">barebones demo webpage</a>. What doesn't exist yet is a webpage or Observable notebook where a non-code user can play around with all the style configuration variables in the plotting template to change things like colors, fills, line widths, sizes, etc. You can see an example of what is possible in the Observable notebook where there is a slider to change the dividing line between shale &#x26; silt and silt &#x26; sand in the gamma-ray log. </p>
 <h2>Things that Need to be Done Before Hackathon</h2>
 <ol>
 <li>More easy issues tagged.</li>
