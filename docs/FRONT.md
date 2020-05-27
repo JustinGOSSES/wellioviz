@@ -5,7 +5,7 @@
 Central to wellioviz is the concept that how to plot and what to plot can be put into a JSON template that has sensible defaults, such that the end-user only has to understand what they want to change about the plotting, not the whole d3.js code.
 
 [![NPM](https://nodei.co/npm/wellioviz.png?compact=true)](https://npmjs.org/package/wellioviz)
-
+<a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="images/well_log_screenshot_new.png" style="width:75%"></a>
 
 
 
