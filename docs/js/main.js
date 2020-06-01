@@ -23,10 +23,7 @@ function checkForJSONThenCollapse(divID){
   console.log(temp_json)
   if (!temp_json['WELL INFORMATION BLOCK']){"button did nothing because well JSON doesn't exist"}
   else{
-    //// Check if loading part is shown, if so collapse it first.
-    if(document.getElementById("wellupload").classList.contains("show")){
-      $("#wellupload").collapse("toggle")
-    }
+    $('.collapse').collapse("hide")
     //// toggle only the one clicked!
     $(divID).collapse("toggle")
   }

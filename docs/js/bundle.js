@@ -1899,6 +1899,7 @@ function checkForJSONThenCollapse(divID){
     if(document.getElementById("wellupload").classList.contains("show")){
       $("#wellupload").collapse("toggle")
     }
+    $('.collapse').collapse("hide")
     //// toggle only the one clicked!
     $(divID).collapse("toggle")
   }
