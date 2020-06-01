@@ -1888,6 +1888,24 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
   alert('The File APIs are not fully supported in this browser.');
 }
 
+//// Function that checks if a temp_json exists. If it does, it allows divs that manipulate that JSON to show
+function checkForJSONThenCollapse(divID){
+  console.log("divID",divID)
+  console.log("check check")
+  console.log(temp_json)
+  if (!temp_json['WELL INFORMATION BLOCK']){"button did nothing because well JSON doesn't exist"}
+  else{
+    //// Check if loading part is shown, if so collapse it first.
+    if(document.getElementById("wellupload").classList.contains("show")){
+      $("#wellupload").collapse("toggle")
+    }
+    //// toggle only the one clicked!
+    $(divID).collapse("toggle")
+  }
+}
+
+
+
 //// helper function that removes the text depiction of the las file. 
 function removeTextLAS(){
   fileContentsDiv = document.getElementById("fileContents");
@@ -1970,6 +1988,17 @@ function readInFilesFunction(){
 
 
 
+function changeMenuBarButtonColorOnConvert(){
+    //// CHANGE buttons from gray to blue in top row
+    var listButtons = document.getElementsByClassName("afterconvert")
+    console.log("list",list)
+    var i;
+    for (i = 0; i < listButtons.length; i++) {
+      // button.style.backgroundColor = "blue";
+      console.log("button",listButtons[i])
+      listButtons[i].classList.add("btn-primary")
+    }
+}
 
 //// Function that calls several other functions involved with converting a new well from las to json 
 //// updating the global variables as needed, and changing some new DOM elements to reflect the new well data.
@@ -1987,6 +2016,7 @@ function convert_and_startHelpers(){
   //// adds inner html to p for the UWI name of the well in questino that was just loaded and converted
   console.log("temp_json['WELL INFORMATION BLOCK'] =", JSON.stringify(temp_json["WELL INFORMATION BLOCK"]))
   document.getElementById("which_well").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+  changeMenuBarButtonColorOnConvert()
 }
 
 
