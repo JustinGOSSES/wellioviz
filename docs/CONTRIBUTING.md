@@ -73,3 +73,5 @@ These means the code in certain <a href="https://observablehq.com/@justingosses/
 
 ## And lastly
 If anything is confusing, open an issue.
+
+ALSO - If you got here relate to the hackathon, check out the Transform2020 Hackathon notes: https://justingosses.github.io/wellioviz/#swung-hackathon
