@@ -84,9 +84,9 @@
 		<h5>Display LAS files as text</h5>
 	</div>
 	<div class="well_step">
-		<p><b>A.</b> Display of .las files as text</p>
-		<button onclick="displayFileFunction() " class='btn btn-secondary'>display text</button>
-		<button onclick="removeTextLAS()" class='btn btn-secondary'>remove text</button>
+		<p><b>A.</b> Display of .las files as text</p>btn-primary
+		<button onclick="displayFileFunction() " class='btn btn-primary'>display text</button>
+		<button onclick="removeTextLAS()" class='btn btn-primary'>remove text</button>
 		<div id="fileContents"></div>
 	</div>
 	</div>
@@ -96,7 +96,7 @@
 		<p>Buttons present are dependent on the curves available in the well loaded</p>
 
 		<div id="curveButtons_holder"></div>
-		<p>Remove all curves</p><button onclick="remove_DOM_children()" class='btn btn-secondary'>remove</button>
+		<p>Remove all curves</p><button onclick="remove_DOM_children()" class='btn btn-primary'>remove</button>
 		<!-- <div>
 			<p>Remove all curves</p>
 			<button onclick="remove_DOM_children()">remove</button>
@@ -112,17 +112,11 @@
 		<h5>Display well log converted into JSON</h5>
 		<p><b>C.</b> Print well in wellio.js JSON format</p>
 		<button onclick="print_well()" class='btn btn-secondary'>print json</button>
-		<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-secondary'>remove json</button>
+		<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-primary'>remove json</button>
 
 	</br>
 <div style="float:left"></div>
 	</br>
-	<!-- <div style="float:left;width:100%">
-		<span>
-			<button onclick="print_well()" class='btn btn-secondary'>Print well in wellio.js JSON format</button>
-			<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-secondary'>remove json</button>
-		</span>
-	</div> -->
 	</br>
 	<div class="well_left_full_width">
 		<pre id="well_json_prettyprint" class="prettyprint">
@@ -134,7 +128,7 @@
 	<div id="welldownloadjson" class="collapse well_step_left groupBorder">
 		<div class="well_step">
 			<h5>Download well as JSON file</h5>
-			<button id="download_button" onclick="download_test()" class='btn btn-secondary'>download</button>
+			<button id="download_button" onclick="download_test()" class='btn btn-primary'>download</button>
 		</div>
 	</div>
 	</div>
