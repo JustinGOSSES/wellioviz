@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>wellioviz 0.0.25 | Documentation</title>
+  <title>wellioviz 0.0.28 | Documentation</title>
   <meta name='description' content='Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>wellioviz</h3>
-          <div class='mb1'><code>0.0.25</code></div>
+          <div class='mb1'><code>0.0.28</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -637,15 +637,18 @@ curveBox function.</p>
 <li>Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a></li>
 </ul>
 <h3>Documentation</h3>
-<p>Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.</p>
+<p>Please submit a pull request or issue for anything confusing or absent in documentation as well. </p>
+<p>Wellioviz documentation is built with <a href="http://documentation.js.org/">documentation.js</a>, a library that grabs inline code documentation above each function and markdown files specified in docs/doc_setup.yml to build HTML documentation pages. You can find a live version of the docs <a href="https://justingosses.github.io/wellioviz/#introduction">here</a></p>
 <h4>How to Make the Docs</h4>
 <ul>
-<li>Add new markdown files to the docs by making changes to docs/doc_setup.yml or the documentation between /** **/ in the index.js file.</li>
+<li>Fork the original repository to your profile. Clone a copy locally.</li>
+<li>Add new markdown files to the docs by making changes to docs/doc_setup.yml or edit documentation between /** **/ in the index.js file or edit any of the markdown files specified in doc_setup.yml.</li>
 <li>Install locally <a href="https://github.com/documentationjs/documentation#documentation">documentation.js</a></li>
 <li>Run in the home directory of wellioviz:<br>
 <code>documentation build ./dist/index.js --config docs/doc_setup.yml -f html -o docs</code></li>
-<li>go to the docs directory. Run: <code>python3 -m http.server</code> Please note, that if you run the server from anywhere except the docs directory, the image links won't work. The docs page on the github.com repository runs from the docs folder on the master branch as well.</li>
-<li>Go to a browser and open <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a> . You should see the docs.</li>
+<li>go to the docs directory. Run: <code>python3 -m http.server</code> . Alternatively, if you have node.js and would like to use that you can run in your terminal <code>http-server</code>. Please note, that if you run the server from anywhere except the docs directory, the image links won't work. The docs page on the github.com repository runs from the docs folder on the master branch as well.</li>
+<li>Go to a browser and open <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a> . You should see the docs. They'll look just like the docs mentioned above that are live as a github pages page but with your changes. </li>
+<li>When you're satisfied with the change, push back to your branch &#x26; then submit a pull request back to the original repository. </li>
 </ul>
 <h3>How to Edit &#x26; Generate Demo.html</h3>
 <p>The tricky part is probably the bundle.js script. Everything else works like vanilla JavaScript.
@@ -694,20 +697,48 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
   
     <h1>Hackathon!</h1>
 <h4>Plans for SWUNG Transform Hackathon 2020</h4>
-<h2>Three Types of Sprint Issues to Pick From:</h2>
+<h2>Types of Sprint Issues to Pick From:</h2>
 <h3>1. Tiny Issues that will have accompanying walk throughs to show new users how to make that type of change</h3>
 <ul>
 <li>
 <p>Make Changes to Documentation:</p>
 <ul>
-<li>Improve something in the documentation that you found confusing.</li>
-<li>Add terminal examples to usuage &#x26; install sections of the documentation.</li>
-<li>Add gallery section with links to additional examples that have,are,will be created.</li>
+<li>A. Improve something in the documentation that you found confusing.</li>
+<li>B. Add terminal examples to usuage &#x26; install sections of the documentation.</li>
+<li>C. Add gallery section with links to additional examples that have,are,will be created.</li>
 </ul>
 </li>
-<li>Add new variable to plotting template and main plotting function curveBox()  &#x3C;=== need to write instructions for this!</li>
 </ul>
-<h3>2. Larger more complicating Issues "from the pile"</h3>
+<ol>
+<li>
+<p>Fork an example on Observable and add in your own well log &#x26; change how it is displayed.</p>
+<ul>
+<li>ObservableHQ is like Jupyter but for JavaScript and exist online as a live, editable, reactive notebook that can be edited and forked. Learn a little about them <a href="https://observablehq.com/@observablehq/a-taste-of-observable">here</a> and in a <a href="https://observablehq.com/@observablehq/observable-for-jupyter-users">Observable for Jupyter users</a>.</li>
+<li>You can find several Observable notebook demos on the Wellioviz<a href="https://github.com/JustinGOSSES/wellioviz/blob/master/README.md">README</a>, which you can fork and then change. </li>
+<li>One of the first things to do is to add in your own LAS 2.0 format well logs. While the "hello wellioviz" notebook has just one way to get a well log into Observable, <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this</a> notebook shows a couple different ways.</li>
+<li>In addition to changing the well, you can change colors, line thickness, fill colors, full cutoffs, width, heights, percent of well visible via scrolling, and a range of other configuration. The data and configuration is given to the curveBox() function in a standard format. You can see an example of that format by running wellioviz.curveBoxTemplateExamples("example") and examining the JSON returned. To see what the curveBox() function expects as values for each key, run wellioviz.curveBoxTemplateExamples("definitions").</li>
+<li>Observable lets you make interactive user interfaces very easily. I've built a small slide to change the cutoff values for the fill in the gammay-ray log in <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this Observable notebook</a>. Do a serch to find "experimental shale/silt cutoff slider" to go right to the slider widget. <a href="https://observablehq.com/@jashkenas/inputs">This</a> observable notebook has a great introduction to inputs and things like slider widgets. There's great little demos that could be made with widgets like this to show other interactive control of some of wellioviz's configuration options.</li>
+</ul>
+</li>
+<li>
+<p>Improve the documentation!</p>
+<ul>
+<li>The documentation for wellioviz is built with documentation.js. Like most documentation tools, it works but can be frustrating. I promise it isn't as bad as using Sphinx in Python though.</li>
+<li>You can find some instructions for re-building the documentation after a change is made in the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/docs/CONTRIBUTING.md">Contributing.md</a> file.</li>
+<li>If there is anything confusiong, change it. If you think something could use more detailed instructions, change it. If you followed the instructions and dthey didn't work, submit an issue or add alternative instructions to the documentation.</li>
+</ul>
+</li>
+</ol>
+<h3>2. Medium Scale Work</h3>
+<ul>
+<li>
+<p>Add new variable to plotting template and main plotting function curveBox()  &#x3C;=== need to write instructions for this!</p>
+<ul>
+<li>Possible Idea: Add functionality such that developers can turn off the default behavior that removes any curveBox that already exists in a div when you provide that div as the place for a new curvebox. You might want to turn that off so users can add multiple curves to the same div without having to handle the multiple div creation on their side. Brief discussion in <a href="https://github.com/JustinGOSSES/wellioviz/issues/98">this</a> issue.</li>
+</ul>
+</li>
+</ul>
+<h3>3. Larger more complicating Issues "from the pile"</h3>
 <ul>
 <li>
 <p>Issue boards:</p>
@@ -717,14 +748,9 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 </ul>
 </li>
 </ul>
-<h3>3. Build GUIs for the visualization library</h3>
+<p>There are a variety of issues that can be worked on for wellioviz. Some issues that are better suited for small hackathon scale springs have been tagged with either <a href="https://github.com/JustinGOSSES/wellioviz/labels/hackathon_easy">"hackathon_easy"</a> or <a href="https://github.com/JustinGOSSES/wellioviz/issues?q=is%3Aissue+is%3Aopen+label%3Ahackathon_advanced">"hackathon_advanced"</a>.</p>
+<h3>4. Build GUIs for the visualization library</h3>
 <p>This is more of a full hackathon project. What exists currently is best demonstrated by <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">this Observable notebook</a> and this <a href="https://justingosses.github.io/wellioviz/demo.html">barebones demo webpage</a>. What doesn't exist yet is a webpage or Observable notebook where a non-code user can play around with all the style configuration variables in the plotting template to change things like colors, fills, line widths, sizes, etc. You can see an example of what is possible in the Observable notebook where there is a slider to change the dividing line between shale &#x26; silt and silt &#x26; sand in the gamma-ray log. </p>
-<h2>Things that Need to be Done Before Hackathon</h2>
-<ol>
-<li>More easy issues tagged.</li>
-<li>Tests started.</li>
-<li>Example HTML/CS/JS GUI created that goes beyong single path barebones and let's user change some of Wellioviz's options.</li>
-</ol>
 
   
 </section></div>
