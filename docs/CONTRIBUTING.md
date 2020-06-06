@@ -24,15 +24,19 @@ If you've fixed an issue in the code, please consider submitting a pull request,
 - Follow the PUll REQUEST template <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/.github/pull_request_template.md">here</a>
 
 ### Documentation
-Anything confusing or absent in documentation as well. Inline documentation, documentation built with documentation.js, tests, example incoming data jsons, and code changes are all welcome. Briefly check issues to see if your issue already exists.
+Please submit a pull request or issue for anything confusing or absent in documentation as well. 
+
+Wellioviz documentation is built with <a href="http://documentation.js.org/">documentation.js</a>, a library that grabs inline code documentation above each function and markdown files specified in docs/doc_setup.yml to build HTML documentation pages. You can find a live version of the docs <a href="https://justingosses.github.io/wellioviz/#introduction">here</a>
 
 #### How to Make the Docs
-- Add new markdown files to the docs by making changes to docs/doc_setup.yml or the documentation between /** **/ in the index.js file.
+- Fork the original repository to your profile. Clone a copy locally.
+- Add new markdown files to the docs by making changes to docs/doc_setup.yml or edit documentation between /** **/ in the index.js file or edit any of the markdown files specified in doc_setup.yml.
 - Install locally <a href="https://github.com/documentationjs/documentation#documentation">documentation.js</a>
 - Run in the home directory of wellioviz:    
   `documentation build ./dist/index.js --config docs/doc_setup.yml -f html -o docs`
-- go to the docs directory. Run: `python3 -m http.server` Please note, that if you run the server from anywhere except the docs directory, the image links won't work. The docs page on the github.com repository runs from the docs folder on the master branch as well.
-- Go to a browser and open http://localhost:8000/index.html . You should see the docs.
+- go to the docs directory. Run: `python3 -m http.server` . Alternatively, if you have node.js and would like to use that you can run in your terminal `http-server`. Please note, that if you run the server from anywhere except the docs directory, the image links won't work. The docs page on the github.com repository runs from the docs folder on the master branch as well.
+- Go to a browser and open http://localhost:8000/index.html . You should see the docs. They'll look just like the docs mentioned above that are live as a github pages page but with your changes. 
+- When you're satisfied with the change, push back to your branch & then submit a pull request back to the original repository. 
 
 
 ### How to Edit & Generate Demo.html
