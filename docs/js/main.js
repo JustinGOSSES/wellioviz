@@ -70,7 +70,7 @@ function readInLASFromASSETS(){
         });
 }
 
-//// function for "Load into browser memeory" button
+//// function for "Load into browser memory" button
 function readInFilesFunction(){
   //// removes all status spans for uploads
   removeInnerHTML("upload-file-info");
