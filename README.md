@@ -10,7 +10,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 
 ## Demos & Examples
 
-### Observable Demos
+#### Observable Demos
 1. Hello Wellioviz Mini Demo in ObservableHQ.com
     - Link: https://observablehq.com/@justingosses/hello-wellioviz
     - Status: Up to date.
@@ -20,12 +20,12 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 3. Observable Notebook Where Code is Developed. Has functions written-out inline. 
     - Status: May be ahead of code in this repository sometimes.
     - Link: <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">here</a>
-
+#### Full Websites
 4. HTML demo as github pages page in this repository
     - Status: Up to Date (almost always). Currently a bare-bones example but plan to flesh out more.
     - Link: Building a basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html 
 
-## Community Built Demos!
+#### Community Built Demos!
 <INSERT YOUR EXAMPLE HERE VIA A PULL REQUEST !!!>
 
 
