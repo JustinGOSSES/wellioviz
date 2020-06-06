@@ -25,6 +25,10 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
     - Status: Up to Date (almost always). Currently a bare-bones example but plan to flesh out more.
     - Link: Building a basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html 
 
+## Community Built Demos!
+<INSERT YOUR EXAMPLE HERE VIA A PULL REQUEST !!!>
+
+
 #### Alterative Observable-notebook-based demos out of date
 - Status: Way out of date! but usefull to check out for illustrative purposes maybe.
 - Link: Other older Observable notebooks that use older versions of wellioviz code but give further idea what is possible are: 
