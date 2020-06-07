@@ -43,6 +43,7 @@
   "dependencies": {
     "d3": "^5.15.0",
     "npm": "^6.14.5",
+    "wellioviz": "^0.0.28",
     "wellio": "^0.1.7"
   },
   "devDependencies": {
