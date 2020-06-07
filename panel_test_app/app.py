@@ -10,7 +10,7 @@ if __name__ == "__main__":
     docs_files.append('docs')
     docs_path = '/'.join(docs_files)
     main_dir = '/'.join(main_dir)
-    with open(docs_path + '/index.html', 'r', encoding='utf-8') as html_file:
+    with open(docs_path + '/well_viz_html.html', 'r', encoding='utf-8') as html_file:
         index_html = html_file.read()
     pn.extension('d3', js_files={'wellio': main_dir + '/dist/index.js'})
     main_column = pn.Column(width=900)
