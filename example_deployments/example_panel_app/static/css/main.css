@@ -1,0 +1,65 @@
+
+.plot_holder{
+	margin-top: 10px;
+	float:left;
+}
+
+.log_plot{
+	margin-top:10px;
+}
+
+.thumb {
+	height: 75px;
+	border: 1px solid #000;
+	margin: 10px 5px 0 0;
+}
+
+
+[hidden] {
+  display: none !important;
+}
+
+.well_file_upload {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	filter: opacity(0);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	opacity: 0;
+	background-color: transparent;
+	color: transparent;
+}
+
+
+div.well_step {
+	margin-top: 1em;
+}
+
+div.well_step_left {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	float: left;
+	width: 100%;
+}
+
+div.well_pos_relative {
+	position: relative;
+}
+
+div.well_left_full_width {
+	float: left;
+	width: 100%
+}
+
+div.well_left {
+	float: left;
+}
+
+button.unavailable {
+	color:"white";
+}
+
+div.groupBorder{
+	border-style: ridge;
+}

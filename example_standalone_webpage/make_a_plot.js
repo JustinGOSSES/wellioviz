@@ -56,36 +56,4 @@ async function plot_log(div_id) {
             "curve2": ""
         }], "well_holder_1D", 200, 700, "DEPT")
     wellioviz.multipleLogPlot(div_id, [gr_plot_template_noFill, gr_plot_template_1, resd_plot_template_1, poro_plot_template_1], true)
-
-    // Get Template
-    // d3.json(json_file).then(function (data) {
-    //     // Load json and plot it
-    //     // let well_d3_obj = wellioviz.convertWellJSONToObj(
-    //     //     data,
-    //     //     Object.keys(data.CURVES),
-    //     //     data['WELL INFORMATION BLOCK']['UWI']['DATA'],
-    //     //     'DEPTH')
-    //     let ShaleSiltCutOff = 80
-    //     let SiltSandCutOff = 55
-    //     let three_things_2 = wellioviz.fromJSONofWEllGetThingsForPlotting(data, 'DEPTH')
-    //     var example_template = wellioviz.curveBoxTemplateExamples("example")
-    //     gr_plot_template_1 = wellioviz.minimumDataIntoTemplateFunc(example_template, three_things_2['well_log_curves_reformatted_for_d3'], three_things_2['uwi'], ["GR"], ["black"], ["API"],
-    //         [{
-    //             "curve_name": "GR",
-    //             "fill": "yes",
-    //             "fill_direction": "right",
-    //             "cutoffs": [0, ShaleSiltCutOff, SiltSandCutOff],
-    //             "fill_colors": ["yellow", "orange", "gray"],
-    //             "curve2": ""
-    //         }], "well_holder_1A", 200, 800, "DEPTH")
-    //     // cali_plot_template_noFill = wellioviz.minimumDataIntoTemplateFunc(example_template,three_things_2['well_log_curves_reformatted_for_d3'],three_things_2['uwi'],["CALI"],["black"],["IN"],[
-    //     //     {"curve_name":"GR","fill":"no","fill_direction":"left","cutoffs":[0,ShaleSiltCutOff,SiltSandCutOff],"fill_colors":["gray","orange","yellow"],"curve2":""}],"well_holder_1A",200,800,"DEPTH")
-    //     result_1 = wellioviz.multipleLogPlot(div_id, [gr_plot_template_1], true)
-    //
-    //
-    //     // return visualization
-    //     // return result_1
-    // })
-    // return result_1
-
 }
