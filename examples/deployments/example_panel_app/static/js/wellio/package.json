@@ -1,0 +1,86 @@
+{
+  "_args": [
+    [
+      "wellio@0.1.7",
+      "C:\\Users\\natha\\PycharmProjects\\wellioviz"
+    ]
+  ],
+  "_from": "wellio@0.1.7",
+  "_id": "wellio@0.1.7",
+  "_inBundle": false,
+  "_integrity": "sha512-J0E39NeUT0PWTrULO4EsP0uOx9HWOfNtJIKFLHsFw3hlRn6pES1YLBQvRIiFFFRN1b4oPzqrxE2d/PEn9oKfOw==",
+  "_location": "/wellio",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "wellio@0.1.7",
+    "name": "wellio",
+    "escapedName": "wellio",
+    "rawSpec": "0.1.7",
+    "saveSpec": null,
+    "fetchSpec": "0.1.7"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/wellio/-/wellio-0.1.7.tgz",
+  "_spec": "0.1.7",
+  "_where": "C:\\Users\\natha\\PycharmProjects\\wellioviz",
+  "author": {
+    "name": "Justin Gosses"
+  },
+  "bugs": {
+    "url": "https://github.com/JustinGOSSES/wellio.js/issues"
+  },
+  "description": "Provides functionality to load a LAS 2.0 formatted well log file and convert it to a json file and then return different information about the well log",
+  "devDependencies": {
+    "ajv-cli": "^3.0.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "tape": "~4.9.0"
+  },
+  "files": [
+    "dist/index.js",
+    "dist/test/test.js",
+    "dist/test/test.LAS",
+    "dist/test/test_lasload.js"
+  ],
+  "homepage": "https://github.com/JustinGOSSES/wellio.js#readme",
+  "keywords": [
+    "LAS",
+    "LAS2.0",
+    "Well",
+    "Well-log",
+    "log",
+    "geology",
+    "stratigraphy",
+    "geoscience",
+    "IO",
+    "well",
+    "welllog",
+    "Log",
+    "geology",
+    "welly",
+    "lasio"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "wellio",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustinGOSSES/wellio.js.git"
+  },
+  "scripts": {
+    "test": "dist/test/test.js",
+    "test-all": "tape dist/test/test*.js",
+    "test-las2json": "tape dist/test/las2json/test_*.js",
+    "test-lasload": "tape dist/test/test_lasload.js"
+  },
+  "unpkg": "dist/index.js",
+  "version": "0.1.7"
+}

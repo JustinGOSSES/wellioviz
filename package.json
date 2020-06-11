@@ -1,6 +1,6 @@
 {
   "name": "wellioviz",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.",
   "main": "dist/index.js",
   "unpkg": "dist/index.js",
@@ -42,8 +42,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "d3": "^5.15.0",
-    "d3.js": "0.0.2-security",
     "npm": "^6.14.5",
+    "wellioviz": "^0.0.28",
     "wellio": "^0.1.7"
   },
   "devDependencies": {

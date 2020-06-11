@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="example_panel_app/static/js/test_bokeh.js", type="text/javascript"></script>
+    <script src="example_panel_app/static/js/d3/dist/d3.js", type="text/javascript"></script>
+    <script src="example_panel_app/static/js/wellio/bundle.js", type="text/javascript"></script>
+    <script src="example_panel_app/static/js/wellio/dist/index.js", type="text/javascript"></script>
+<!--    <script src="example_panel_app/static/js/wellioviz/dist/index.js", type="text/javascript"></script>-->
+    <script src="example_panel_app/static/js/make_a_plot.js", type="text/javascript"></script>
+     {{ bokeh_css }}
+     {{ bokeh_js }}
+
+    <link rel="stylesheet" href="example_panel_app/static/css/main.css">
+</head>
+<body>
+<!--<script>-->
+<!--    {% include 'main.js' %}-->
+<!--    </script>-->
+    {{ plot_div|indent(8) }}
+    {{ plot_script|indent(8) }}
+    <div id="current_log"></div>
+ </body>
+</html>
