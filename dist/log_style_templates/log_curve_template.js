@@ -1,9 +1,12 @@
 // Base sort of abstract template, specialized templates can override pieces of this
 const fill_template = require('../fill_templates/curve_fill_template');
-class LogCurveTemplate {
+const BaseTemplate = require("../base_template")
+
+class LogCurveTemplate extends BaseTemplate {
     // const obj = {}
     // Define Default Settings Values
     constructor(params={}) {
+        super();
         this.curve_name = "default"
         this.color = "black"
         this.stroke_type = "solid"
@@ -24,9 +27,7 @@ class LogCurveTemplate {
         // Define Template Functions
         // TODO: decide if null are handled here or at load validation
         //Update template based on passed params
-        for (const [key, value] in Object.entries(params)){
-            obj[key] = value
-        }
+        this.handle_params(params)
     }
     // Simple function to set the data that is associated with this curve
     define_data(data) {

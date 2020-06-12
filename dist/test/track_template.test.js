@@ -10,7 +10,7 @@ let test_curve_data = [
 let test_curve = new log_curve_template().set_curve_and_data('RHOB', test_curve_data)
 
 test('default track name is a property',  () => {
-    expect(new track_template()).toHaveProperty("track_name")
+    expect(new track_template()).toHaveProperty("track_template_name")
 })
 
 test('add curve works',  () => {

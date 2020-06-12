@@ -47,7 +47,11 @@
          * @returns {obj} It returns the d3.js object and all its functions as a module.
          */
         d3: require("d3"),
-
+        TrackTemplate: require('./log_style_templates/log_curve_template'),
+        WellLogTemplate: require('./well_log_templates/well_log_template'),
+        WellSectionTemplate: require('./well_section_templates/well_section_templates'),
+        CurveFillTemplate: require('./fill_templates/curve_fill_template'),
+        LogCurveTemplate: require('./log_style_templates/log_curve_template'),
         /**
          * A function that directs users to the docs if they need help.
          * @returns {string} It says = I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. \n If you would like to know what wellioviz does, try wellioviz.define(). \n If you would like to see an example template, try wellioviz.curveBoxTemplateExamples('example') \n If you would like to see an example template defintions, try wellioviz.curveBoxTemplateExamples('definitions') Best of luck.
