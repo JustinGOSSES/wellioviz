@@ -41,9 +41,7 @@ class LogCurveTemplate extends BaseTemplate {
         this.define_data(data)
         this.curve_name = curve_name
         //Update template based on passed params
-        for (const [key, value] in Object.entries(params)){
-            obj[key] = value
-        }
+        this.handle_params(params)
         return this
     }
 

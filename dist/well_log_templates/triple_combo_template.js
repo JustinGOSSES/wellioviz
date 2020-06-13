@@ -6,6 +6,7 @@ class TripleCombo extends WellLogTemplate {
         this.tracks = {
             'CAL_GR': new CaliperGR_track()
         }
+        this.log_template_name = 'Triple Combination'
         this.handle_params(params)
     }
 }

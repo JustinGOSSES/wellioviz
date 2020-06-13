@@ -35,22 +35,38 @@ class TrackTemplate extends BaseTemplate{
     load_log(logs_dict) {
         console.log('setting up track data')
         var curves_with_data = {}
-        this.depth_curve = this.get_depth_track_name(logs_dict['CURVE_INFORMATION_BLOCK'])
-        for (const [key, value] in Object.entries(this.curves)){
+        this.depth_curve = this.get_depth_track_name(logs_dict['CURVE INFORMATION BLOCK'])
+        for (let curve in this.curves){
             // Check if the curve is in the well log
             // TODO: Put curve aliasing here!!
-            if(key in Object.keys(logs_dict['CURVE_INFORMATION_BLOCK'])){
+            if(curve in logs_dict['CURVE INFORMATION BLOCK']){
                 // Load the curve
-                let formatted_log = this.format_log(logs_dict['CURVES'], key)
-                curves_with_data[key] = value.set_curve_and_data(key, formatted_log)
+                let formatted_log = this.format_log(logs_dict['CURVES'], curve)
+                curves_with_data[curve] = this.curves[curve].set_curve_and_data(curve, formatted_log)
             } else {
-                curves_with_data[key] = value
+                curves_with_data[curve] = this.curves[curve]
             }
 
         }
         this.curves = curves_with_data
         return this
     }
+
+    draw(div_id) {
+        console.log('here')
+        // Define Track Size
+
+        // Define Track Header
+
+        // Handle Grid Lines
+
+        // Handle Mouseover
+
+        // TODO Secondary Depth Track
+
+        //
+    }
+
     /**
      * convertWellJSONToObj is a function that takes in wellio style JSON of all LAS file well log information,
      * array of curves names, and a string for UWI
@@ -63,6 +79,7 @@ class TrackTemplate extends BaseTemplate{
         let depth = curve_dict[this.depth_curve];
         let curve = curve_dict[curve_name]
         let curve_data = [];
+        curve_data.push(curve_dict[this.depth_curve])
         curve_data.push(curve_dict[curve_name]);
         var array_of_object;
         array_of_object = [];
@@ -83,3 +100,5 @@ class TrackTemplate extends BaseTemplate{
 
 }
 module.exports = TrackTemplate
+
+// TODO write a track that does text, images, rectangular boxes, etc

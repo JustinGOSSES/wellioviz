@@ -7,8 +7,7 @@
     "browserfy": "^1.0.0",
     "d3": "^5.15.0",
     "npm": "^6.14.5",
-    "wellio": "^0.1.8",
-    "wellioviz": "file:./dist/index.js"
+    "wellio": "^0.1.8"
   },
   "description": "Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.",
   "devDependencies": {
@@ -22,8 +21,7 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "tape": "~4.9.0",
-    "jest": "^26.0.1",
-    "wellioviz": "file:./dist/index.js"
+    "jest": "^26.0.1"
   },
   "directories": {
     "doc": "docs",
@@ -33,7 +31,12 @@
     "dist/test/data_for_testing.js",
     "dist/test/test.LAS",
     "dist/index.js",
-    "dist/log_style_templates/log_curve_template.js",
+    "dist/log_style_templates/",
+    "dist/fill_templates/",
+    "dist/track_templates/",
+    "dist/well_log_templates/",
+    "dist/well_section_templates/",
+    "dist/base_template.js",
     "dist/test/log_templates.test.js"
   ],
   "homepage": "https://github.com/JustinGOSSES/wellioviz",
@@ -79,7 +82,7 @@
   ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "name": "wellioviz",
+  "name": "@testwellioviz/wellioviz",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JustinGOSSES/wellioviz.git"
@@ -89,5 +92,5 @@
     "make_bundle": "cd docs/js && browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js"
   },
   "unpkg": "dist/index.js",
-  "version": "0.0.28"
+  "version": "0.0.30"
 }
