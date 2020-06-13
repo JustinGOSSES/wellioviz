@@ -59,6 +59,11 @@ You're probably not going to use wellioviz on the backend. The one exception is 
 7. However, if you run `wellioviz.help` you'll now see returned on the next line =`'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'`.
 8. Further wellioviz functions are just the variable name you created `wellioviz` + `.` + function name with arguments included inside the `()`.
 
+### Run Example Holoviews Panel/Bokeh Deployment
+1. pip install panel (and its dependancies)
+2. clone/download repository source code
+3. In the command line, navigate to the examples/deployments/ folder
+4. From the command line, run panel serve example_panel_app --show
 
 ### Install in a Jupyter Notebook with JavaScript Kernal
 -- IN PROGRESS --
