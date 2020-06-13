@@ -1,14 +1,22 @@
-async function plot_log(div_id) {
+async function plot_log(div_id, log_str="") {
     let ShaleSiltCutOff = 80
     let SiltSandCutOff = 55
-    var fileUrltoWellLog = "https://gist.githubusercontent.com/JustinGOSSES/2685e588d5c2f2a0ba1591ec7b9c9421/raw/415fe8a2f27dc7621f06f60ffd40a62c0d55a0f0/00-01-01-095-19W4-0.las"
-    var fetched = await fetch(fileUrltoWellLog)
-    var well_as_string = await fetched.text()
-    var well_json_01_01_095_19W4 = wellio.las2json(well_as_string)
+    var well_json_01_01_095_19W4;
+    if (log_str === "") {
+        let fileUrltoWellLog = "./00-01-11-082-23W4-0.las"
+        let fetched = await fetch(fileUrltoWellLog)
+        let log_str = await fetched.text()
+        well_json_01_01_095_19W4 = wellio.las2json(log_str)
+    } else {
+        console.log(log_str)
+        well_json_01_01_095_19W4 = wellio.las2json(log_str)
+    }
+
+
     let depth_curve_name = "DEPT"
     let three_things_2 = wellioviz.fromJSONofWEllGetThingsForPlotting(well_json_01_01_095_19W4, depth_curve_name)
     let curve_names2 = Array(6) ["DEPT", "GR", "CALI", "NPHI", "DPHI", "ILD"]
-    let uwi2 = "00/01-01-095-19W4/0"
+    let uwi2 = three_things_2["uwi"]
     let well_log_curves_reformatted_for_d3_2 = three_things_2["well_log_curves_reformatted_for_d3"]
     var example_template = wellioviz.curveBoxTemplateExamples("example")
     var gr_plot_template_noFill = wellioviz.minimumDataIntoTemplateFunc(example_template, well_log_curves_reformatted_for_d3_2, [uwi2], ["CALI"], ["black"], [""], [

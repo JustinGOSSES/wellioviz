@@ -22818,14 +22818,14 @@
                             }
 
                             var counter_of_curve_names = 0;
-                            console.log("curve_data_line_array.length = ", curve_data_line_array.length)
-                            console.log("curve_data_line_array = ", curve_data_line_array)
+                            // console.log("curve_data_line_array.length = ", curve_data_line_array.length)
+                            // console.log("curve_data_line_array = ", curve_data_line_array)
 
 
                             var last_curv_data_line_position = curve_data_line_array.length - 1;
-                            console.log("curve_data_line_array[last_curv_data_line_position] = ", curve_data_line_array[last_curv_data_line_position])
+                            // console.log("curve_data_line_array[last_curv_data_line_position] = ", curve_data_line_array[last_curv_data_line_position])
                             curve_data_line_array[last_curv_data_line_position] = curve_data_line_array[last_curv_data_line_position].replace("\r", "")
-                            console.log("curve_data_line_array[last_curv_data_line_position] = ", curve_data_line_array[last_curv_data_line_position])
+                            // console.log("curve_data_line_array[last_curv_data_line_position] = ", curve_data_line_array[last_curv_data_line_position])
                             for (k = 0; k < curve_data_line_array.length; k++) {
                                 if (curve_data_line_array[k] !== "") {
                                     lasjson["CURVES"][curve_names_array_holder[counter_of_curve_names]].push(curve_data_line_array[k])

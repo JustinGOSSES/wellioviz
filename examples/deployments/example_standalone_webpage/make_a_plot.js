@@ -7,8 +7,8 @@ async function plot_log(div_id) {
     var well_json_01_01_095_19W4 = wellio.las2json(well_as_string)
     let depth_curve_name = "DEPT"
     let three_things_2 = wellioviz.fromJSONofWEllGetThingsForPlotting(well_json_01_01_095_19W4, depth_curve_name)
-    let curve_names2 = Array(6) ["DEPT", "GR", "CALI", "NPHI", "DPHI", "ILD"]
-    let uwi2 = "00/01-01-095-19W4/0"
+    let curve_names2 = three_things_2['curve_names']
+    let uwi2 = three_things_2['uwi']
     let well_log_curves_reformatted_for_d3_2 = three_things_2["well_log_curves_reformatted_for_d3"]
     var example_template = wellioviz.curveBoxTemplateExamples("example")
     var gr_plot_template_noFill = wellioviz.minimumDataIntoTemplateFunc(example_template, well_log_curves_reformatted_for_d3_2, [uwi2], ["CALI"], ["black"], [""], [
