@@ -54,6 +54,8 @@ class TrackTemplate extends BaseTemplate{
 
     draw(div_id) {
         console.log('here')
+        let d3 = module.exports.d3;
+        d3.select("#" + div_id).selectAll("*").remove();
         // Define Track Size
 
         // Define Track Header
