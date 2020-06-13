@@ -16,5 +16,21 @@ class WellLogTemplate extends BaseTemplate{
         //Update template based on passed params
         this.handle_params(params)
     }
+
+    load_log(log_dict) {
+        console.log('loading log into template')
+        var tracks_with_data = {}
+        for (const [key, value] in Object.entries(this.tracks)){
+            // Extract Data for each log and load into the track
+            tracks_with_data[key] = track.load_log(log_dict)
+        }
+        // setup well log header
+
+        return this
+    }
+
+    get_depth_track_name(curve_info){
+        return Object.keys(curve_info)[0]
+    }
 }
 module.exports = WellLogTemplate

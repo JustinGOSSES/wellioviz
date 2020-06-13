@@ -1,4 +1,4 @@
-const BaseTemplate = require("../base_template")
+let BaseTemplate = require("../base_template");
 
 class WellSectionTemplate extends BaseTemplate{
     constructor(params={}) {

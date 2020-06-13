@@ -10,4 +10,4 @@ class BaseTemplate {
         return this
     }
 }
-module.exports(BaseTemplate)
+module.exports = BaseTemplate

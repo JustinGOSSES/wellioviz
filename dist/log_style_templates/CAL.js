@@ -6,9 +6,7 @@ class CAL extends LogCurveTemplate {
         this.curve_name = "CAL"
         this.units = "cm"
         this.stroke_type = "dash" // TODO Warning! This might not be a thing haha
-        for (const [key, value] in Object.entries(params)){
-            obj[key] = value
-        }
+        this.handle_params(params)
     }
 }
-module.exports(CAL)
+module.exports = CAL

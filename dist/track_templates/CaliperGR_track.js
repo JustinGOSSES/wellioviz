@@ -9,9 +9,7 @@ class CaliperGRTrack extends DefaultSubTrack {
         this.div_id = 'cal_gr_track'
         this.title = {"text": "CAL - GR", "font": "16px"}
         this.curves = {'GR': new GR, 'CAL': new CAL}
-        for (const [key, value] in Object.entries(params)){
-            obj[key] = value
-        }
+        this.handle_params(params)
     }
 
 }

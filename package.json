@@ -4,10 +4,11 @@
     "url": "https://github.com/JustinGOSSES/wellioviz/issues"
   },
   "dependencies": {
+    "browserfy": "^1.0.0",
     "d3": "^5.15.0",
     "npm": "^6.14.5",
-    "wellioviz": "^0.0.28",
-    "wellio": "^0.1.7"
+    "wellio": "^0.1.8",
+    "wellioviz": "file:./dist/index.js"
   },
   "description": "Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.",
   "devDependencies": {
@@ -21,10 +22,12 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "tape": "~4.9.0",
-    "jest": "^26.0.1"
+    "jest": "^26.0.1",
+    "wellioviz": "file:./dist/index.js"
   },
   "directories": {
-    "doc": "docs"
+    "doc": "docs",
+    "dist": "dist"
   },
   "files": [
     "dist/test/data_for_testing.js",
@@ -42,7 +45,9 @@
       "./dist/log_style_templates/",
       "./"
     ],
-    "modulePathIgnorePatterns": ["./examples/"],
+    "modulePathIgnorePatterns": [
+      "./examples/"
+    ],
     "moduleFileExtensions": [
       "js",
       "jsx",

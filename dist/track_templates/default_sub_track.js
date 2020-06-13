@@ -8,9 +8,7 @@ class DefaultSubTrack extends TrackTemplate {
         this.show_depth_type = false
         this.independent_scale = false
         this.div_id = 'sub_track'
-        for (const [key, value] in Object.entries(params)){
-            obj[key] = value
-        }
+        this.handle_params()
     }
 
 }
