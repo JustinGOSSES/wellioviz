@@ -21,6 +21,9 @@ function checkForJSONThenCollapse(divID){
   console.log("divID",divID)
   console.log("check check")
   console.log(temp_json)
+  if(divID=="#welldisplaycurves"){
+    draw_curve("log_plot_div")
+  }
   if (!temp_json['WELL INFORMATION BLOCK']){"button did nothing because well JSON doesn't exist"}
   else{
     $('.collapse').collapse("hide")
