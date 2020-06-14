@@ -2,6 +2,7 @@
 .plot_holder{
 	margin-top: 10px;
 	float:left;
+	width:100%;
 }
 
 .log_plot{
@@ -63,3 +64,22 @@ button.unavailable {
 div.groupBorder{
 	border-style: ridge;
 }
+
+div.horizontal_div_scroll_fix{
+	width:90%;
+	/* max-width:720px; */
+	height:470px;
+	display:flex;
+	text-align:center;
+	overflow-x: scroll;
+	white-space: nowrap;
+	background-color:black"
+}
+
+/* 
+div.log_plot_div{
+	display:flex;
+	text-align:center;
+	overflow-x:auto;
+	height:95%;
+} */

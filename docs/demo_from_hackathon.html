@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>LAS Loading Script Test</title>
+
+	<!-- BOOTSTRAP CSS GENERIC STYLESHEET & HELPERS   .  .  .-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+	<!-- USED TO HELP LOAD FILES -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
+
+	<!-- WHAT IS THIS FOR !? -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+
+	<!-- SCRIPT TO HELP BOOTSTRAP CSS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+	<!-- SCRIPT FOR D3.JS A VISUALIZATION LIBRARY USED BY G3.JS -->
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+
+	<!-- SCRIPT FOR PRINTING JSON INTO A DOM ELEMENT SO IT LOOKS NICE ON A WEBPAGE -->
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+	<!-- SCRIPT FOR ADDING SPACES TO JSON SO IT LOOKS NICE ON A WEBPAGE -->
+	<script src="./js/vkbeautify.js"></script>
+
+	<!-- MAIN WEBPAGE STYLESHEET -->
+	<link rel="stylesheet" href="./css/main.css">
+
+	<!-- GEOLOGY DATA SPECIFIC VISUALIZATIONS BUILT ON TOP OF D3.JS -->
+	<!-- <script src="./js/g3.js"></script> -->
+	<script src="../dist/index.js"></script>
+	<!-- PLOTTING FUNCTIONS THAT CALL G3.JS FROM MAIN.JS -->
+	<script src="./js/call_plots.js"></script>
+	<!-- REST OF THE WEBPAGE FUNCTIONS -->
+	<script src="./js/main.js"></script>
+	<!-- LAS TO JSON JAVASCRIPT FUNCTIONS -->
+	<script src="./js/bundle.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js.map"></script> -->
+</head>
+<body>
+	<div class="jumbotron text-center">
+		<h1><a href="https://github.com/JustinGOSSES/wellioviz">Wellioviz</a></h1>
+		<h2>Demo Page</h2>
+		<h5>A JavaScript library for visualizing well logs.</h5>
+	</div>
+	<div class="container">
+		<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#wellupload">Upload and convert LAS file</button>
+		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldisplaycurves')">Display Curves with Wellioviz</button>
+		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldisplaytext')" >Display LAS file</button>
+		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldisplayjson')">Display JSON</button>
+		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldownloadjson')">Download JSON</button>
+    
+	<div id="wellupload" class="collapse groupBorder">
+	<div class="well_step ">
+		<h5>[Upload and convert LAS file]</h5>
+		<p><b>First</b>: use either of these buttons to load a LAS files.</p>
+		<div class="well_pos_relative">
+			<a class='btn btn-primary' href='javascript:;'>
+				from your computer
+				<input type="file" id="files" multiple class='well_file_upload' name="file_source" size="40" onchange='$("#upload-file-info").html($(this).val());readInFilesFunction()'>
+			</a>
+
+			<button onclick="readInLASFromASSETS()" class='btn btn-primary'>from Assets folder of this webpage</button>
+			<span class='label label-info' id="upload-success"></span>
+			</br>
+			<span class='label label-info' id="upload-file-info"></span>
+		</div>
+		<output id="list"></output>
+	</div>
+
+	<div class="well_step">
+		<p><b>Second</b>: convert .las text into JSON. If you selected more than one las, the first will be used.</p>
+		<button onclick="convert_and_startHelpers()" class='btn btn-primary'>convert</button>
+		<p id="which_well"><i>no well selection</i></p>
+	</div>
+	</div>
+
+	<div id="welldisplaytext" class="collapse groupBorder">
+	<div class="well_step">
+		<h5>Display LAS files as text</h5>
+	</div>
+	<div class="well_step">
+		<p><b>A.</b> Display of .las files as text</p>btn-primary
+		<button onclick="displayFileFunction() " class='btn btn-primary'>display text</button>
+		<button onclick="removeTextLAS()" class='btn btn-primary'>remove text</button>
+		<div id="fileContents"></div>
+	</div>
+	</div>
+
+	<div id="welldisplaycurves" class="collapse well_step_left groupBorder">
+        <!-- <h5>Display curves visually using Wellioviz</h5>
+        <div class="container" style="display:inline-flex;margin-bottom:1em;">
+            <button onclick="draw_curve('GR')" class='btn btn-primary'>Plot Curves</button>
+            <button onclick="remove_DOM_children()" class='btn btn-primary' style="margin-left:1em;">remove curves</button>
+        </div>  -->
+        <div>
+            <p style="color:red">NOTE ALL OF THESE WORK AT THIS TIME!</p>
+            <form>
+                <div style="background-color:#feccff">
+                <div style="display: inline-block">
+                    <p style="margin:o auto;margin-left:4em">SiltSandCutOff</p>
+                    <label>0 <input name="SiltSandCutOff" type="range" min=0 max=100 value=95>100 <i></i></label>
+                </div>
+                
+                <div style="display: inline-block">
+                    <p style="margin:o auto;margin-left:4em;">ShaleSiltCutOff</p>
+                    <label style="margin-left:1em;">0 <input name="ShaleSiltCutOff" type="range" min=0 max=360 value=88>100 <i></i>          </label>
+                </div>
+                <div style="display: inline-block;background-color:#feccff">
+                    <p style="margin:o auto;margin-left:2em;">height_multiplier_components</p>
+                    <label style="margin-left:1em">1 <input name="height_multiplier_components" type="range" min=1 max=10 value=2 oninput="changeConfig(this.value,'height_multiplier_components')" onchange="changeConfig(this.value,'height_multiplier_components')"> 10 <i></i></label>
+                </div>
+                </div>
+                <div style="background-color:#feccff;">caliper_fill_direction
+                <label><input name="caliper_fill_direction" type="radio" value="left" checked> <i>left</i></label>
+                <label><input name="caliper_fill_direction" type="radio" value="right"> <i>right</i></label>
+                </div>
+                <div style="background-color:#fbffce">
+                    <label><input name="value_for_nulls" type="text" value="-999.2500"> <i>Input a value for nulls. These will be convered to empty strings so D3.js handles them properly</i></label>
+                </div>
+            <div style="background-color:#89ff99">
+                <!-- <div>Which way to load LAS file:
+                <label><input name="which_way" type="radio" value="gist" checked> <i>CORS enabled URL</i></label>
+                <label><input name="which_way" type="radio" value="zip"> <i>URL to zip file</i></label>
+                <label><input name="which_way" type="radio" value="local"> <i>Local File</i></label>
+                </div> -->
+                <div style="background-color:#fbffce">
+                    <label>
+                        <input name="only_curves_to_include_if_present" type="text" value="">
+                            Only curves to keep if they're present.<i> Example: "GR","ILD"</i>
+                    </label>
+                </div>
+                <div style="background-color:#fbffce">
+                    <label>
+                        <input name="curves_to_skip_if_present" type="text" value='"DEPTH","DEPT","depth","dep","DEP"'>
+                            Curves to skip if present<i> Example: "CALI","ILD"</i>
+                    </label>
+                </div>
+            </div>
+            </form>
+            </div>
+		<p>Curves present are dependent on the curves available in the well loaded</p>
+
+		<div id="curveButtons_holder"></div>
+		
+		<!-- <div>
+			<p>Remove all curves</p>
+			<button onclick="remove_DOM_children()">remove</button>
+		</div> -->
+		<div class="plot_holder">
+			<div id="log_plot_div" class="log_plot_div horizontal_div_scroll_fix"></div>
+			<div class="log_plot_div2 box"></div>
+		</div>
+		</br>
+	</div>
+
+	<div id="welldisplayjson" class="collapse well_step_left groupBorder">
+		<h5>Display well log converted into JSON</h5>
+		<p><b>C.</b> Print well in wellio.js JSON format</p>
+		<button onclick="print_well()" class='btn btn-secondary'>print json</button>
+		<button onclick="remove_DOM_children('well_json_prettyprint')" class='btn btn-primary'>remove json</button>
+
+	</br>
+<div style="float:left"></div>
+	</br>
+	</br>
+	<div class="well_left_full_width">
+		<pre id="well_json_prettyprint" class="prettyprint">
+		</pre>
+	</div>
+	</div>
+	</br>
+
+	<div id="welldownloadjson" class="collapse well_step_left groupBorder">
+		<div class="well_step">
+			<h5>Download well as JSON file</h5>
+			<button id="download_button" onclick="download_test()" class='btn btn-primary'>download</button>
+		</div>
+	</div>
+	</div>
+	</br>
+</body>
+</html>

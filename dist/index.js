@@ -424,6 +424,24 @@
         ///////////////////////////////
 
         /**
+         * findDepthName is a function that takes in a wellio style JSON representation of the well log, 
+         * looks at all the curve names and finds the one that is probably the depth curve, then returns it.
+         * This is useful for not plotting the depth curve.
+         * @param {object} well_log_in_json a full wellio style JSON
+         * @returns {string} returns a string representation of the curve name that is likely the depth curve. It assumes there is only one!
+         */
+        findDepthName: function (well_log_in_json){
+            var curve_names_array = Object.keys(well_log_in_json.CURVES)
+            var dep = curve_names_array.find(a =>a.includes("dep"));
+            var Dep = curve_names_array.find(a =>a.includes("Dep"));
+            var DEP = curve_names_array.find(a =>a.includes("DEP"));
+            if(dep){return dep}
+            if(Dep){return Dep}
+            if(DEP){return DEP}
+            else{return "couldn't find depth curve name"}
+          },
+
+        /**
          * convertWellJSONToObj is a function that takes in wellio style JSON of all LAS file well log information,
          * array of curves names, and a string for UWI
          * and returns the data array of objects that D3.js likes for data used in plotting.
@@ -1476,6 +1494,43 @@
             return svg.node();
         },
 
+         //////////
+        /**
+         * This function is used to quickly plot multiple curves as separate curveboxes and taking into consideration a
+         * list of curves to skip and some basic pre-built styles, both given as arguments.
+         * @param {array} well_log_curves_reformatted_for_d3_2 An array of objects. Each object is a depth point with key:value pairs of curve name and value. 
+         * This was likely created by the three_things_2 function and returned like so: well_log_curves_reformatted_for_d3_2 = three_things_2["well_log_curves_reformatted_for_d3"]
+         * @param {array} curves_to_skip An array of strings for curve names to skip plotting.
+         * @param {object} prebuilt_minimal_styles_by_curvename An object that maps curve names to style and styles to 
+         * basic style config like fill color
+         * @returns {array} array_of_jsons_for_what_to_plot - An array of objects for each curve to be plotted in its 
+         * curvebox via the curveBox() function or another function that funnels into curvebox.
+         */
+        forMultipleCurvesMinimumDataIntoTemplateFunc: function(well_log_curves_reformatted_for_d3_2,curves_to_skip,prebuilt_minimal_styles_by_curvename,uwi2,depth_curve_name){
+            var array_of_jsons_for_what_to_plot = []
+            var array_curvenames = Object.keys(well_log_curves_reformatted_for_d3_2[0])
+            var UWI_index = array_curvenames.indexOf("UWI")
+            array_curvenames.splice(UWI_index, 1)
+            for (var i = 0; i < array_curvenames.length; i++) {
+              if(curves_to_skip[0]["curves_to_skip_if_present"].includes(array_curvenames[i])){}
+              else{
+                 if(curves_to_skip[0]["only_curves_to_include_if_present"].includes(array_curvenames[i]) || curves_to_skip[0]["only_curves_to_include_if_present"].length == 0 ){
+                   ///// Get Styles if they exist, if not, use "all_others"
+                  var style = prebuilt_minimal_styles_by_curvename[0]["styles"]["all_others"]
+                   if(prebuilt_minimal_styles_by_curvename[0]["mapping_curvename_to_stylename"][array_curvenames[i]]){
+                    var stylename = prebuilt_minimal_styles_by_curvename[0]["mapping_curvename_to_stylename"][array_curvenames[i]]
+                     style = prebuilt_minimal_styles_by_curvename[0]["styles"][stylename]
+                   }
+                   
+                    var json_template_for_plotting = module.exports.minimumDataIntoTemplateFunc(example_template,well_log_curves_reformatted_for_d3_2,[uwi2],           [array_curvenames[i]],[style["line_color"]],[""],[
+                       {"curve_name":array_curvenames[i],"fill":style["fill"],"fill_direction":style["fill_direction"],"cutoffs":   style["cutoffs"],"fill_colors":  style["fill_colors"],"curve2":""}],"well_holder_1A",200,400,depth_curve_name)
+              ///
+              array_of_jsons_for_what_to_plot.push(json_template_for_plotting)  
+                 }
+              }
+            }  
+            return array_of_jsons_for_what_to_plot
+          },
 
         //////////
         /**
@@ -1484,7 +1539,7 @@
          * @param {object} templates An array of CurveBox input templates
          * @param {boolean} show_all is a boolean value that decides whether or not multiple plots are shown in a multiple log plot div. If show_all is false however, the developer must switch their CSS to be "inline-block" one at a time via some other means. If they don't,none will appear!
          */
-        multipleLogPlot: function (div_id, templates, show_all = true) {
+        multipleLogPlot: function (div_id, templates, show_all = true,remove_preexisting=true) {
             let d3 = module.exports.d3;
             let noDIV = d3.select("#" + div_id).selectAll("div").remove();
             let noSVG = d3.select("#" + div_id).selectAll("svg").remove();
