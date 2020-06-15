@@ -14,14 +14,17 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 1. Hello Wellioviz Mini Demo in ObservableHQ.com
     - Link: https://observablehq.com/@justingosses/hello-wellioviz
     - Status: Up to date.
-2. Demo in Observable of Most Recent Published Code with 3 Examples:
+2. More GUI-like Experience in an ObservableHQ notebook
+    - Link: https://justingosses.github.io/wellioviz/demo_from_hackathon.html
+    - Status: Built up via hackathon. Up to date at the time. Some features still a bit unstable but mostly works.
+3. Demo in Observable of Most Recent Published Code with 3 Examples:
     - Link: <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm</a>
     - Status: Code is pulled from NPM, so this reflects the latest code that has been published to NPM. May lag slightly compared to the code on this github repository in master branch. 
-3. Observable Notebook Where Code is Developed. Has functions written-out inline. 
+4. Observable Notebook Where Code is Developed. Has functions written-out inline. 
     - Status: May be ahead of code in this repository sometimes.
     - Link: <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">here</a>
 #### Full Websites
-4. HTML demo as github pages page in this repository
+5. HTML demo as github pages page in this repository
     - Status: Up to Date (almost always). Currently a bare-bones example but plan to flesh out more.
     - Link: Building a basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html 
 
