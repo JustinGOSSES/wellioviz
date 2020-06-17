@@ -1,21 +1,63 @@
 {
-  "name": "wellioviz",
-  "version": "0.0.28",
+  "author": "Justin Gosses",
+  "bugs": {
+    "url": "https://github.com/JustinGOSSES/wellioviz/issues"
+  },
+  "dependencies": {
+    "browserfy": "^1.0.0",
+    "d3": "^5.15.0",
+    "npm": "^6.14.5",
+    "wellio": "^0.1.8"
+  },
   "description": "Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.",
-  "main": "dist/index.js",
-  "unpkg": "dist/index.js",
-  "scripts": {
-    "test": "dist/test/test.js",
-    "make_bundle": "cd docs/js && browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js"
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "tape": "~4.9.0",
+    "jest": "^26.0.1"
+  },
+  "directories": {
+    "doc": "docs",
+    "dist": "dist"
   },
   "files": [
-    "dist/test/test.js",
+    "dist/test/data_for_testing.js",
     "dist/test/test.LAS",
-    "dist/index.js"
+    "dist/index.js",
+    "dist/log_style_templates/",
+    "dist/fill_templates/",
+    "dist/track_templates/",
+    "dist/well_log_templates/",
+    "dist/well_section_templates/",
+    "dist/base_template.js",
+    "dist/test/log_templates.test.js"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JustinGOSSES/wellioviz.git"
+  "homepage": "https://github.com/JustinGOSSES/wellioviz",
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "./dist/test/",
+      "./dist/",
+      "./dist/log_style_templates/",
+      "./"
+    ],
+    "modulePathIgnorePatterns": [
+      "./examples/"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx"
+    ]
   },
   "keywords": [
     "LAS",
@@ -38,31 +80,17 @@
     "web",
     "d3.js"
   ],
-  "author": "Justin Gosses",
   "license": "Apache-2.0",
-  "dependencies": {
-    "d3": "^5.15.0",
-    "npm": "^6.14.5",
-    "wellioviz": "^0.0.28",
-    "wellio": "^0.1.7"
+  "main": "dist/index.js",
+  "name": "@testwellioviz/wellioviz",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustinGOSSES/wellioviz.git"
   },
-  "devDependencies": {
-    "browserify": "^16.5.1",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "tape": "~4.9.0"
+  "scripts": {
+    "test": "jest",
+    "make_bundle": "cd docs/js && browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js"
   },
-  "bugs": {
-    "url": "https://github.com/JustinGOSSES/wellioviz/issues"
-  },
-  "homepage": "https://github.com/JustinGOSSES/wellioviz",
-  "directories": {
-    "doc": "docs"
-  }
+  "unpkg": "dist/index.js",
+  "version": "0.0.30"
 }
