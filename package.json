@@ -92,5 +92,5 @@
     "make_bundle": "cd docs/js && browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js"
   },
   "unpkg": "dist/index.js",
-  "version": "0.0.30"
+  "version": "0.0.29"
 }
