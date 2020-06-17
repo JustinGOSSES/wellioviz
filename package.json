@@ -82,7 +82,7 @@
   ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "name": "@testwellioviz/wellioviz",
+  "name": "wellioviz",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JustinGOSSES/wellioviz.git"
