@@ -118,13 +118,13 @@ function readInFilesFunction(){
 
 function changeMenuBarButtonColorOnConvert(){
     //// CHANGE buttons from gray to blue in top row
-    var listButtons = document.getElementsByClassName("afterconvert")
+    var listMenuItems = document.getElementsByClassName("afterconvert")
     console.log("list",list)
     var i;
-    for (i = 0; i < listButtons.length; i++) {
+    for (i = 0; i < listMenuItems.length; i++) {
       // button.style.backgroundColor = "blue";
-      console.log("button",listButtons[i])
-      listButtons[i].classList.add("btn-primary")
+      console.log("menu_item",listMenuItems[i])
+      listMenuItems[i].classList.add("text-primary")
     }
 }
 
