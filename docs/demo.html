@@ -50,16 +50,34 @@
 		<h2>Demo Page</h2>
 		<h5>A JavaScript library for visualizing well logs.</h5>
 	</div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarToggler">
+			<ul class="navbar-nav">
+				<li class="nav-item active">
+					<a class="nav-link afterconvert" data-toggle="collapse" href="#wellupload">Load Well(s)</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link afterconvert" onclick="checkForJSONThenCollapse('#welldisplaycurves')">Display</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link afterconvert" onclick="checkForJSONThenCollapse('#welldisplaytext')" >Display LAS file</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link afterconvert" onclick="checkForJSONThenCollapse('#welldisplayjson')">Display JSON</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link afterconvert" onclick="checkForJSONThenCollapse('#welldownloadjson')">Download</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
 	<div class="container">
-		<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#wellupload">Upload and convert LAS file</button>
-		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldisplaycurves')">Display Curves with Wellioviz</button>
-		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldisplaytext')" >Display LAS file</button>
-		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldisplayjson')">Display JSON</button>
-		<button class="btn btn-sm afterconvert" onclick="checkForJSONThenCollapse('#welldownloadjson')">Download JSON</button>
-		
+
 	<div id="wellupload" class="collapse groupBorder">
 	<div class="well_step ">
-		<h5>[Upload and convert LAS file]</h5>
 		<p><b>First</b>: use either of these buttons to load a LAS files.</p>
 		<div class="well_pos_relative">
 			<a class='btn btn-primary' href='javascript:;'>
