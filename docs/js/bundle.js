@@ -2284,7 +2284,7 @@ function reformatJSONforPlotting(temp_json,curve,div){
 		  "curve_box_depth_max":9990000, /// not built yet
 		  "take_out_null_or_visualize":"no", /// not built yet
 		  "show_title":"yes", 
-		  "width": 260, 
+		  "width": 50, 
 		  "height": 400, 
 		  "height_multiplier_components":1,
 		  "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
@@ -2479,7 +2479,7 @@ function changeConfig(config_value,config){
 function draw_curve(div,config_change="none"){
 	if(!div){div = "log_plot_div"}
 
-	let height_multiplier_components = 2
+	let height_multiplier_components = 1.5
 	if(config_change!="none"){
 		if(Object.keys(config_change)=="height_multiplier_components"){
 			height_multiplier_components = config_change["height_multiplier_components"]
@@ -2542,7 +2542,7 @@ function forMultipleCurvesMinimumDataIntoTemplateFunc(well_log_curves_reformatte
 		   }
 		   
 			var json_template_for_plotting = wellioviz.minimumDataIntoTemplateFunc(example_template,well_log_curves_reformatted_for_d3_2,[uwi2],           [array_curvenames[i]],[style["line_color"]],[""],[
-			   {"curve_name":array_curvenames[i],"fill":style["fill"],"fill_direction":style["fill_direction"],"cutoffs":   style["cutoffs"],"fill_colors":  style["fill_colors"],"curve2":""}],"well_holder_1A",200,400,depth_curve_name)
+			   {"curve_name":array_curvenames[i],"fill":style["fill"],"fill_direction":style["fill_direction"],"cutoffs":   style["cutoffs"],"fill_colors":  style["fill_colors"],"curve2":""}],"well_holder_1A",100,400,depth_curve_name)
 	  ///
 	  array_of_jsons_for_what_to_plot.push(json_template_for_plotting)  
 		 }
