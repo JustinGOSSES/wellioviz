@@ -7,7 +7,7 @@
     "browserfy": "^1.0.0",
     "d3": "^5.15.0",
     "npm": "^6.14.5",
-    "wellio": "^0.1.8"
+    "wellio": "^0.1.9"
   },
   "description": "Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.",
   "devDependencies": {
@@ -92,5 +92,5 @@
     "make_bundle": "cd docs/js && browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js"
   },
   "unpkg": "dist/index.js",
-  "version": "0.0.29"
+  "version": "0.0.30"
 }

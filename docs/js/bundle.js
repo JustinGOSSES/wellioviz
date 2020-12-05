@@ -187,6 +187,43 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],3:[function(require,module,exports){
+class BaseTemplate {
+    constructor(params={}) {
+        this.handle_params(params)
+    }
+
+    handle_params(params) {
+        for (const [key, value] in Object.entries(params)){
+            this[key] = value
+        }
+        return this
+    }
+
+    start_draw(div_id){
+        let d3 = module.exports.d3;
+        let noDIV = d3.select("#" + div_id).selectAll("div").remove();
+        let noSVG = d3.select("#" + div_id).selectAll("svg").remove();
+        return d3
+    }
+}
+module.exports = BaseTemplate
+},{}],4:[function(require,module,exports){
+const BaseTemplate = require("../base_template")
+
+class CurveFillTemplate extends BaseTemplate{
+    constructor(params={}) {
+        super();
+        this.curve_name = "default"
+        this.fill = "no"
+        this.fill_direction = "left"
+        this.cutoffs = Array(0) // TODO should take values OR curve names
+        this.fill_colors = Array(0)
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+}
+module.exports = CurveFillTemplate
+},{"../base_template":3}],5:[function(require,module,exports){
 (function (global){
 !function (e) {
     "object" == typeof exports ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : "undefined" != typeof window ? window.commonJsModule = e() : "undefined" != typeof global ? global.commonJsModule = e() : "undefined" != typeof self && (self.commonJsModule = e());
@@ -237,7 +274,17 @@ process.umask = function() { return 0; };
          * @returns {obj} It returns the d3.js object and all its functions as a module.
          */
         d3: require("d3"),
-
+        TrackTemplate: require('./log_style_templates/log_curve_template'),
+        WellLogTemplate: require('./well_log_templates/well_log_template'),
+        WellSectionTemplate: require('./well_section_templates/well_section_templates'),
+        CurveFillTemplate: require('./fill_templates/curve_fill_template'),
+        LogCurveTemplate: require('./log_style_templates/log_curve_template'),
+        TripleCombo: require("./well_log_templates/triple_combo_template"),
+        BaseTemplate: require("./base_template"),
+        CaliperGRTrack: require("./track_templates/CaliperGR_track"),
+        GR: require("./log_style_templates/GR"),
+        CAL: require("./log_style_templates/CAL"),
+        DefaultSubTrack: require("./track_templates/default_sub_track"),
         /**
          * A function that directs users to the docs if they need help.
          * @returns {string} It says = I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. \n If you would like to know what wellioviz does, try wellioviz.define(). \n If you would like to see an example template, try wellioviz.curveBoxTemplateExamples('example') \n If you would like to see an example template defintions, try wellioviz.curveBoxTemplateExamples('definitions') Best of luck.
@@ -1789,7 +1836,377 @@ process.umask = function() { return 0; };
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"d3":39,"wellio":40}],4:[function(require,module,exports){
+},{"./base_template":3,"./fill_templates/curve_fill_template":4,"./log_style_templates/CAL":6,"./log_style_templates/GR":7,"./log_style_templates/log_curve_template":8,"./track_templates/CaliperGR_track":9,"./track_templates/default_sub_track":10,"./well_log_templates/triple_combo_template":12,"./well_log_templates/well_log_template":13,"./well_section_templates/well_section_templates":14,"d3":50,"wellio":51}],6:[function(require,module,exports){
+const LogCurveTemplate = require("./log_curve_template")
+
+class CAL extends LogCurveTemplate {
+    constructor(params={}) {
+        super(params);
+        this.curve_name = "CAL"
+        this.units = "cm"
+        this.stroke_type = "dash" // TODO Warning! This might not be a thing haha
+        this.handle_params(params)
+    }
+}
+module.exports = CAL
+},{"./log_curve_template":8}],7:[function(require,module,exports){
+const LogCurveTemplate = require("./log_curve_template")
+
+class GR extends LogCurveTemplate {
+    constructor(params={}) {
+        super(params);
+        this.curve_name = "GR"
+        // this.fill = null // TODO: GR Fill
+        this.units = "API"
+        this.handle_params(params)
+    }
+}
+module.exports = GR
+},{"./log_curve_template":8}],8:[function(require,module,exports){
+// Base sort of abstract template, specialized templates can override pieces of this
+const fill_template = require('../fill_templates/curve_fill_template');
+const BaseTemplate = require("../base_template")
+
+class LogCurveTemplate extends BaseTemplate {
+    // const obj = {}
+    // Define Default Settings Values
+    constructor(params={}) {
+        super();
+        this.curve_name = "default"
+        this.color = "black"
+        this.stroke_type = "solid"
+        this.stroke_linecap = "butt"
+        this.stroke_width = 1.0
+        this.stroke_transparency = 1.0
+        this.fill = new fill_template()
+        this.units = "unkn"
+        this.depth_limits = {"min": "autocalculate", "max": "autocalculate"}
+        this.curve_limits = {"min": -100000, "max":3} // TODO: This needs to be looked at more
+        this.data = Array(0)
+        this.data_id = ""
+        this.well_name = "default"
+        this.uwi14 = "00000000000000"
+        this.isLinear = true // false sets to a log scale
+        this.depth_type = "MD"
+        this.depth_units = "meter"
+        // Define Template Functions
+        // TODO: decide if null are handled here or at load validation
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+    // Simple function to set the data that is associated with this curve
+    define_data(data) {
+        // Add data to a template
+        // TODO: Validation step here??
+        this.data = data
+        return this
+    }
+    // Function change the target curve name and data for the instance of curve template
+    set_curve_and_data(curve_name, data, params={}){
+        this.define_data(data)
+        this.curve_name = curve_name
+        //Update template based on passed params
+        this.handle_params(params)
+        return this
+    }
+
+}
+
+module.exports = LogCurveTemplate;
+},{"../base_template":3,"../fill_templates/curve_fill_template":4}],9:[function(require,module,exports){
+const DefaultSubTrack = require("./default_sub_track")
+const GR = require("../log_style_templates/GR")
+const CAL = require("../log_style_templates/CAL")
+
+class CaliperGRTrack extends DefaultSubTrack {
+    constructor(params = {}) {
+        super(params);
+        this.track_template_name = 'CAL_GR'
+        this.div_id = 'cal_gr_track'
+        this.title = {"text": "CAL - GR", "font": "16px"}
+        this.curves = {'GR': new GR, 'CAL': new CAL}
+        this.handle_params(params)
+    }
+
+}
+module.exports = CaliperGRTrack
+},{"../log_style_templates/CAL":6,"../log_style_templates/GR":7,"./default_sub_track":10}],10:[function(require,module,exports){
+const TrackTemplate = require("./track_template")
+
+class DefaultSubTrack extends TrackTemplate {
+    constructor(params = {}) {
+        super(params);
+        this.track_template_name = 'default'
+        this.show_well_name = false
+        this.show_depth_type = false
+        this.independent_scale = false
+        this.div_id = 'sub_track'
+        this.handle_params(params)
+    }
+
+}
+module.exports = DefaultSubTrack
+},{"./track_template":11}],11:[function(require,module,exports){
+const BaseTemplate = require("../base_template")
+const log_curve_template = require('../log_style_templates/log_curve_template');
+
+class TrackTemplate extends BaseTemplate{
+    constructor(params={}) {
+        super()
+        this.track_template_name = "default"
+        this.show_well_name = true
+        this.show_depth_type = false
+        this.show_curves_units = true
+        this.show_null = false
+        this.show_track_title = false
+        this.grid_lines = true
+        this.independent_scale = true
+        this.mouse_over = true
+        this.mouse_over_depth_only = false
+        this.grid_color = "#D3D3D3"
+        this.grid_stroke_width = 0.2
+        this.depth_curve = "DEPT"
+        this.track_dimensions = {"height": 500, "width": 260}
+        this.scale_numerator = 2
+        this.margin = {"top": 10, "right": 10, "bottom": 30, "left": 60}
+        this.title = {"text": "default", "font": "16px"}
+        this.div_id = "default_track"
+        this.curves = {}
+        // TODO: look at other potential track level variables
+        this.handle_params(params)
+    }
+
+    add_curve(curve) {
+        this.curves[curve.curve_name] = curve
+        return this
+    }
+
+    load_log(logs_dict) {
+        console.log('setting up track data')
+        var curves_with_data = {}
+        this.depth_curve = this.get_depth_track_name(logs_dict['CURVE INFORMATION BLOCK'])
+        for (let curve in this.curves){
+            // Check if the curve is in the well log
+            // TODO: Put curve aliasing here!!
+            if(curve in logs_dict['CURVE INFORMATION BLOCK']){
+                // Load the curve
+                let formatted_log = this.format_log(logs_dict['CURVES'], curve)
+                curves_with_data[curve] = this.curves[curve].set_curve_and_data(curve, formatted_log)
+            } else {
+                curves_with_data[curve] = this.curves[curve]
+            }
+
+        }
+        this.curves = curves_with_data
+        return this
+    }
+
+    draw(div_id) {
+        console.log('here')
+        let d3 = module.exports.d3;
+        d3.select("#" + div_id).selectAll("*").remove();
+        // Define Track Size
+
+        // Define Track Header
+
+        // Handle Grid Lines
+
+        // Handle Mouseover
+
+        // TODO Secondary Depth Track
+
+        //
+    }
+
+    /**
+     * convertWellJSONToObj is a function that takes in wellio style JSON of all LAS file well log information,
+     * array of curves names, and a string for UWI
+     * and returns the data array of objects that D3.js likes for data used in plotting.
+     * @param {object} curve_dict wellio style curves
+     * @param {string} curve_name the name of the curve to format
+     * @returns {array} returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
+     */
+    format_log(curve_dict, curve_name){
+        let depth = curve_dict[this.depth_curve];
+        let curve = curve_dict[curve_name]
+        let curve_data = [];
+        curve_data.push(curve_dict[this.depth_curve])
+        curve_data.push(curve_dict[curve_name]);
+        var array_of_object;
+        array_of_object = [];
+        for (let eachPt = 0; eachPt < depth.length; eachPt++) {
+            let obj = {};
+            obj[this.depth_curve] = parseFloat(curve_data[0][eachPt]);
+            obj[curve_name] = parseFloat(curve_data[1][eachPt])
+
+
+            array_of_object.push(obj);
+        }
+        return array_of_object
+    }
+
+    get_depth_track_name(curve_info){
+        return Object.keys(curve_info)[0]
+    }
+
+}
+module.exports = TrackTemplate
+
+// TODO write a track that does text, images, rectangular boxes, etc
+},{"../base_template":3,"../log_style_templates/log_curve_template":8}],12:[function(require,module,exports){
+const WellLogTemplate =  require('../well_log_templates/well_log_template');
+const CaliperGR_track = require("../track_templates/CaliperGR_track")
+class TripleCombo extends WellLogTemplate {
+    constructor(params= {}) {
+        super(params);
+        this.tracks = {
+            'CAL_GR': new CaliperGR_track()
+        }
+        this.log_template_name = 'Triple Combination'
+        this.handle_params(params)
+    }
+}
+module.exports = TripleCombo
+},{"../track_templates/CaliperGR_track":9,"../well_log_templates/well_log_template":13}],13:[function(require,module,exports){
+const BaseTemplate = require("../base_template")
+
+class WellLogTemplate extends BaseTemplate{
+    constructor(params = {}) {
+        super()
+        this.log_template_name = "default"
+        this.well_log_header = {}
+        this.header_height = 50.0
+        this.tracks = {}
+        this.log_border_padding = 20.0
+        this.pick_lines = {}
+        this.other_lines = Array(0)
+        this.max_width = 1000.0
+        this.uniform_scroll = true
+        this.vertical_scale_numerator = 30
+        this.log_max_depth = 20000.0
+        this.log_min_depth = 0.0
+        this.div_id = "default_well_log"
+        this.units = "metric"
+        this.depth_curve_name = "DEPT"
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+
+    load_log(log_dict) {
+        console.log('loading log into template')
+        var tracks_with_data = {}
+        for (let track in this.tracks){
+            // Extract Data for each log and load into the track
+            tracks_with_data[track] = this.tracks[track].load_log(log_dict)
+        }
+        // setup well log header
+        this.well_log_header['WELL'] = this.get_well_name(log_dict['WELL INFORMATION BLOCK'])
+        this.well_log_header['UWI'] = this.get_well_uwi(log_dict['WELL INFORMATION BLOCK'])
+        // get depth limits
+        this.log_max_depth = this.get_max_depth(log_dict['WELL INFORMATION BLOCK'])
+        this.log_min_depth = this.get_min_depth(log_dict['WELL INFORMATION BLOCK'])
+        this.depth_curve_name = this.get_depth_track_name(log_dict['CURVE INFORMATION BLOCK'])
+        return this
+    }
+
+    draw(div_id) {
+        let d3 = this.start_draw(div_id)
+        let drawn_tracks;
+        drawn_tracks = [];
+        let counter = 0
+        // Well Header
+        this.draw_track_header(div_id)
+
+        for (let track in this.tracks) {
+            let curvebox_holder = d3.select("#" + div_id).append("div");
+            curvebox_holder.style("vertical-align", "middle")
+                .attr("id", div_id + "curvebox_holder" + i);
+            // TODO Handle alias-ing of well name or a backup string of some kind
+            let track_div_id = div_id + this.well_log_header['WELL'] + track + counter
+            let drawn_template = this.tracks[track].draw(track_div_id)
+            drawn_tracks.push(drawn_template)
+            counter += 1
+        }
+        // TODO Handle non-track related drawing here
+
+
+        // Draw Tops
+
+
+
+        return drawn_tracks
+        console.log('starting here')
+    }
+
+    draw_track_header(div_id){
+        let svg_header = 'track_header' + div_id
+        let svg_holder = d3.select("#" + div_id).append("div")
+            .attr("class", "svg_holder")
+            .style("overflow-x", "auto");
+        svg_header = d3.select("#" + svg_header).append("svg");
+        svg_header.attr("class", "header");
+
+        // TODO: Compute Width of log before here
+        svg_header.attr("width", width)
+            .attr("height", this.header_height);
+        svg_header.append("g");
+        svg_header.style("display", "block");
+
+        svg_header.append("text")
+            .attr("x", (margin.left) / 2)
+            .attr("y", "1em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "10px")
+            .style("text-decoration", "underline")
+            .text(this.depth_curve_name); // TODO: Add units and such
+    }
+
+    get_depth_track_name(curve_info){
+        return Object.keys(curve_info)[0]
+    }
+
+    get_well_name(well_info){
+        return well_info['WELL']['DATA']
+    }
+
+    get_well_uwi(well_info){
+        return well_info['UWI']['DATA']
+    }
+
+    get_max_depth(well_info) {
+        return parseFloat(well_info['STRT']['DATA'])
+    }
+
+    get_min_depth(well_info) {
+        return parseFloat(well_info['STOP']['DATA'])
+    }
+}
+module.exports = WellLogTemplate
+},{"../base_template":3}],14:[function(require,module,exports){
+let BaseTemplate = require("../base_template");
+
+class WellSectionTemplate extends BaseTemplate{
+    constructor(params={}) {
+        super()
+        this.template_name = 'default'
+        this.well_section_header = {}
+        this.uniform_scale = true
+        this.use_uniform_padding = true
+        this.padding = 50.0
+        this.uniform_scroll = true
+        this.horizontal_scale_numerator = 100
+        this.vertical_scale_numerator = 50
+        this.log_template_to_use = null // TODO: Fill this in??
+        this.well_data = Array(0)
+        this.div_id = "well_section_default"
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+
+}
+
+module.exports = WellSectionTemplate
+},{"../base_template":3}],15:[function(require,module,exports){
 // well_curve_config_template = [
 //     {"multipleLines":"yes","curveNames":["GR"],
 //      "curveColors":["black","pink"],
@@ -2170,13 +2587,13 @@ function getExampleTemplateWithEdits(height_multiplier_components,header_sep_svg
 //     var domain_x = [Math.min.apply(null, curve),Math.max.apply(null, curve)]
 //     makePlot(curve,div,600,250,domain_x,[0,curve.length],curve_name)
 // }
-},{}],5:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 wellio = require('wellio');
 
 las2json = wellio.las2json;
 
-wellioviz = require("../../dist/index.js")
-},{"../../dist/index.js":3,"wellio":40}],6:[function(require,module,exports){
+wellioviz = require("../../dist")
+},{"../../dist":5,"wellio":51}],17:[function(require,module,exports){
 ///////////////////////  global objects placeholders   ////////////////////////  
 //// ... maybe not good programming practice but quick to do for simple demo.
 
@@ -2297,13 +2714,14 @@ function readInFilesFunction(){
 
 function changeMenuBarButtonColorOnConvert(){
     //// CHANGE buttons from gray to blue in top row
-    var listButtons = document.getElementsByClassName("afterconvert")
+    var listMenuItems = document.getElementsByClassName("afterconvert")
     console.log("list",list)
     var i;
-    for (i = 0; i < listButtons.length; i++) {
+    for (i = 0; i < listMenuItems.length; i++) {
       // button.style.backgroundColor = "blue";
-      console.log("button",listButtons[i])
-      listButtons[i].classList.add("btn-primary")
+      console.log("menu_item",listMenuItems[i])
+      // listMenuItems[i].classList.add("text-primary")
+      listMenuItems[i].classList.add("text-light")
     }
 }
 
@@ -2415,7 +2833,8 @@ function download (filename, text) {
     document.body.removeChild(element)
   }
   
-},{}],7:[function(require,module,exports){
+
+},{}],18:[function(require,module,exports){
 /**
 * vkBeautify - javascript plugin to pretty-print or minify text in XML, JSON, CSS and SQL formats.
 *  
@@ -2772,7 +3191,7 @@ function download (filename, text) {
     window.vkbeautify = new vkbeautify();
     
     })();
-},{}],8:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // https://d3js.org/d3-array/ v1.2.4 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -3364,7 +3783,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],9:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // https://d3js.org/d3-axis/ v1.0.12 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -3559,7 +3978,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],10:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 // https://d3js.org/d3-brush/ v1.1.5 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
@@ -4178,7 +4597,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-dispatch":15,"d3-drag":16,"d3-interpolate":24,"d3-selection":31,"d3-transition":36}],11:[function(require,module,exports){
+},{"d3-dispatch":26,"d3-drag":27,"d3-interpolate":35,"d3-selection":42,"d3-transition":47}],22:[function(require,module,exports){
 // https://d3js.org/d3-chord/ v1.0.6 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array'), require('d3-path')) :
@@ -4410,7 +4829,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-array":8,"d3-path":25}],12:[function(require,module,exports){
+},{"d3-array":19,"d3-path":36}],23:[function(require,module,exports){
 // https://d3js.org/d3-collection/ v1.0.7 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -4629,7 +5048,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],13:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 // https://d3js.org/d3-color/ v1.4.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -5212,7 +5631,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],14:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 // https://d3js.org/d3-contour/ v1.3.2 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
@@ -5645,7 +6064,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-array":8}],15:[function(require,module,exports){
+},{"d3-array":19}],26:[function(require,module,exports){
 // https://d3js.org/d3-dispatch/ v1.0.6 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -5742,7 +6161,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],16:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 // https://d3js.org/d3-drag/ v1.2.5 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-selection')) :
@@ -5978,7 +6397,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-dispatch":15,"d3-selection":31}],17:[function(require,module,exports){
+},{"d3-dispatch":26,"d3-selection":42}],28:[function(require,module,exports){
 // https://d3js.org/d3-dsv/ v1.2.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -6213,7 +6632,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],18:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 // https://d3js.org/d3-ease/ v1.0.6 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -6474,7 +6893,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],19:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 // https://d3js.org/d3-fetch/ v1.1.2 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dsv')) :
@@ -6578,7 +6997,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-dsv":17}],20:[function(require,module,exports){
+},{"d3-dsv":28}],31:[function(require,module,exports){
 // https://d3js.org/d3-force/ v1.2.1 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-quadtree'), require('d3-collection'), require('d3-dispatch'), require('d3-timer')) :
@@ -7248,7 +7667,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-collection":12,"d3-dispatch":15,"d3-quadtree":27,"d3-timer":35}],21:[function(require,module,exports){
+},{"d3-collection":23,"d3-dispatch":26,"d3-quadtree":38,"d3-timer":46}],32:[function(require,module,exports){
 // https://d3js.org/d3-format/ v1.4.3 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -7588,7 +8007,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],22:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // https://d3js.org/d3-geo/ v1.11.9 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
@@ -10716,7 +11135,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-array":8}],23:[function(require,module,exports){
+},{"d3-array":19}],34:[function(require,module,exports){
 // https://d3js.org/d3-hierarchy/ v1.1.9 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -12008,7 +12427,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],24:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // https://d3js.org/d3-interpolate/ v1.4.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-color')) :
@@ -12603,7 +13022,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-color":13}],25:[function(require,module,exports){
+},{"d3-color":24}],36:[function(require,module,exports){
 // https://d3js.org/d3-path/ v1.0.9 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -12746,7 +13165,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],26:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 // https://d3js.org/d3-polygon/ v1.0.6 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -12898,7 +13317,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],27:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // https://d3js.org/d3-quadtree/ v1.0.7 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -13319,7 +13738,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],28:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 // https://d3js.org/d3-random/ v1.1.2 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -13436,7 +13855,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],29:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // https://d3js.org/d3-scale-chromatic/ v1.5.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-interpolate'), require('d3-color')) :
@@ -13959,7 +14378,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-color":13,"d3-interpolate":24}],30:[function(require,module,exports){
+},{"d3-color":24,"d3-interpolate":35}],41:[function(require,module,exports){
 // https://d3js.org/d3-scale/ v2.2.2 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-collection'), require('d3-array'), require('d3-interpolate'), require('d3-format'), require('d3-time'), require('d3-time-format')) :
@@ -15126,7 +15545,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-array":8,"d3-collection":12,"d3-format":21,"d3-interpolate":24,"d3-time":34,"d3-time-format":33}],31:[function(require,module,exports){
+},{"d3-array":19,"d3-collection":23,"d3-format":32,"d3-interpolate":35,"d3-time":45,"d3-time-format":44}],42:[function(require,module,exports){
 // https://d3js.org/d3-selection/ v1.4.1 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -16117,7 +16536,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],32:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // https://d3js.org/d3-shape/ v1.3.7 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-path')) :
@@ -18068,7 +18487,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-path":25}],33:[function(require,module,exports){
+},{"d3-path":36}],44:[function(require,module,exports){
 // https://d3js.org/d3-time-format/ v2.2.3 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-time')) :
@@ -18777,7 +19196,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-time":34}],34:[function(require,module,exports){
+},{"d3-time":45}],45:[function(require,module,exports){
 // https://d3js.org/d3-time/ v1.1.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -19152,7 +19571,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],35:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // https://d3js.org/d3-timer/ v1.0.10 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -19303,7 +19722,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],36:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 // https://d3js.org/d3-transition/ v1.3.2 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-dispatch'), require('d3-timer'), require('d3-interpolate'), require('d3-color'), require('d3-ease')) :
@@ -20185,7 +20604,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-color":13,"d3-dispatch":15,"d3-ease":18,"d3-interpolate":24,"d3-selection":31,"d3-timer":35}],37:[function(require,module,exports){
+},{"d3-color":24,"d3-dispatch":26,"d3-ease":29,"d3-interpolate":35,"d3-selection":42,"d3-timer":46}],48:[function(require,module,exports){
 // https://d3js.org/d3-voronoi/ v1.1.4 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -21186,7 +21605,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],38:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // https://d3js.org/d3-zoom/ v1.8.3 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
@@ -21685,7 +22104,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-dispatch":15,"d3-drag":16,"d3-interpolate":24,"d3-selection":31,"d3-transition":36}],39:[function(require,module,exports){
+},{"d3-dispatch":26,"d3-drag":27,"d3-interpolate":35,"d3-selection":42,"d3-transition":47}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -21974,7 +22393,7 @@ Object.keys(d3Zoom).forEach(function (k) {
 });
 exports.version = version;
 
-},{"d3-array":8,"d3-axis":9,"d3-brush":10,"d3-chord":11,"d3-collection":12,"d3-color":13,"d3-contour":14,"d3-dispatch":15,"d3-drag":16,"d3-dsv":17,"d3-ease":18,"d3-fetch":19,"d3-force":20,"d3-format":21,"d3-geo":22,"d3-hierarchy":23,"d3-interpolate":24,"d3-path":25,"d3-polygon":26,"d3-quadtree":27,"d3-random":28,"d3-scale":30,"d3-scale-chromatic":29,"d3-selection":31,"d3-shape":32,"d3-time":34,"d3-time-format":33,"d3-timer":35,"d3-transition":36,"d3-voronoi":37,"d3-zoom":38}],40:[function(require,module,exports){
+},{"d3-array":19,"d3-axis":20,"d3-brush":21,"d3-chord":22,"d3-collection":23,"d3-color":24,"d3-contour":25,"d3-dispatch":26,"d3-drag":27,"d3-dsv":28,"d3-ease":29,"d3-fetch":30,"d3-force":31,"d3-format":32,"d3-geo":33,"d3-hierarchy":34,"d3-interpolate":35,"d3-path":36,"d3-polygon":37,"d3-quadtree":38,"d3-random":39,"d3-scale":41,"d3-scale-chromatic":40,"d3-selection":42,"d3-shape":43,"d3-time":45,"d3-time-format":44,"d3-timer":46,"d3-transition":47,"d3-voronoi":48,"d3-zoom":49}],51:[function(require,module,exports){
 (function (process,global){
 !function(e){"object"==typeof exports?module.exports=e():"function"==typeof define&&define.amd?define(e):"undefined"!=typeof window?window.commonJsModule=e():"undefined"!=typeof global?global.commonJsModule=e():"undefined"!=typeof self&&(self.commonJsModule=e())}(function(){var define,module,exports;module={exports:(exports={})};
 
@@ -22178,10 +22597,21 @@ module.exports = {
 			if (unit_and_data.length > 1){
 				unit_and_data_str = unit_and_data[0].toString()+"."+unit_and_data[1].toString();
 			}
-			else{
+			// This is an empty ver_info_obj, print a warning and return
+			else if (ver_info_obj["MNEM"] == '' && unit_and_data.length == 0) {
+				console.log("WARNING: Metatdata line has no data: ", vers_line_1half_array);
+				return ver_info_obj;
+			}
+			else {
 				unit_and_data_str = unit_and_data.toString()
 			}
-			var unit = unit_and_data_str[0,5].trim();
+
+			// Sometimes the unit_and_data_str are less that 5 chars
+			var last_idx = 5;
+			if ((unit_and_data_str.length - 1) < 5) {
+				last_idx = unit_and_data_str.length - 1;
+			}
+			var unit = unit_and_data_str[0,last_idx].trim();
 			var data = unit_and_data_str.substring(5,unit_and_data_str.length).trim();
 			ver_info_obj["DATA"] = data
 			ver_info_obj["UNIT"] = unit
@@ -22204,20 +22634,25 @@ module.exports = {
 		for(i = 0; i < param_line_array.length; i++){
 			//// create one object for parameter line
 			//// Skip empty elements and comment elements that start with '#'.
-			if(param_line_array[i] != "" && param_line_array[i][0] !== '#'){
+			if(param_line_array[i] != "" && ! param_line_array[i].trim().startsWith("#")) {
 				var param_obj_inst = splitLineofType1(Object.assign({}, param_info_obj),param_line_array[i]);
-				lasjson["PARAMETER INFORMATION"][param_obj_inst["MNEM"]] = param_obj_inst
+				if (param_obj_inst.MNEM) {
+					lasjson["PARAMETER INFORMATION"][param_obj_inst["MNEM"]] = param_obj_inst;
+				}
 			}
 		}
-		//// Working with CURVE INFORMATION BLOCK second by splitting it by newline into an array.
+		//// Working with CURVE INFORMATION BLOCK second by splitting it by newline
+		//// into an array.
 		//// This skips the line with the section's title.
 		var curve_line_array = curve_info_str.split("\n").slice(1,);
 		for(i = 0; i < curve_line_array.length; i++){
 			//// create one object for parameter line
 			//// Skip empty elements and comment elements that start with '#'.
-			if(curve_line_array[i] != "" && curve_line_array[i][0] !== '#'){
+			if(curve_line_array[i] != "" && ! curve_line_array[i].trim().startsWith("#")) {
 				var curve_obj_inst = splitLineofType1(Object.assign({}, curve_info_obj),curve_line_array[i]);
-				lasjson["CURVE INFORMATION BLOCK"][curve_obj_inst["MNEM"]] = curve_obj_inst
+				if (curve_obj_inst.MNEM) {
+					lasjson["CURVE INFORMATION BLOCK"][curve_obj_inst["MNEM"]] = curve_obj_inst;
+				}
 			}
 		}
 		//// Working with WELL INFORMATION BLOCK second by splitting it by newline into an array.
@@ -22229,9 +22664,11 @@ module.exports = {
 			}
 			//// create one object for parameter line
 			//// Skip empty elements and comment elements that start with '#'.
-			if(well_line_array[i] != "" && well_line_array[i][0] !== '#'){
+			else if(well_line_array[i] != "" && ! well_line_array[i].trim().startsWith("#")) {
 				var well_obj_inst = splitLineofType1(Object.assign({}, well_info_obj),well_line_array[i]);
-				lasjson["WELL INFORMATION BLOCK"][well_obj_inst["MNEM"]] = well_obj_inst
+				if (well_obj_inst.MNEM) {
+					lasjson["WELL INFORMATION BLOCK"][well_obj_inst["MNEM"]] = well_obj_inst;
+				}
 			}
 			else{
 				console.log("INFO: in else for well_line: " + i)
@@ -22342,4 +22779,4 @@ module.exports = {
 return module.exports;});
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":2,"fs":1}]},{},[4,6,5,7]);
+},{"_process":2,"fs":1}]},{},[15,17,16,18]);
