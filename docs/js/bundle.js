@@ -2285,8 +2285,8 @@ function reformatJSONforPlotting(temp_json,curve,div){
 		  "take_out_null_or_visualize":"no", /// not built yet
 		  "show_title":"yes", 
 		  "width": 50, 
-		  "height": 400, 
-		  "height_multiplier_components":1,
+		  "height": 600, 
+		  "height_multiplier_components":14,
 		  "margin": {"top": 10, "right": 10, "bottom": 30, "left": 60}, 
 		  "title": {"text": "", "title_font_size": "10px"}, /// not built yet
 		  "div_id": "log_plot_div", /// Should be skip-able // default=random str? What happens if div doesn't exist?
@@ -2479,9 +2479,9 @@ function changeConfig(config_value,config){
 function draw_curve(div,config_change="none"){
 	if(!div){div = "log_plot_div"}
 
-	let height_multiplier_components = 1.5
+	let height_multiplier_components = 1.0
 	if(config_change!="none"){
-		if(Object.keys(config_change)=="height_multiplier_components"){
+		if(Object.keys(config_change)[0]=="height_multiplier_components"){
 			height_multiplier_components = config_change["height_multiplier_components"]
 		}
 	}
@@ -2542,7 +2542,7 @@ function forMultipleCurvesMinimumDataIntoTemplateFunc(well_log_curves_reformatte
 		   }
 		   
 			var json_template_for_plotting = wellioviz.minimumDataIntoTemplateFunc(example_template,well_log_curves_reformatted_for_d3_2,[uwi2],           [array_curvenames[i]],[style["line_color"]],[""],[
-			   {"curve_name":array_curvenames[i],"fill":style["fill"],"fill_direction":style["fill_direction"],"cutoffs":   style["cutoffs"],"fill_colors":  style["fill_colors"],"curve2":""}],"well_holder_1A",100,400,depth_curve_name)
+			   {"curve_name":array_curvenames[i],"fill":style["fill"],"fill_direction":style["fill_direction"],"cutoffs":   style["cutoffs"],"fill_colors":  style["fill_colors"],"curve2":""}],"well_holder_1A",180,600,depth_curve_name)
 	  ///
 	  array_of_jsons_for_what_to_plot.push(json_template_for_plotting)  
 		 }
