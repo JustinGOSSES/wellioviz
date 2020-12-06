@@ -57,7 +57,7 @@
 		<div class="collapse navbar-collapse" id="navbarToggler">
 			<ul class="navbar-nav">
 				<li class="nav-item active">
-					<a class="nav-link afterconvert" data-toggle="collapse" href="#wellupload">Load Well(s)</a>
+					<a class="nav-link afterconvert" data-toggle="collapse" href="#wellupload" onclick="checkForJSONThenCollapse('#wellupload')">Load Well(s)</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link afterconvert" onclick="checkForJSONThenCollapse('#welldisplaycurves')">Display</a>
@@ -94,18 +94,20 @@
 	</div>
 
 	<div class="well_step">
+		<p id="which_well"><i>no well selection</i></p>
 		<p><b>Second</b>: convert .las text into JSON. If you selected more than one las, the first will be used.</p>
 		<button onclick="convert_and_startHelpers()" class='btn btn-primary'>convert</button>
-		<p id="which_well"><i>no well selection</i></p>
 	</div>
 	</div>
 
 	<div id="welldisplaytext" class="collapse groupBorder">
 	<div class="well_step">
+		<p id="which_well_text"><i>no well selection</i></p>
 		<h5>Display LAS files as text</h5>
 	</div>
 	<div class="well_step">
-		<p><b>A.</b> Display of .las files as text</p>btn-primary
+		
+		<p><b>A.</b> Display of .las files as text</p>
 		<button onclick="displayFileFunction() " class='btn btn-primary'>display text</button>
 		<button onclick="removeTextLAS()" class='btn btn-primary'>remove text</button>
 		<div id="fileContents"></div>
@@ -113,6 +115,7 @@
 	</div>
 
 	<div id="welldisplaycurves" class="collapse well_step_left groupBorder">
+		<p id="which_well_display"><i>no well selection</i></p>
 		<h5>Display curves visually using Wellioviz</h5>
 		<p>Available Curves</p>
 
@@ -132,6 +135,7 @@
 	</div>
 
 	<div id="welldisplayjson" class="collapse well_step_left groupBorder">
+		<p id="which_well_json"><i>no well selection</i></p>
 		<h5>Display well log converted into JSON</h5>
 		<p><b>C.</b> Print well in wellio.js JSON format</p>
 		<button onclick="print_well()" class='btn btn-secondary'>print json</button>
@@ -150,6 +154,7 @@
 
 	<div id="welldownloadjson" class="collapse well_step_left groupBorder">
 		<div class="well_step">
+			<p id="which_well_download"><i>no well selection</i></p>
 			<h5>Download well as JSON file</h5>
 			<button id="download_button" onclick="download_test()" class='btn btn-primary'>download</button>
 		</div>

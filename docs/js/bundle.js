@@ -2741,6 +2741,11 @@ function convert_and_startHelpers(){
   //// adds inner html to p for the UWI name of the well in questino that was just loaded and converted
   console.log("temp_json['WELL INFORMATION BLOCK'] =", JSON.stringify(temp_json["WELL INFORMATION BLOCK"]))
   document.getElementById("which_well").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+  document.getElementById("which_well_text").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+  document.getElementById("which_well_display").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+  document.getElementById("which_well_json").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+  document.getElementById("which_well_download").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+
   changeMenuBarButtonColorOnConvert()
 }
 
