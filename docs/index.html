@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>wellioviz 0.0.28 | Documentation</title>
+  <title>wellioviz 0.0.30 | Documentation</title>
   <meta name='description' content='Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>wellioviz</h3>
-          <div class='mb1'><code>0.0.28</code></div>
+          <div class='mb1'><code>0.0.30</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -166,6 +166,16 @@
               
                 
                 <li><a
+                  href='#finddepthname'
+                  class="">
+                  findDepthName
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#convertwelljsontoobj'
                   class="">
                   convertWellJSONToObj
@@ -256,6 +266,16 @@
               
                 
                 <li><a
+                  href='#formultiplecurvesminimumdataintotemplatefunc'
+                  class="">
+                  forMultipleCurvesMinimumDataIntoTemplateFunc
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#multiplelogplot'
                   class="">
                   multipleLogPlot
@@ -279,6 +299,16 @@
                   href='#savesvg'
                   class="">
                   saveSvg
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#format_log'
+                  class="">
+                  format_log
                   
                 </a>
                 
@@ -387,6 +417,13 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <li>The console output should be <code>undefined</code>, which is a big scary, sorry. </li>
 <li>However, if you run <code>wellioviz.help</code> you'll now see returned on the next line =<code>'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'</code>.</li>
 <li>Further wellioviz functions are just the variable name you created <code>wellioviz</code> + <code>.</code> + function name with arguments included inside the <code>()</code>.</li>
+</ol>
+<h3>Run Example Holoviews Panel/Bokeh Deployment</h3>
+<ol>
+<li>Run <code>pip install panel</code> (and its dependancies) from your python enviroment command line.</li>
+<li>Clone/download this repository's source code</li>
+<li>In the command line, navigate to the "examples/deployments/" folder</li>
+<li>From the command line, run <code>panel serve example_panel_app --show</code></li>
 </ol>
 <h3>Install in a Jupyter Notebook with JavaScript Kernal</h3>
 <p>-- IN PROGRESS --</p>
@@ -682,6 +719,7 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 </ul>
 <h2>And lastly</h2>
 <p>If anything is confusing, open an issue.</p>
+<p>ALSO - If you got here relate to the hackathon, check out the Transform2020 Hackathon notes: <a href="https://justingosses.github.io/wellioviz/#swung-hackathon">https://justingosses.github.io/wellioviz/#swung-hackathon</a></p>
 
   
 </section></div>
@@ -1190,6 +1228,78 @@ It is used next by funtion _<strong><em> and </em></strong>.</p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='finddepthname'>
+      findDepthName
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>findDepthName is a function that takes in a wellio style JSON representation of the well log,
+looks at all the curve names and finds the one that is probably the depth curve, then returns it.
+This is useful for not plotting the depth curve.</p>
+
+    <div class='pre p1 fill-light mt0'>findDepthName(well_log_in_json: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>well_log_in_json</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    a full wellio style JSON
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        returns a string representation of the curve name that is likely the depth curve. It assumes there is only one!
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='convertwelljsontoobj'>
       convertWellJSONToObj
     </h3>
@@ -1377,7 +1487,7 @@ the data array of objects that D3.js likes for data used in plotting.</p>
   </div>
   
 
-  <p>createDepthArray is a function that takes in a min float, max float, and step float value.<br>
+  <p>createDepthArray is a function that takes in a min float, max float, and step float value.
 and returns an array or depth values from the min to the max value going by the step value each step.
 This function is used to create a depth array for plotting when only the max, min, and depth is given explicitly in the input data. This might be done to avoid sending the depth curve from the backend to the front-end.</p>
 
@@ -2059,6 +2169,115 @@ and returns the data array of objects that D3.js likes for data used in plotting
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='formultiplecurvesminimumdataintotemplatefunc'>
+      forMultipleCurvesMinimumDataIntoTemplateFunc
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This function is used to quickly plot multiple curves as separate curveboxes and taking into consideration a
+list of curves to skip and some basic pre-built styles, both given as arguments.</p>
+
+    <div class='pre p1 fill-light mt0'>forMultipleCurvesMinimumDataIntoTemplateFunc(well_log_curves_reformatted_for_d3_2: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, curves_to_skip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, prebuilt_minimal_styles_by_curvename: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, uwi2: any, depth_curve_name: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>well_log_curves_reformatted_for_d3_2</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of objects. Each object is a depth point with key:value pairs of curve name and value.
+This was likely created by the three_things_2 function and returned like so: well_log_curves_reformatted_for_d3_2 = three_things_2
+["well_log_curves_reformatted_for_d3"]
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curves_to_skip</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of strings for curve names to skip plotting.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prebuilt_minimal_styles_by_curvename</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    An object that maps curve names to style and styles to
+basic style config like fill color
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>uwi2</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>depth_curve_name</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        array_of_jsons_for_what_to_plot - An array of objects for each curve to be plotted in its
+curvebox via the curveBox() function or another function that funnels into curvebox.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='multiplelogplot'>
       multipleLogPlot
     </h3>
@@ -2069,7 +2288,7 @@ and returns the data array of objects that D3.js likes for data used in plotting
 
   <p>This function is used to plot multiple curveboxes in a row. AKA makes a cross-section. It calls curveBox multiple times.</p>
 
-    <div class='pre p1 fill-light mt0'>multipleLogPlot(div_id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, templates: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, show_all: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+    <div class='pre p1 fill-light mt0'>multipleLogPlot(div_id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, templates: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, show_all: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, remove_preexisting: any)</div>
   
   
 
@@ -2108,6 +2327,15 @@ and returns the data array of objects that D3.js likes for data used in plotting
             = <code>true</code>)</code>
 	    is a boolean value that decides whether or not multiple plots are shown in a multiple log plot div. If show_all is false however, the developer must switch their CSS to be "inline-block" one at a time via some other means. If they don't,none will appear!
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>remove_preexisting</span> <code class='quiet'>(any
+            = <code>true</code>)</code>
+	    
           </div>
           
         </div>
@@ -2260,6 +2488,87 @@ In certain environments, this  may not work for security reasons.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='format_log'>
+      format_log
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>convertWellJSONToObj is a function that takes in wellio style JSON of all LAS file well log information,
+array of curves names, and a string for UWI
+and returns the data array of objects that D3.js likes for data used in plotting.</p>
+
+    <div class='pre p1 fill-light mt0'>format_log(curve_dict: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, curve_name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_dict</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    wellio style curves
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>curve_name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the name of the curve to format
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
+
+      
+    
   
 
   

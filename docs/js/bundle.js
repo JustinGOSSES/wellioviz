@@ -739,17 +739,27 @@ module.exports = CurveFillTemplate
          * @returns {array} returns an object of 3 things that will eventually be used in plotting. {"well_log_curves_reformatted_for_d3":well_log_curves_reformatted_for_d3,"curve_names":curve_names,"uwi":uwi}
          */
         fromJSONofWEllGetThingsForPlotting: function (jsonWell, depth_curve_name) {
-            curve_names = Object.keys(jsonWell["CURVES"]);
-            uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
-            depth_curve_name = depth_curve_name;
-            well_log_curves_reformatted_for_d3 = module.exports.convertWellJSONToObj(jsonWell, curve_names, uwi, depth_curve_name);
-            return {
-                "well_log_curves_reformatted_for_d3": well_log_curves_reformatted_for_d3,
-                "curve_names": curve_names,
-                "uwi": uwi
-            };
-        },
-
+          curve_names = Object.keys(jsonWell["CURVES"]);
+          uwi = ""
+          try {
+              uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+            }
+          catch(err) {
+              try{
+                  uwi = jsonWell["WELL INFORMATION BLOCK"]["WEll"]["DATA"];
+              }
+              catch(err) {
+                  console.log("function fromJSONofWEllGetThingsForPlotting in wellioviz.js tried to find the UWI name and then well name and could find neighter in the place it expected. Please submit an issue at https://github.com/JustinGOSSES/wellioviz .",err)
+              }
+            }
+          depth_curve_name = depth_curve_name;
+          well_log_curves_reformatted_for_d3 = module.exports.convertWellJSONToObj(jsonWell, curve_names, uwi, depth_curve_name);
+          return {
+              "well_log_curves_reformatted_for_d3": well_log_curves_reformatted_for_d3,
+              "curve_names": curve_names,
+              "uwi": uwi
+          };
+      },
 
         ///////////////////////////////
         //// Functions for reformatting data other than wellio.js style JSON

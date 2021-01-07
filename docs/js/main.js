@@ -24,11 +24,16 @@ function checkForJSONThenCollapse(divID){
   if(divID=="#welldisplaycurves"){
     draw_curve("log_plot_div")
   }
-  if (!temp_json['WELL INFORMATION BLOCK']){"button did nothing because well JSON doesn't exist"}
+  if (!temp_json['WELL INFORMATION BLOCK']){console.log("button did nothing because well JSON doesn't exist")}
   else{
     $('.collapse').collapse("hide")
     //// toggle only the one clicked!
     $(divID).collapse("toggle")
+    if (divID=="#wellupload"){
+      document.getElementById("files").files = []
+      // temp_json = {}
+      all_files = [];
+    }
   }
 }
 
@@ -77,7 +82,7 @@ function readInLASFromASSETS(){
             url : "./assets/00-01-01-073-05W5-0.LAS",
             dataType: "text",
             success : function (data) {
-              all_files = [data,""]
+              all_files = [data]
               document.getElementById("upload-success").innerHTML = "upload success";
               console.log("successfully loaded .draw_curve_from_data/assets/00-01-01-073-05W5-0.LAS")
             },
@@ -133,6 +138,7 @@ function changeMenuBarButtonColorOnConvert(){
 //// updating the global variables as needed, and changing some new DOM elements to reflect the new well data.
 //// It calls the las2json(onelas) function found in wellio.js JavaScript file.
 function convert_and_startHelpers(){
+  console.log("all_files",all_files.length,all_files)
   //// removes the buttons for the well curves from the previous well if they exist
   remove_DOM_children("curveButtons_holder")
   //// calls the function that takes a single LAS text file representing a single well and returns an object variable in JSON format for that well.
@@ -144,11 +150,16 @@ function convert_and_startHelpers(){
   addCurveOptionButtons()
   //// adds inner html to p for the UWI name of the well in questino that was just loaded and converted
   console.log("temp_json['WELL INFORMATION BLOCK'] =", JSON.stringify(temp_json["WELL INFORMATION BLOCK"]))
-  document.getElementById("which_well").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
-  document.getElementById("which_well_text").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
-  document.getElementById("which_well_display").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
-  document.getElementById("which_well_json").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
-  document.getElementById("which_well_download").innerHTML = "UWI = "+temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+  let uwi = "no well name found"
+  try {uwi = temp_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"]}
+  catch(err){
+    console.log("tried to get UWI well name but it didn't exist, so using",uwi," instead.",err)
+  }
+  document.getElementById("which_well").innerHTML = "UWI = "+uwi;
+  document.getElementById("which_well_text").innerHTML = "UWI = "+uwi;
+  document.getElementById("which_well_display").innerHTML = "UWI = "+uwi;
+  document.getElementById("which_well_json").innerHTML = "UWI = "+uwi;
+  document.getElementById("which_well_download").innerHTML = "UWI = "+uwi;
 
   changeMenuBarButtonColorOnConvert()
 }

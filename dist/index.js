@@ -513,7 +513,18 @@
          */
         fromJSONofWEllGetThingsForPlotting: function (jsonWell, depth_curve_name) {
             curve_names = Object.keys(jsonWell["CURVES"]);
-            uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+            uwi = ""
+            try {
+                uwi = jsonWell["WELL INFORMATION BLOCK"]["UWI"]["DATA"];
+              }
+            catch(err) {
+                try{
+                    uwi = jsonWell["WELL INFORMATION BLOCK"]["WEll"]["DATA"];
+                }
+                catch(err) {
+                    console.log("function fromJSONofWEllGetThingsForPlotting in wellioviz.js tried to find the UWI name and then well name and could find neighter in the place it expected. Please submit an issue at https://github.com/JustinGOSSES/wellioviz .",err)
+                }
+              }
             depth_curve_name = depth_curve_name;
             well_log_curves_reformatted_for_d3 = module.exports.convertWellJSONToObj(jsonWell, curve_names, uwi, depth_curve_name);
             return {

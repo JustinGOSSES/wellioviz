@@ -35,7 +35,7 @@
 
 	<!-- GEOLOGY DATA SPECIFIC VISUALIZATIONS BUILT ON TOP OF D3.JS -->
 	<!-- <script src="./js/g3.js"></script> -->
-	<script src="../dist/index.js"></script>
+	<!-- <script src="../dist/index.js"></script> -->
 	<!-- PLOTTING FUNCTIONS THAT CALL G3.JS FROM MAIN.JS -->
 	<script src="./js/call_plots.js"></script>
 	<!-- REST OF THE WEBPAGE FUNCTIONS -->
@@ -80,12 +80,12 @@
 	<div class="well_step ">
 		<p><b>First</b>: use either of these buttons to load a LAS files.</p>
 		<div class="well_pos_relative">
-			<a class='btn btn-primary' href='javascript:;'>
+			<a class='btn btn-primary' href='javascript:;' style="width:15em">
 				from your computer
-				<input type="file" id="files" multiple class='well_file_upload' name="file_source" size="40" onchange='$("#upload-file-info").html($(this).val());readInFilesFunction()'>
+				<input type="file" id="files" multiple class='well_file_upload' name="file_source" onchange='$("#upload-file-info").html($(this).val());readInFilesFunction()' style="width:15em">
 			</a>
 
-			<button onclick="readInLASFromASSETS()" class='btn btn-primary'>from Assets folder of this webpage</button>
+			<button onclick="readInLASFromASSETS()" class='btn btn-primary' style="margin-left:2em;">from Assets folder of this webpage</button>
 			<span class='label label-info' id="upload-success"></span>
 			</br>
 			<span class='label label-info' id="upload-file-info"></span>
@@ -94,8 +94,9 @@
 	</div>
 
 	<div class="well_step">
-		<p id="which_well"><i>no well selection</i></p>
+		
 		<p><b>Second</b>: convert .las text into JSON. If you selected more than one las, the first will be used.</p>
+		<p id="which_well"><i>no well converted yet</i></p>
 		<button onclick="convert_and_startHelpers()" class='btn btn-primary'>convert</button>
 	</div>
 	</div>
