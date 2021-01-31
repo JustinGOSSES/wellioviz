@@ -6,9 +6,13 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="docs/images/well_log_screenshot_new.png"></a>
 
-## IT IS IN PROGRESS.....
 
 ## Demos & Examples
+#### Full Websites
+1. HTML demo as github pages page in this repository
+    - Status: Up to Date (almost always). 
+    - Link: Basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html Note that the user interface on this page is part of the demo but not the only way to use wellioviz as wellioviz is just the visualization capability.
+    - Who for: People who want to see it work with a well log provided by the website, so they don't have to provide one, or people who went to load their own well log file into the browser from their local computer. All data stays in the browser window, nothing leaves your browser.
 
 #### Full Websites
 1. HTML demo as github pages page in this repository
@@ -19,19 +23,26 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 1. Hello Wellioviz Mini Demo in ObservableHQ.com
     - Link: https://observablehq.com/@justingosses/hello-wellioviz
     - Status: Up to date.
-2. More GUI-like Experience in an ObservableHQ notebook
-    - Link: https://justingosses.github.io/wellioviz/demo_from_hackathon.html
-    - Status: Built up via hackathon. Up to date at the time. Some features still a bit unstable but mostly works.
+    - Who for: People who wnat to see what it does quickly. Litterally the hello world version. Loads well that exists at an URL.
+2. Demo that consumes well logs directly from Government Open Data sites, so you don't have to download files locally
+    - Link: https://observablehq.com/@justingosses/a-notebook-using-wellio-js-wellioviz-js-for-quick-looks-of-la
+    - Status: Up to date
+    - Who for: People who want to check out well logs that exist on a government site without having to download the file and work with it locally. Requires each well log to be in LAS 2.0 file format and downloadable from a specific URL.
 3. Demo in Observable of Most Recent Published Code with 3 Examples:
     - Link: <a href="https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm">https://observablehq.com/@justingosses/first-wellio-example-with-all-wellioviz-functions-from-npm</a>
     - Status: Code is pulled from NPM, so this reflects the latest code that has been published to NPM. May lag slightly compared to the code on this github repository in master branch. 
+    - Who for: Good demo to check out if you want to see wellioviz work with both well log data in wellio.js style JSON and sparse style JSON. Uses whatever most recent version of wellioviz and wellio published to NPM.
 4. Observable Notebook Where Code is Developed. Has functions written-out inline. 
-    - Status: May be ahead of code in this repository sometimes.
+    - Status: Stale. Development has shifted to local development with UI using demo.html found in docs folder. 
     - Link: <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">here</a>
+<<<<<<< HEAD
 
 
 #### Community Built Demos!
 <INSERT YOUR EXAMPLE HERE VIA A PULL REQUEST !!!>
+=======
+    - Who for: If you want to see some of the actual functions in a setting where all changes are live, with the understanding that this code is old and some functions might have changed,this is a good one to check out as it is decidedly less "magical". Brings in well log that exists at an URL.
+>>>>>>> 4530e7f04310ee6fcecb0604a6a1df9426732187
 
 
 #### Alterative Observable-notebook-based demos out of date
@@ -42,7 +53,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 - https://observablehq.com/@justingosses/well-log-curve-cross-sections
 
 ## DOCS
-Docs will be here: https://justingosses.github.io/wellioviz/ They are only partially up to date currently. 
+Docs are here: https://justingosses.github.io/wellioviz/  
 
 ## Architecture 
 <a href="images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png"></a>
