@@ -6,11 +6,8 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 
 <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"><img src="docs/images/well_log_screenshot_new.png"></a>
 
-## IT IS IN PROGRESS.....
 
 ## Demos & Examples
-
-
 #### Full Websites
 1. HTML demo as github pages page in this repository
     - Status: Up to Date (almost always). Currently a bare-bones example but plan to flesh out more.
@@ -44,7 +41,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 - https://observablehq.com/@justingosses/well-log-curve-cross-sections
 
 ## DOCS
-Docs will be here: https://justingosses.github.io/wellioviz/ They are only partially up to date currently. 
+Docs are here: https://justingosses.github.io/wellioviz/  
 
 ## Architecture 
 <a href="images/wellioviz_architecture.png"><img src="docs/images/wellioviz_architecture.png"></a>
