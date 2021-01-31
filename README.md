@@ -10,15 +10,15 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 ## Demos & Examples
 #### Full Websites
 1. HTML demo as github pages page in this repository
-    - Status: Up to Date (almost always). Currently a bare-bones example but plan to flesh out more.
-    - Link: Building a basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html 
+    - Status: Up to Date (almost always). 
+    - Link: Basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html Note that the user interface on this page is part of the demo but not the only way to use wellioviz as wellioviz is just the visualization capability.
     - Who for: People who want to see it work with a well log provided by the website, so they don't have to provide one, or people who went to load their own well log file into the browser from their local computer. All data stays in the browser window, nothing leaves your browser.
 
 #### Observable Demos
 1. Hello Wellioviz Mini Demo in ObservableHQ.com
     - Link: https://observablehq.com/@justingosses/hello-wellioviz
     - Status: Up to date.
-    - Who for: People who wnat to see what it does quickly. Litterally the hello world version.
+    - Who for: People who wnat to see what it does quickly. Litterally the hello world version. Loads well that exists at an URL.
 2. Demo that consumes well logs directly from Government Open Data sites, so you don't have to download files locally
     - Link: https://observablehq.com/@justingosses/a-notebook-using-wellio-js-wellioviz-js-for-quick-looks-of-la
     - Status: Up to date
