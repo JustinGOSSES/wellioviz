@@ -14,11 +14,6 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
     - Link: Basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html Note that the user interface on this page is part of the demo but not the only way to use wellioviz as wellioviz is just the visualization capability.
     - Who for: People who want to see it work with a well log provided by the website, so they don't have to provide one, or people who went to load their own well log file into the browser from their local computer. All data stays in the browser window, nothing leaves your browser.
 
-#### Full Websites
-1. HTML demo as github pages page in this repository
-    - Status: Up to Date (almost always). Currently a bare-bones example but plan to flesh out more.
-    - Link: Building a basic webpage demo here: https://justingosses.github.io/wellioviz/demo.html 
-
 #### Observable Demos
 1. Hello Wellioviz Mini Demo in ObservableHQ.com
     - Link: https://observablehq.com/@justingosses/hello-wellioviz
@@ -35,14 +30,7 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 4. Observable Notebook Where Code is Developed. Has functions written-out inline. 
     - Status: Stale. Development has shifted to local development with UI using demo.html found in docs folder. 
     - Link: <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">here</a>
-<<<<<<< HEAD
 
-
-#### Community Built Demos!
-<INSERT YOUR EXAMPLE HERE VIA A PULL REQUEST !!!>
-=======
-    - Who for: If you want to see some of the actual functions in a setting where all changes are live, with the understanding that this code is old and some functions might have changed,this is a good one to check out as it is decidedly less "magical". Brings in well log that exists at an URL.
->>>>>>> 4530e7f04310ee6fcecb0604a6a1df9426732187
 
 
 #### Alterative Observable-notebook-based demos out of date
