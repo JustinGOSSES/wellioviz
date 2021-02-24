@@ -63,7 +63,7 @@ Most geologists who make charts of well logs via code seem to do so in Python, o
 
 
 ## Contributing
-Check out the Contributing <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/CONTRIBUTING.md">Guidelines</a>. Issues, documentation, pull requests, examples, test cases, and questions needed!
+Check out the Contributing <a href="https://justingosses.github.io/wellioviz/#contributing">Guidelines</a>. Issues, documentation, pull requests, examples, test cases, and questions needed!
 
 I also have a description in Contributing.md of how I tend to work on the project and what things to expect will always be in sync in case there are questions on that.
 
