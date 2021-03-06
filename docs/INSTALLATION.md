@@ -6,11 +6,13 @@ Wellioviz is a node.js module. If you've only brought JavaScript into an HTML pr
 
 ### Install in an Observable Notebook - JavaScript 
 ##### (easiest way to get started)
-To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says `wellioviz = require('https://bundle.run/wellioviz)` 
+To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says 
 
-If you want to bring in a specific version, you can add the version on the end like so `wellioviz = require('https://bundle.run/wellioviz@0.0.25')`.
+<code class="black">`wellioviz = require('https://bundle.run/wellioviz)`</code>
 
-You would then call wellioviz functions in other cells by adding the function name on the end of wellioviz like: `example_template = wellioviz.curveBoxTemplateExamples("example")`.
+If you want to bring in a specific version, you can add the version on the end like so <code class="black">`wellioviz = require('https://bundle.run/wellioviz@0.0.25')`</code>.
+
+You would then call wellioviz functions in other cells by adding the function name on the end of wellioviz like: <code class="black">`example_template = wellioviz.curveBoxTemplateExamples("example")`</code>.
 
 You can find an example of this in the <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz"</a> notebook on ObservableHQ.com.
 
@@ -30,8 +32,8 @@ There is more than one way to get npm modules into a front-end project. Welliovi
     }
 }`
 Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other modules you need would go in here too after wellioviz line separated by a comma.
-5. From the same folder that has the package.json run `npm install`. This will create a folder called "node_modules" and there should be another folder called wellioviz.
-6. Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag `<script src="node_modules/wellioviz/dist/index.js"></script>`. You should be able to call wellioviz functions in your other JavaScript files now.
+5. From the same folder that has the package.json run <code class="black">`npm install`</code>. This will create a folder called "node_modules" and there should be another folder called wellioviz.
+6. Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code class="black">`<script src="node_modules/wellioviz/dist/index.js"></script>`</code>. You should be able to call wellioviz functions in your other JavaScript files now.
 
 #### A second possible way to use wellioviz in a website:
 This way is slightly cleaner in terms of namespace. Additionally, you may not want to include your entire node modules folder if that gets big!
@@ -40,30 +42,30 @@ This way is slightly cleaner in terms of namespace. Additionally, you may not wa
 2. Install <a href="https://www.npmjs.com/get-npm">npm</a>
 3. Install <a href="http://browserify.org/">browserify</a>
 4. Navigate to the directory of your new project.
-5. Run `npm install wellioviz`
+5. Run <code class="black">`npm install wellioviz`</code>
 6. Create a directory called `JS`. 
 7. Navigate into `JS` directory and create a file called `main.js`.
-8. In main.js include a line `wellio = require('wellioviz');`.
-9. If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command `browserify main.js other.js more.js -o bundle.js`. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.
-10. Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag `<script src="JS/bundle.js"></script>`. You should be able to call wellioviz functions in your other JavaScript files now.
+8. In main.js include a line <code class="black">`wellio = require('wellioviz');`</code>.
+9. If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command <code class="black">`browserify main.js other.js more.js -o bundle.js`</code>. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.
+10. Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code class="black">`<script src="JS/bundle.js"></script>`</code>. You should be able to call wellioviz functions in your other JavaScript files now.
 
 ### Install Locally and Use Via Node.js backend
 You're probably not going to use wellioviz on the backend. The one exception is if you wanted to create a large number of static SVGs of well logs from your LAS files.
 
 1. Install <a href="https://nodejs.org/en/download/">node.js</a>
 2. Install <a href="https://www.npmjs.com/get-npm">npm</a>
-3. Run `npm install wellioviz`.
-4. To use wellioviz from the command line run `node --require wellioviz`. This should start the node console with wellioviz included. You should see a `>` on the next console line.
-5. Now run `var wellio = require('wellioviz')`
-6. The console output should be `undefined`, which is a big scary, sorry. 
-7. However, if you run `wellioviz.help` you'll now see returned on the next line =`'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'`.
+3. Run <code class="black">`npm install wellioviz`</code>.
+4. To use wellioviz from the command line run <code class="black">`node --require wellioviz`</code>. This should start the node console with wellioviz included. You should see a `>` on the next console line.
+5. Now run <code class="black">`var wellio = require('wellioviz')`</code>
+6. The console output should be `undefined`, which is a bit scary, sorry. 
+7. However, if you run <code class="black">`wellioviz.help`</code> you'll now see returned on the next line = <code class="black">`'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'`</code>.
 8. Further wellioviz functions are just the variable name you created `wellioviz` + `.` + function name with arguments included inside the `()`.
 
 ### Run Example Holoviews Panel/Bokeh Deployment
-1. Run `pip install panel` (and its dependancies) from your python enviroment command line.
+1. Run <code class="black">`pip install panel`</code> (and its dependancies) from your python enviroment command line.
 2. Clone/download this repository's source code
-3. In the command line, navigate to the "examples/deployments/" folder
-4. From the command line, run `panel serve example_panel_app --show`
+3. In the command line, navigate to the <bold>"examples/deployments/"</bold> folder
+4. From the command line, run <code class="black">`panel serve example_panel_app --show`</code>
 
 ### Install in a Jupyter Notebook with JavaScript Kernal
 -- IN PROGRESS --
@@ -73,8 +75,8 @@ You're probably not going to use wellioviz on the backend. The one exception is 
 
 ### Install Wellioviz for Contributing to Wellioviz
 1. Fork the repository https://github.com/JustinGOSSES/wellioviz.git on github.com to your own account. 
-2. Clone your fork of repository that is now on your github page `git clone https://github.com/`+yourUserName+`/wellioviz.git`.
-3. Navigate inside `cd wellioviz`.
+2. Clone your fork of repository that is now on your github page <code class="black">`git clone https://github.com/`+yourUserName+`/wellioviz.git`</code>.
+3. Navigate inside <code class="black">`cd wellioviz`</code>.
 4. Make changes
 5. To see Wellioviz changes appear in the demo.html page, make sure to run browserify after any changes as described in the second option for install under "Install for Use on Front-end Website".
 6. When you are ready to merge changes back, push the changes back to your account on github.com. 

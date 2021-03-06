@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>wellioviz 0.0.30 | Documentation</title>
+  <title>wellioviz 0.0.32 | Documentation</title>
   <meta name='description' content='Provides functionality to visualize well logs, particularly those already converted to JSON, using d3.js visualization library.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,11 +15,14 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>wellioviz</h3>
-          <div class='mb1'><code>0.0.30</code></div>
+          <div class='mb1'><code>0.0.32</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
             class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
             type='text' />
           <div id='toc'>
             <ul class='list-reset h5 py1-ul'>
@@ -374,9 +377,10 @@
 <p>Wellioviz is a node.js module. If you've only brought JavaScript into an HTML project via a <script></script> tag, you probably want to learn a little bit about how to use npm (node package manager) to get JavaScript modules into your front-end code. <a href="https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072">This</a> is a short demo that only covers the minimum you need to know.</p>
 <h3>Install in an Observable Notebook - JavaScript</h3>
 <h5>(easiest way to get started)</h5>
-<p>To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says <code>wellioviz = require('https://bundle.run/wellioviz)</code> </p>
-<p>If you want to bring in a specific version, you can add the version on the end like so <code>wellioviz = require('https://bundle.run/wellioviz@0.0.25')</code>.</p>
-<p>You would then call wellioviz functions in other cells by adding the function name on the end of wellioviz like: <code>example_template = wellioviz.curveBoxTemplateExamples("example")</code>.</p>
+<p>To use wellioviz in a ObservableHQ.com JavaScript notebook, you can simply have a cell that says </p>
+<p><code class="black"><code>wellioviz = require('https://bundle.run/wellioviz)</code></code></p>
+<p>If you want to bring in a specific version, you can add the version on the end like so <code class="black"><code>wellioviz = require('https://bundle.run/wellioviz@0.0.25')</code></code>.</p>
+<p>You would then call wellioviz functions in other cells by adding the function name on the end of wellioviz like: <code class="black"><code>example_template = wellioviz.curveBoxTemplateExamples("example")</code></code>.</p>
 <p>You can find an example of this in the <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz"</a> notebook on ObservableHQ.com.</p>
 <h3>Install for Use on Front-end Website</h3>
 <p>As mentionted above, if you haven't used npm modules in an HTML page before, you probably want to reach a little about them. </p>
@@ -389,8 +393,8 @@
 <li>Create a package.json file that looks like this:
 <code>{ "dependencies": { "wellioviz": "0.0.25" } }</code>
 Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other modules you need would go in here too after wellioviz line separated by a comma.</li>
-<li>From the same folder that has the package.json run <code>npm install</code>. This will create a folder called "node_modules" and there should be another folder called wellioviz.</li>
-<li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code>&#x3C;script src="node_modules/wellioviz/dist/index.js">&#x3C;/script></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
+<li>From the same folder that has the package.json run <code class="black"><code>npm install</code></code>. This will create a folder called "node_modules" and there should be another folder called wellioviz.</li>
+<li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code class="black"><code>&#x3C;script src="node_modules/wellioviz/dist/index.js">&#x3C;/script></code></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
 </ol>
 <h4>A second possible way to use wellioviz in a website:</h4>
 <p>This way is slightly cleaner in terms of namespace. Additionally, you may not want to include your entire node modules folder if that gets big!</p>
@@ -399,31 +403,31 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <li>Install <a href="https://www.npmjs.com/get-npm">npm</a></li>
 <li>Install <a href="http://browserify.org/">browserify</a></li>
 <li>Navigate to the directory of your new project.</li>
-<li>Run <code>npm install wellioviz</code></li>
+<li>Run <code class="black"><code>npm install wellioviz</code></code></li>
 <li>Create a directory called <code>JS</code>. </li>
 <li>Navigate into <code>JS</code> directory and create a file called <code>main.js</code>.</li>
-<li>In main.js include a line <code>wellio = require('wellioviz');</code>.</li>
-<li>If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command <code>browserify main.js other.js more.js -o bundle.js</code>. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.</li>
-<li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code>&#x3C;script src="JS/bundle.js">&#x3C;/script></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
+<li>In main.js include a line <code class="black"><code>wellio = require('wellioviz');</code></code>.</li>
+<li>If you had multiple JavaScript files, lets say called main.js, other.js and more.js, you'd now go inside the JS folder run the command <code class="black"><code>browserify main.js other.js more.js -o bundle.js</code></code>. This would not only combine those folders into a single file, but it would also pull in the wellioviz library because of the line in step 8.</li>
+<li>Creat an HTML file at the same top-level of your project directory. Inside it, put a sript tag <code class="black"><code>&#x3C;script src="JS/bundle.js">&#x3C;/script></code></code>. You should be able to call wellioviz functions in your other JavaScript files now.</li>
 </ol>
 <h3>Install Locally and Use Via Node.js backend</h3>
 <p>You're probably not going to use wellioviz on the backend. The one exception is if you wanted to create a large number of static SVGs of well logs from your LAS files.</p>
 <ol>
 <li>Install <a href="https://nodejs.org/en/download/">node.js</a></li>
 <li>Install <a href="https://www.npmjs.com/get-npm">npm</a></li>
-<li>Run <code>npm install wellioviz</code>.</li>
-<li>To use wellioviz from the command line run <code>node --require wellioviz</code>. This should start the node console with wellioviz included. You should see a <code>></code> on the next console line.</li>
-<li>Now run <code>var wellio = require('wellioviz')</code></li>
-<li>The console output should be <code>undefined</code>, which is a big scary, sorry. </li>
-<li>However, if you run <code>wellioviz.help</code> you'll now see returned on the next line =<code>'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'</code>.</li>
+<li>Run <code class="black"><code>npm install wellioviz</code></code>.</li>
+<li>To use wellioviz from the command line run <code class="black"><code>node --require wellioviz</code></code>. This should start the node console with wellioviz included. You should see a <code>></code> on the next console line.</li>
+<li>Now run <code class="black"><code>var wellio = require('wellioviz')</code></code></li>
+<li>The console output should be <code>undefined</code>, which is a bit scary, sorry. </li>
+<li>However, if you run <code class="black"><code>wellioviz.help</code></code> you'll now see returned on the next line = <code class="black"><code>'I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. Best of luck.'</code></code>.</li>
 <li>Further wellioviz functions are just the variable name you created <code>wellioviz</code> + <code>.</code> + function name with arguments included inside the <code>()</code>.</li>
 </ol>
 <h3>Run Example Holoviews Panel/Bokeh Deployment</h3>
 <ol>
-<li>Run <code>pip install panel</code> (and its dependancies) from your python enviroment command line.</li>
+<li>Run <code class="black"><code>pip install panel</code></code> (and its dependancies) from your python enviroment command line.</li>
 <li>Clone/download this repository's source code</li>
-<li>In the command line, navigate to the "examples/deployments/" folder</li>
-<li>From the command line, run <code>panel serve example_panel_app --show</code></li>
+<li>In the command line, navigate to the <bold>"examples/deployments/"</bold> folder</li>
+<li>From the command line, run <code class="black"><code>panel serve example_panel_app --show</code></code></li>
 </ol>
 <h3>Install in a Jupyter Notebook with JavaScript Kernal</h3>
 <p>-- IN PROGRESS --</p>
@@ -432,8 +436,8 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <h3>Install Wellioviz for Contributing to Wellioviz</h3>
 <ol>
 <li>Fork the repository <a href="https://github.com/JustinGOSSES/wellioviz.git">https://github.com/JustinGOSSES/wellioviz.git</a> on github.com to your own account. </li>
-<li>Clone your fork of repository that is now on your github page <code>git clone https://github.com/</code>+yourUserName+<code>/wellioviz.git</code>.</li>
-<li>Navigate inside <code>cd wellioviz</code>.</li>
+<li>Clone your fork of repository that is now on your github page <code class="black"><code>git clone https://github.com/</code>+yourUserName+<code>/wellioviz.git</code></code>.</li>
+<li>Navigate inside <code class="black"><code>cd wellioviz</code></code>.</li>
 <li>Make changes</li>
 <li>To see Wellioviz changes appear in the demo.html page, make sure to run browserify after any changes as described in the second option for install under "Install for Use on Front-end Website".</li>
 <li>When you are ready to merge changes back, push the changes back to your account on github.com. </li>
@@ -802,11 +806,28 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
   </h2>
 
   
-    <hr>
-<p>Loading, Templating, Transformation, Packaging, Plotting, Helping</p>
-<h2>Loading Function</h2>
-<h4>(spoiler, there are none)</h4>
-<p>Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. </p>
+    <head>
+<style>
+h2{
+  color:black;
+}
+  code.black{
+    background-color: #295377;
+    
+    overflow: hidden;
+    padding: 0.5rem;
+    color: white;
+    font: 0.8rem Inconsolata, monospace;
+<pre><code>width:100%;          
+</code></pre>
+<p>  }
+</style></p>
+</head>
+----  
+Loading, Templating, Transformation, Packaging, Plotting, Helping
+## Loading Function
+#### (spoiler, there are none)
+Wellioviz assumes people are going to want to bring in data in different formats. It doesn't presuppose one format. Some people will want to load an entire well logs file to JSON and bring that in entirely on the front-end via JavaScript. Others will want to extract only the information needed on the backend and then send just that data to the front-end where it is transformed into a format wellioviz can take. 
 <p>If you're going to use LAS 2.0 files and don't mind loading the entire file and then converting it all to JSON on the front-end, the best way to do that is to use the <a href="https://github.com/JustinGOSSES/wellio.js">wellio.js</a> library. We're also working on a conversion between JSON from <a href="https://github.com/kinverarity1/lasio">LASIO.py</a>s to WELLIO.js style JSON. </p>
 <p>If you're not using wellio.js, getting the data into the front-end for JavaScript is done by functions you write.s</p>
 <hr>
@@ -923,6 +944,8 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
   
 
   
+
+  
 </section>
 
           
@@ -966,6 +989,8 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 
       
     
+  
+
   
 
   
@@ -1039,6 +1064,8 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
   
 
   
+
+  
 </section>
 
           
@@ -1082,6 +1109,8 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 
       
     
+  
+
   
 
   
@@ -1160,6 +1189,8 @@ Someone might run this function with "example" as the parameter, give back the J
   
 
   
+
+  
 </section>
 
           
@@ -1205,6 +1236,8 @@ It is used next by funtion _<strong><em> and </em></strong>.</p>
 
       
     
+  
+
   
 
   
@@ -1277,6 +1310,8 @@ This is useful for not plotting the depth curve.</p>
 
       
     
+  
+
   
 
   
@@ -1388,6 +1423,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
   
 
   
+
+  
 </section>
 
           
@@ -1456,6 +1493,8 @@ the data array of objects that D3.js likes for data used in plotting.</p>
 
       
     
+  
+
   
 
   
@@ -1560,6 +1599,8 @@ This function is used to create a depth array for plotting when only the max, mi
   
 
   
+
+  
 </section>
 
           
@@ -1621,6 +1662,8 @@ THIS FUNCTION NEEDS CHANGED IT IS TOO EXPLICIT !!!!!!!</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -1737,6 +1780,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
   
 
   
+
+  
 </section>
 
           
@@ -1791,6 +1836,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
         </div>
       
     </div>
+  
+
   
 
   
@@ -1924,6 +1971,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
         </div>
       
     </div>
+  
+
   
 
   
@@ -2082,6 +2131,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
   
 
   
+
+  
 </section>
 
           
@@ -2146,6 +2197,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
 
       
     
+  
+
   
 
   
@@ -2268,6 +2321,8 @@ curvebox via the curveBox() function or another function that funnels into curve
   
 
   
+
+  
 </section>
 
           
@@ -2358,6 +2413,8 @@ curvebox via the curveBox() function or another function that funnels into curve
   
 
   
+
+  
 </section>
 
           
@@ -2416,6 +2473,8 @@ When called it removes anything that is a child of the div listed in div_id befo
 
       
     
+  
+
   
 
   
@@ -2501,6 +2560,8 @@ In certain environments, this  may not work for security reasons.</p>
   
 
   
+
+  
 </section>
 
           
@@ -2569,6 +2630,8 @@ and returns the data array of objects that D3.js likes for data used in plotting
 
       
     
+  
+
   
 
   

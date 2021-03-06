@@ -20,6 +20,24 @@ toc:
     
   - name: Wellioviz Function Types
     description: |
+        <head>
+        <style>
+        h2{
+          color:black;
+        }
+          code.black{
+            background-color: #295377;
+            
+            overflow: hidden;
+            padding: 0.5rem;
+            color: white;
+            font: 0.8rem Inconsolata, monospace;
+
+        
+            width:100%;          
+          }
+        </style>
+        </head>
         ----  
         Loading, Templating, Transformation, Packaging, Plotting, Helping
         ## Loading Function
