@@ -29,7 +29,10 @@ toc:
             background-color: #295377;
             
             overflow: hidden;
-            padding: 0.5rem;
+            padding-left:0.5rem;
+            padding-right:0.5rem;
+            padding-top:0.25rem;
+            padding-bottom:0.25rem;
             color: white;
             font: 0.8rem Inconsolata, monospace;
 

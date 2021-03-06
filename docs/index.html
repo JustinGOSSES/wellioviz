@@ -754,15 +754,40 @@ curveBox function.</p>
 <p>The tricky part is probably the bundle.js script. Everything else works like vanilla JavaScript.
 To regenerate the bundle.js script in docs/js used in the demo.html page:</p>
 <ul>
-<li>install npm</li>
-<li>use npm to install: browserify, wellio.js, and d3.js</li>
-<li>navigate in terminal to docs/js folder</li>
-<li>run <code>browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js</code>
-This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.</li>
+<li>Clone the repository locally. </li>
+</ul>
+<p><code class="black"> <code>git clone https://github.com/JustinGOSSES/wellioviz.git</code></code>.</p>
+<ul>
+<li>
+<p>Install npm if it isn't already installed. </p>
+</li>
+<li>
+<p>Navigate to the top folder of wellioviz if you aren't already there by running </p>
+</li>
+</ul>
+<p><code class="black"><code>cd wellioviz</code></code> .</p>
+<ul>
+<li>npm install should install all production and development dependencies in a node modules folder.The key things to be installed are browserify, wellio.js, and d3.js</li>
+</ul>
+<p><code class="black"><code>npm install</code></code> . </p>
+<ul>
+<li>Navigate in terminal to docs/js folder. From the top folder of wellioviz, this would be </li>
+</ul>
+<p><code class="black"><code>cd docs/js</code></code></p>
+<ul>
+<li>To build the demo run the line below. This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.</li>
+</ul>
+<p><code class="black"> <code>browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js</code> </code></p>
+<ul>
+<li>If you want to test that the demo built okay, you can start a server in the folder with demo.html and see it with your browser pointing at local host. If you want to use Python3 for this, it is </li>
+</ul>
+<p><code class="black">python3 -m http.server</code> .</p>
+<ul>
+<li>If you prefer to use node.js, you can use the <a href="https://www.npmjs.com/package/http-server">http-server</a> module. If you started either server in your top wellioviz folder, the address to put in your browser to see the demo.html page live would be <a href="http://localhost:8000/docs/demo.html">http://localhost:8000/docs/demo.html</a>.</li>
 </ul>
 <h2>How I'm Keeping Things In Sync During Development.</h2>
-<p>The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! </p>
-<p>The active notebook is noted in the README. </p>
+<p>Originally, I would develope in an Observable notebook and then move the code into <code>dist/index.js</code> in this repo. For this type of work, it has been a faster way to write working code.</p>
+<p>However, now I mostly developer in VS code on the repository directly and use the demo.html page for experimentation and testing instead.</p>
 <h4>How I try develop this repository now...</h4>
 <ol>
 <li>Try to make changes to the code base that address issues from the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. </li>
@@ -875,7 +900,10 @@ h2{
     background-color: #295377;
     
     overflow: hidden;
-    padding: 0.5rem;
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+    padding-top:0.25rem;
+    padding-bottom:0.25rem;
     color: white;
     font: 0.8rem Inconsolata, monospace;
 <pre><code>width:100%;          

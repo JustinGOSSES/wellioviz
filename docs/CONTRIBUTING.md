@@ -42,11 +42,33 @@ Wellioviz documentation is built with <a href="http://documentation.js.org/">doc
 ### How to Edit & Generate Demo.html
 The tricky part is probably the bundle.js script. Everything else works like vanilla JavaScript.
 To regenerate the bundle.js script in docs/js used in the demo.html page:
-- install npm
-- use npm to install: browserify, wellio.js, and d3.js
-- navigate in terminal to docs/js folder
-- run `browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js`
-This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.
+- Clone the repository locally. 
+
+<code class="black"> `git clone https://github.com/JustinGOSSES/wellioviz.git`</code>.
+
+- Install npm if it isn't already installed. 
+
+- Navigate to the top folder of wellioviz if you aren't already there by running 
+
+<code class="black">`cd wellioviz`</code> .
+
+- npm install should install all production and development dependencies in a node modules folder.The key things to be installed are browserify, wellio.js, and d3.js
+
+<code class="black">`npm install`</code> . 
+
+- Navigate in terminal to docs/js folder. From the top folder of wellioviz, this would be 
+
+<code class="black">`cd docs/js`</code>
+
+- To build the demo run the line below. This will pull in wellio.js and wellioviz.js from your local node environment and combine them and the other JavaScript into a single bundle.js file that the demo.html file uses.
+
+<code class="black"> `browserify call_plots.js main.js get_wellio.js vkbeautify.js -o bundle.js` </code>
+
+- If you want to test that the demo built okay, you can start a server in the folder with demo.html and see it with your browser pointing at local host. If you want to use Python3 for this, it is 
+
+<code class="black">python3 -m http.server</code> .
+
+ - If you prefer to use node.js, you can use the <a href="https://www.npmjs.com/package/http-server">http-server</a> module. If you started either server in your top wellioviz folder, the address to put in your browser to see the demo.html page live would be <a href="http://localhost:8000/docs/demo.html">http://localhost:8000/docs/demo.html</a>.
 
 
 
