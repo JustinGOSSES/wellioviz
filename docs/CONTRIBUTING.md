@@ -56,13 +56,16 @@ The way I'm developing is to do changes in Observable notebook first. For this t
 The active notebook is noted in the README. 
 
 #### How I try develop this repository now...
-1. Make changes to <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">an Observable notebook</a> that has all the code. These changes are usually for one, or  maybe two issues, on the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. 
+1. Try to make changes to the code base that address issues from the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. 
 2. Create a branch for these changes on the git repo. 
-3. When I'm happy with the changes in the Observable notebook, I copy them to the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/dist/index.js">index.js file</a> in the git repository.
-4. Merge the forked branch back into master. 
-5. Change version in the package.json file. Push that change.
-6. Run npm publish. 
-7. Clear issues that are fixed due to the version bump.
+3. Merge the forked branch back into master. 
+4. Make sure the demo page in the repository that uses the version of wellioviz that is in dist/index.js still works. Run other tests as appropriate.
+5. If it appears changs are ready to be published to npm (node package manager), I'll move up the version in the package.json file. Push that change.
+6. In a terminal run, <code class="black">`npm publish`</code>. 
+7. Go to an Observable notebook that uses the latest version of wellioviz from npm to double check everything is working okay. 
+8. Clear issues that are fixed due to the version bump.
+9. Merge master branch into release branch.
+
 
 These means the code in certain <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"> Observable notebooks</a> where I'm actively working with the code might be ahead of the master branch in private mode, but I try to only publish (share the changes to the notebook publically) once I have pushed to the github repository.
 

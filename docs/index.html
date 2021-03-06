@@ -470,6 +470,65 @@ Note, the latest version of wellioviz is probably not 0.0.25 by now. Any other m
 <p>Check out the <a href="/installation">installation section</a> of the docs for more information on how to get wellioviz working in different settings.</p>
 <h4>Wellioviz has some functions you will never use and a few that will be always used!</h4>
 <p></b>The only mandatory parts of wellioviz really are (1) the plotting JSON template given to the curveBox() function that contains information about what to plot and how to plot it and (2) the curveBox function. Everything else is optional depending on need.</b></p>
+<h4>Smallest Possible Sequence to Use Wellioviz</h4>
+<ol>
+<li>
+<p>Load your LAS 2.0 file into memory. This will come in as a txt file converted to a string. General JavaScript functions can be used to load the file into memory. There are a couple different ways to do this depending on if the LAS 2.0 well log comes in from a file saved in the same directory as the code, a file loaded from the user's local computer into a web application, or pulled from somewhere else on the web via an API. All of these examples are shown in different Observable Demos linked to in this repositories README.md file.</p>
+</li>
+<li>
+<p>Use wellio to convert the string of well log information into a wellio-style JSON.
+<code class="black"> <code>well_json_01_01_095_19W4 = wellio.las2json(well_as_string)</code></code></p>
+</li>
+<li>
+<p>Supply this and the depth curve name to the next function, like so:
+<code class="black"> <code>three_things_2 = wellioviz.fromJSONofWEllGetThingsForPlotting(well_json_01_01_095_19W4,"DEPTH")</code></code>
+The three_things objects holds an object or dict with three key:value pairs. The three keys are "curve_names", "uwi", and "well_log_curves_reformatted_for_d3". We'll use these in the next steps.</p>
+</li>
+<li>
+<p>First though we need to get a blank template to be populated. This template holds both the data and the style for how things are visualized by wellioviz. We'll get one from wellioviz by calling:
+<code class="black"> <code>example_template = wellioviz.curveBoxTemplateExamples("example")</code></code></p>
+</li>
+<li>
+<p>You can either use the default style options for each curve, exert a large amount of fine grain control, or style things somewhere between. In this example, we'll do something somewhere in between using the function:
+<code>wellioviz.minimumDataIntoTemplateFunc()</code></p>
+<p><code class="black">gr_plot_template_noFill =
+wellioviz.minimumDataIntoTemplateFunc(
+example_template,well_log_curves_reformatted_for_d3_2,[uwi2],["CALI"],["black"],[""],[
+{"curve_name":"GR",
+"fill":"no",
+"fill_direction":"left",
+"cutoffs":[0,ShaleSiltCutOff,SiltSandCutOff],
+"fill_colors":["gray","orange","yellow"],
+"curve2":""
+}
+],
+"well_holder_1A",200,400,"DEPT")</code></p>
+<p><code class="black">resd_plot_template_1 = wellioviz.minimumDataIntoTemplateFunc(example_template,well_log_curves_reformatted_for_d3_2,[uwi2],['ILD'],["RED"],[""],[
+{"curve_name":"ILD","fill":"yes","fill_direction":"left","cutoffs":[5,10,25],"fill_colors":["#ffe6e6","#ffb3b3","red"],"curve2":"ILD"}],"well_holder_1B",200,400,"DEPT")</code></p>
+<p><code class="black">poro_plot_template_1 = wellioviz.minimumDataIntoTemplateFunc(example_template,well_log_curves_reformatted_for_d3_2,[uwi2],["NPHI","DPHI"],["purple","pink"],[""],[{
+"curve_name":"NPHI",
+"fill":"yes",
+"fill_direction":"between",
+"cutoffs":[0],
+"fill_colors":["lightblue"],
+"curve2":"DPHI"
+},
+{
+"curve_name":"DPHI",
+"fill":"no",
+"fill_direction":"left",
+"cutoffs":[],
+"fill_colors":[],
+"curve2":""
+}
+],"well_holder_1C",200,400,"DEPT")</code></p>
+</li>
+<li>
+<p>We'll then put each of those well log curves into a single div to hold all the curves for that well. </p>
+<p><code class="black">result_1 = wellioviz.multipleLogPlot("well_holder",[gr_plot_template_noFill,resd_plot_template_1,poro_plot_template_1])</code></p>
+</li>
+</ol>
+<p>This will create a div with several sub-divs with SVGs within them that represent the various curves in the well. They will all get appended to the div called "well_holder".</p>
 <h3>Examples of How to Use</h3>
 <h5>Hello Wellioviz: Easy Way to Get Started</h5>
 <p>The absolutely quickest way to get started (no installation) is to try it out on ObservableHQ. There is a <a href="https://observablehq.com/@justingosses/hello-wellioviz">Hello Wellioviz demo</a> that shows how to bring wellioviz into Observable and uses a small number of functions to quickly plot an example LAS 2.0 well log. You can also load your own LAS 2.0 well logs file from your computer into the browser and try it.  </p>
@@ -706,13 +765,15 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 <p>The active notebook is noted in the README. </p>
 <h4>How I try develop this repository now...</h4>
 <ol>
-<li>Make changes to <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2">an Observable notebook</a> that has all the code. These changes are usually for one, or  maybe two issues, on the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. </li>
+<li>Try to make changes to the code base that address issues from the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. </li>
 <li>Create a branch for these changes on the git repo. </li>
-<li>When I'm happy with the changes in the Observable notebook, I copy them to the <a href="https://github.com/JustinGOSSES/wellioviz/blob/master/dist/index.js">index.js file</a> in the git repository.</li>
 <li>Merge the forked branch back into master. </li>
-<li>Change version in the package.json file. Push that change.</li>
-<li>Run npm publish. </li>
+<li>Make sure the demo page in the repository that uses the version of wellioviz that is in dist/index.js still works. Run other tests as appropriate.</li>
+<li>If it appears changs are ready to be published to npm (node package manager), I'll move up the version in the package.json file. Push that change.</li>
+<li>In a terminal run, <code class="black"><code>npm publish</code></code>. </li>
+<li>Go to an Observable notebook that uses the latest version of wellioviz from npm to double check everything is working okay. </li>
 <li>Clear issues that are fixed due to the version bump.</li>
+<li>Merge master branch into release branch.</li>
 </ol>
 <p>These means the code in certain <a href="https://observablehq.com/@justingosses/well-log-in-d3-js-v5-notebook-2"> Observable notebooks</a> where I'm actively working with the code might be ahead of the master branch in private mode, but I try to only publish (share the changes to the notebook publically) once I have pushed to the github repository.</p>
 <ul>
