@@ -51,9 +51,10 @@ This will pull in wellio.js and wellioviz.js from your local node environment an
 
 
 ## How I'm Keeping Things In Sync During Development.
-The way I'm developing is to do changes in Observable notebook first. For this type of work, it has been a faster way to write working code. Because all the code is automatically executed in each cell when code changes, it allows me to catch bugs earlier than I would otherwise. I can have multiple plots of different types built in the same notebook and make sure they all still build as I change code! 
+Originally, I would develope in an Observable notebook and then move the code into `dist/index.js` in this repo. For this type of work, it has been a faster way to write working code.
 
-The active notebook is noted in the README. 
+However, now I mostly developer in VS code on the repository directly and use the demo.html page for experimentation and testing instead.
+
 
 #### How I try develop this repository now...
 1. Try to make changes to the code base that address issues from the <a href="https://github.com/JustinGOSSES/wellioviz/projects/1">kanban board</a>. 
