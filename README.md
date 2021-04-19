@@ -40,6 +40,10 @@ WELLIOVIZ is a JavaScript library that provides functionality to visualize well 
 - https://observablehq.com/@justingosses/overly-simplified-stratigraphic-modeling
 - https://observablehq.com/@justingosses/well-log-curve-cross-sections
 
+#### Data in the demos
+Data for the demos is mostly wells from an open source dataset of the <a href="https://ags.aer.ca/publication/spe-006">Mannville Group from Alberta Canada</a>. A preprocessed version of this dataset can be found on <a href="https://dataunderground.org/dataset/athabasca-preprocessed">dataunderground</a> along with many other well dataset.
+
+
 ## DOCS
 Docs are here: https://justingosses.github.io/wellioviz/  
 
