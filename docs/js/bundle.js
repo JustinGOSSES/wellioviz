@@ -187,7 +187,44 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],3:[function(require,module,exports){
-(function (global){
+class BaseTemplate {
+    constructor(params={}) {
+        this.handle_params(params)
+    }
+
+    handle_params(params) {
+        for (const [key, value] in Object.entries(params)){
+            this[key] = value
+        }
+        return this
+    }
+
+    start_draw(div_id){
+        let d3 = module.exports.d3;
+        let noDIV = d3.select("#" + div_id).selectAll("div").remove();
+        let noSVG = d3.select("#" + div_id).selectAll("svg").remove();
+        return d3
+    }
+}
+module.exports = BaseTemplate
+},{}],4:[function(require,module,exports){
+const BaseTemplate = require("../base_template")
+
+class CurveFillTemplate extends BaseTemplate{
+    constructor(params={}) {
+        super();
+        this.curve_name = "default"
+        this.fill = "no"
+        this.fill_direction = "left"
+        this.cutoffs = Array(0) // TODO should take values OR curve names
+        this.fill_colors = Array(0)
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+}
+module.exports = CurveFillTemplate
+},{"../base_template":3}],5:[function(require,module,exports){
+(function (global){(function (){
 !function (e) {
     "object" == typeof exports ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : "undefined" != typeof window ? window.commonJsModule = e() : "undefined" != typeof global ? global.commonJsModule = e() : "undefined" != typeof self && (self.commonJsModule = e());
 }(function () {
@@ -237,7 +274,17 @@ process.umask = function() { return 0; };
          * @returns {obj} It returns the d3.js object and all its functions as a module.
          */
         d3: require("d3"),
-
+        TrackTemplate: require('./log_style_templates/log_curve_template'),
+        WellLogTemplate: require('./well_log_templates/well_log_template'),
+        WellSectionTemplate: require('./well_section_templates/well_section_templates'),
+        CurveFillTemplate: require('./fill_templates/curve_fill_template'),
+        LogCurveTemplate: require('./log_style_templates/log_curve_template'),
+        TripleCombo: require("./well_log_templates/triple_combo_template"),
+        BaseTemplate: require("./base_template"),
+        CaliperGRTrack: require("./track_templates/CaliperGR_track"),
+        GR: require("./log_style_templates/GR"),
+        CAL: require("./log_style_templates/CAL"),
+        DefaultSubTrack: require("./track_templates/default_sub_track"),
         /**
          * A function that directs users to the docs if they need help.
          * @returns {string} It says = I'm really no help. Please check out the docs at https://justingosses.github.io/wellioviz/ or the main README.md at https://github.com/JustinGOSSES/wellioviz. \n If you would like to know what wellioviz does, try wellioviz.define(). \n If you would like to see an example template, try wellioviz.curveBoxTemplateExamples('example') \n If you would like to see an example template defintions, try wellioviz.curveBoxTemplateExamples('definitions') Best of luck.
@@ -1788,8 +1835,378 @@ process.umask = function() { return 0; };
     return module.exports;
 });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"d3":39,"wellio":40}],4:[function(require,module,exports){
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./base_template":3,"./fill_templates/curve_fill_template":4,"./log_style_templates/CAL":6,"./log_style_templates/GR":7,"./log_style_templates/log_curve_template":8,"./track_templates/CaliperGR_track":9,"./track_templates/default_sub_track":10,"./well_log_templates/triple_combo_template":12,"./well_log_templates/well_log_template":13,"./well_section_templates/well_section_templates":14,"d3":50,"wellio":51}],6:[function(require,module,exports){
+const LogCurveTemplate = require("./log_curve_template")
+
+class CAL extends LogCurveTemplate {
+    constructor(params={}) {
+        super(params);
+        this.curve_name = "CAL"
+        this.units = "cm"
+        this.stroke_type = "dash" // TODO Warning! This might not be a thing haha
+        this.handle_params(params)
+    }
+}
+module.exports = CAL
+},{"./log_curve_template":8}],7:[function(require,module,exports){
+const LogCurveTemplate = require("./log_curve_template")
+
+class GR extends LogCurveTemplate {
+    constructor(params={}) {
+        super(params);
+        this.curve_name = "GR"
+        // this.fill = null // TODO: GR Fill
+        this.units = "API"
+        this.handle_params(params)
+    }
+}
+module.exports = GR
+},{"./log_curve_template":8}],8:[function(require,module,exports){
+// Base sort of abstract template, specialized templates can override pieces of this
+const fill_template = require('../fill_templates/curve_fill_template');
+const BaseTemplate = require("../base_template")
+
+class LogCurveTemplate extends BaseTemplate {
+    // const obj = {}
+    // Define Default Settings Values
+    constructor(params={}) {
+        super();
+        this.curve_name = "default"
+        this.color = "black"
+        this.stroke_type = "solid"
+        this.stroke_linecap = "butt"
+        this.stroke_width = 1.0
+        this.stroke_transparency = 1.0
+        this.fill = new fill_template()
+        this.units = "unkn"
+        this.depth_limits = {"min": "autocalculate", "max": "autocalculate"}
+        this.curve_limits = {"min": -100000, "max":3} // TODO: This needs to be looked at more
+        this.data = Array(0)
+        this.data_id = ""
+        this.well_name = "default"
+        this.uwi14 = "00000000000000"
+        this.isLinear = true // false sets to a log scale
+        this.depth_type = "MD"
+        this.depth_units = "meter"
+        // Define Template Functions
+        // TODO: decide if null are handled here or at load validation
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+    // Simple function to set the data that is associated with this curve
+    define_data(data) {
+        // Add data to a template
+        // TODO: Validation step here??
+        this.data = data
+        return this
+    }
+    // Function change the target curve name and data for the instance of curve template
+    set_curve_and_data(curve_name, data, params={}){
+        this.define_data(data)
+        this.curve_name = curve_name
+        //Update template based on passed params
+        this.handle_params(params)
+        return this
+    }
+
+}
+
+module.exports = LogCurveTemplate;
+},{"../base_template":3,"../fill_templates/curve_fill_template":4}],9:[function(require,module,exports){
+const DefaultSubTrack = require("./default_sub_track")
+const GR = require("../log_style_templates/GR")
+const CAL = require("../log_style_templates/CAL")
+
+class CaliperGRTrack extends DefaultSubTrack {
+    constructor(params = {}) {
+        super(params);
+        this.track_template_name = 'CAL_GR'
+        this.div_id = 'cal_gr_track'
+        this.title = {"text": "CAL - GR", "font": "16px"}
+        this.curves = {'GR': new GR, 'CAL': new CAL}
+        this.handle_params(params)
+    }
+
+}
+module.exports = CaliperGRTrack
+},{"../log_style_templates/CAL":6,"../log_style_templates/GR":7,"./default_sub_track":10}],10:[function(require,module,exports){
+const TrackTemplate = require("./track_template")
+
+class DefaultSubTrack extends TrackTemplate {
+    constructor(params = {}) {
+        super(params);
+        this.track_template_name = 'default'
+        this.show_well_name = false
+        this.show_depth_type = false
+        this.independent_scale = false
+        this.div_id = 'sub_track'
+        this.handle_params(params)
+    }
+
+}
+module.exports = DefaultSubTrack
+},{"./track_template":11}],11:[function(require,module,exports){
+const BaseTemplate = require("../base_template")
+const log_curve_template = require('../log_style_templates/log_curve_template');
+
+class TrackTemplate extends BaseTemplate{
+    constructor(params={}) {
+        super()
+        this.track_template_name = "default"
+        this.show_well_name = true
+        this.show_depth_type = false
+        this.show_curves_units = true
+        this.show_null = false
+        this.show_track_title = false
+        this.grid_lines = true
+        this.independent_scale = true
+        this.mouse_over = true
+        this.mouse_over_depth_only = false
+        this.grid_color = "#D3D3D3"
+        this.grid_stroke_width = 0.2
+        this.depth_curve = "DEPT"
+        this.track_dimensions = {"height": 500, "width": 260}
+        this.scale_numerator = 2
+        this.margin = {"top": 10, "right": 10, "bottom": 30, "left": 60}
+        this.title = {"text": "default", "font": "16px"}
+        this.div_id = "default_track"
+        this.curves = {}
+        // TODO: look at other potential track level variables
+        this.handle_params(params)
+    }
+
+    add_curve(curve) {
+        this.curves[curve.curve_name] = curve
+        return this
+    }
+
+    load_log(logs_dict) {
+        console.log('setting up track data')
+        var curves_with_data = {}
+        this.depth_curve = this.get_depth_track_name(logs_dict['CURVE INFORMATION BLOCK'])
+        for (let curve in this.curves){
+            // Check if the curve is in the well log
+            // TODO: Put curve aliasing here!!
+            if(curve in logs_dict['CURVE INFORMATION BLOCK']){
+                // Load the curve
+                let formatted_log = this.format_log(logs_dict['CURVES'], curve)
+                curves_with_data[curve] = this.curves[curve].set_curve_and_data(curve, formatted_log)
+            } else {
+                curves_with_data[curve] = this.curves[curve]
+            }
+
+        }
+        this.curves = curves_with_data
+        return this
+    }
+
+    draw(div_id) {
+        console.log('here')
+        let d3 = module.exports.d3;
+        d3.select("#" + div_id).selectAll("*").remove();
+        // Define Track Size
+
+        // Define Track Header
+
+        // Handle Grid Lines
+
+        // Handle Mouseover
+
+        // TODO Secondary Depth Track
+
+        //
+    }
+
+    /**
+     * convertWellJSONToObj is a function that takes in wellio style JSON of all LAS file well log information,
+     * array of curves names, and a string for UWI
+     * and returns the data array of objects that D3.js likes for data used in plotting.
+     * @param {object} curve_dict wellio style curves
+     * @param {string} curve_name the name of the curve to format
+     * @returns {array} returns array of objects that contain key:value pairs of curve name and value at each depth. Depth is also a key:value pair.
+     */
+    format_log(curve_dict, curve_name){
+        let depth = curve_dict[this.depth_curve];
+        let curve = curve_dict[curve_name]
+        let curve_data = [];
+        curve_data.push(curve_dict[this.depth_curve])
+        curve_data.push(curve_dict[curve_name]);
+        var array_of_object;
+        array_of_object = [];
+        for (let eachPt = 0; eachPt < depth.length; eachPt++) {
+            let obj = {};
+            obj[this.depth_curve] = parseFloat(curve_data[0][eachPt]);
+            obj[curve_name] = parseFloat(curve_data[1][eachPt])
+
+
+            array_of_object.push(obj);
+        }
+        return array_of_object
+    }
+
+    get_depth_track_name(curve_info){
+        return Object.keys(curve_info)[0]
+    }
+
+}
+module.exports = TrackTemplate
+
+// TODO write a track that does text, images, rectangular boxes, etc
+},{"../base_template":3,"../log_style_templates/log_curve_template":8}],12:[function(require,module,exports){
+const WellLogTemplate =  require('../well_log_templates/well_log_template');
+const CaliperGR_track = require("../track_templates/CaliperGR_track")
+class TripleCombo extends WellLogTemplate {
+    constructor(params= {}) {
+        super(params);
+        this.tracks = {
+            'CAL_GR': new CaliperGR_track()
+        }
+        this.log_template_name = 'Triple Combination'
+        this.handle_params(params)
+    }
+}
+module.exports = TripleCombo
+},{"../track_templates/CaliperGR_track":9,"../well_log_templates/well_log_template":13}],13:[function(require,module,exports){
+const BaseTemplate = require("../base_template")
+
+class WellLogTemplate extends BaseTemplate{
+    constructor(params = {}) {
+        super()
+        this.log_template_name = "default"
+        this.well_log_header = {}
+        this.header_height = 50.0
+        this.tracks = {}
+        this.log_border_padding = 20.0
+        this.pick_lines = {}
+        this.other_lines = Array(0)
+        this.max_width = 1000.0
+        this.uniform_scroll = true
+        this.vertical_scale_numerator = 30
+        this.log_max_depth = 20000.0
+        this.log_min_depth = 0.0
+        this.div_id = "default_well_log"
+        this.units = "metric"
+        this.depth_curve_name = "DEPT"
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+
+    load_log(log_dict) {
+        console.log('loading log into template')
+        var tracks_with_data = {}
+        for (let track in this.tracks){
+            // Extract Data for each log and load into the track
+            tracks_with_data[track] = this.tracks[track].load_log(log_dict)
+        }
+        // setup well log header
+        this.well_log_header['WELL'] = this.get_well_name(log_dict['WELL INFORMATION BLOCK'])
+        this.well_log_header['UWI'] = this.get_well_uwi(log_dict['WELL INFORMATION BLOCK'])
+        // get depth limits
+        this.log_max_depth = this.get_max_depth(log_dict['WELL INFORMATION BLOCK'])
+        this.log_min_depth = this.get_min_depth(log_dict['WELL INFORMATION BLOCK'])
+        this.depth_curve_name = this.get_depth_track_name(log_dict['CURVE INFORMATION BLOCK'])
+        return this
+    }
+
+    draw(div_id) {
+        let d3 = this.start_draw(div_id)
+        let drawn_tracks;
+        drawn_tracks = [];
+        let counter = 0
+        // Well Header
+        this.draw_track_header(div_id)
+
+        for (let track in this.tracks) {
+            let curvebox_holder = d3.select("#" + div_id).append("div");
+            curvebox_holder.style("vertical-align", "middle")
+                .attr("id", div_id + "curvebox_holder" + i);
+            // TODO Handle alias-ing of well name or a backup string of some kind
+            let track_div_id = div_id + this.well_log_header['WELL'] + track + counter
+            let drawn_template = this.tracks[track].draw(track_div_id)
+            drawn_tracks.push(drawn_template)
+            counter += 1
+        }
+        // TODO Handle non-track related drawing here
+
+
+        // Draw Tops
+
+
+
+        return drawn_tracks
+        console.log('starting here')
+    }
+
+    draw_track_header(div_id){
+        let svg_header = 'track_header' + div_id
+        let svg_holder = d3.select("#" + div_id).append("div")
+            .attr("class", "svg_holder")
+            .style("overflow-x", "auto");
+        svg_header = d3.select("#" + svg_header).append("svg");
+        svg_header.attr("class", "header");
+
+        // TODO: Compute Width of log before here
+        svg_header.attr("width", width)
+            .attr("height", this.header_height);
+        svg_header.append("g");
+        svg_header.style("display", "block");
+
+        svg_header.append("text")
+            .attr("x", (margin.left) / 2)
+            .attr("y", "1em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "10px")
+            .style("text-decoration", "underline")
+            .text(this.depth_curve_name); // TODO: Add units and such
+    }
+
+    get_depth_track_name(curve_info){
+        return Object.keys(curve_info)[0]
+    }
+
+    get_well_name(well_info){
+        return well_info['WELL']['DATA']
+    }
+
+    get_well_uwi(well_info){
+        return well_info['UWI']['DATA']
+    }
+
+    get_max_depth(well_info) {
+        return parseFloat(well_info['STRT']['DATA'])
+    }
+
+    get_min_depth(well_info) {
+        return parseFloat(well_info['STOP']['DATA'])
+    }
+}
+module.exports = WellLogTemplate
+},{"../base_template":3}],14:[function(require,module,exports){
+let BaseTemplate = require("../base_template");
+
+class WellSectionTemplate extends BaseTemplate{
+    constructor(params={}) {
+        super()
+        this.template_name = 'default'
+        this.well_section_header = {}
+        this.uniform_scale = true
+        this.use_uniform_padding = true
+        this.padding = 50.0
+        this.uniform_scroll = true
+        this.horizontal_scale_numerator = 100
+        this.vertical_scale_numerator = 50
+        this.log_template_to_use = null // TODO: Fill this in??
+        this.well_data = Array(0)
+        this.div_id = "well_section_default"
+        //Update template based on passed params
+        this.handle_params(params)
+    }
+
+}
+
+module.exports = WellSectionTemplate
+},{"../base_template":3}],15:[function(require,module,exports){
 // well_curve_config_template = [
 //     {"multipleLines":"yes","curveNames":["GR"],
 //      "curveColors":["black","pink"],
@@ -2170,13 +2587,13 @@ function getExampleTemplateWithEdits(height_multiplier_components,header_sep_svg
 //     var domain_x = [Math.min.apply(null, curve),Math.max.apply(null, curve)]
 //     makePlot(curve,div,600,250,domain_x,[0,curve.length],curve_name)
 // }
-},{}],5:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 wellio = require('wellio');
 
 las2json = wellio.las2json;
 
-wellioviz = require("../../dist/index.js")
-},{"../../dist/index.js":3,"wellio":40}],6:[function(require,module,exports){
+wellioviz = require("../../dist")
+},{"../../dist":5,"wellio":51}],17:[function(require,module,exports){
 ///////////////////////  global objects placeholders   ////////////////////////  
 //// ... maybe not good programming practice but quick to do for simple demo.
 
@@ -2415,7 +2832,7 @@ function download (filename, text) {
     document.body.removeChild(element)
   }
   
-},{}],7:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
 * vkBeautify - javascript plugin to pretty-print or minify text in XML, JSON, CSS and SQL formats.
 *  
@@ -2772,7 +3189,7 @@ function download (filename, text) {
     window.vkbeautify = new vkbeautify();
     
     })();
-},{}],8:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // https://d3js.org/d3-array/ v1.2.4 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -3364,7 +3781,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],9:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // https://d3js.org/d3-axis/ v1.0.12 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -3559,8 +3976,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],10:[function(require,module,exports){
-// https://d3js.org/d3-brush/ v1.1.5 Copyright 2019 Mike Bostock
+},{}],21:[function(require,module,exports){
+// https://d3js.org/d3-brush/ v1.1.6 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
 typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
@@ -3869,14 +4286,16 @@ function brush$1(dim) {
   }
 
   function emitter(that, args, clean) {
-    return (!clean && that.__brush.emitter) || new Emitter(that, args);
+    var emit = that.__brush.emitter;
+    return emit && (!clean || !emit.clean) ? emit : new Emitter(that, args, clean);
   }
 
-  function Emitter(that, args) {
+  function Emitter(that, args, clean) {
     this.that = that;
     this.args = args;
     this.state = that.__brush;
     this.active = 0;
+    this.clean = clean;
   }
 
   Emitter.prototype = {
@@ -4178,7 +4597,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-dispatch":15,"d3-drag":16,"d3-interpolate":24,"d3-selection":31,"d3-transition":36}],11:[function(require,module,exports){
+},{"d3-dispatch":26,"d3-drag":27,"d3-interpolate":35,"d3-selection":42,"d3-transition":47}],22:[function(require,module,exports){
 // https://d3js.org/d3-chord/ v1.0.6 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array'), require('d3-path')) :
@@ -4410,7 +4829,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-array":8,"d3-path":25}],12:[function(require,module,exports){
+},{"d3-array":19,"d3-path":36}],23:[function(require,module,exports){
 // https://d3js.org/d3-collection/ v1.0.7 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -4629,8 +5048,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],13:[function(require,module,exports){
-// https://d3js.org/d3-color/ v1.4.0 Copyright 2019 Mike Bostock
+},{}],24:[function(require,module,exports){
+// https://d3js.org/d3-color/ v1.4.1 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -4846,8 +5265,8 @@ function color(format) {
   format = (format + "").trim().toLowerCase();
   return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
       : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-      : l === 8 ? new Rgb(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-      : l === 4 ? new Rgb((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+      : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
       : null) // invalid hex
       : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
       : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
@@ -5212,7 +5631,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],14:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 // https://d3js.org/d3-contour/ v1.3.2 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
@@ -5645,7 +6064,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-array":8}],15:[function(require,module,exports){
+},{"d3-array":19}],26:[function(require,module,exports){
 // https://d3js.org/d3-dispatch/ v1.0.6 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -5742,7 +6161,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],16:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 // https://d3js.org/d3-drag/ v1.2.5 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-selection')) :
@@ -5978,7 +6397,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-dispatch":15,"d3-selection":31}],17:[function(require,module,exports){
+},{"d3-dispatch":26,"d3-selection":42}],28:[function(require,module,exports){
 // https://d3js.org/d3-dsv/ v1.2.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -6213,8 +6632,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],18:[function(require,module,exports){
-// https://d3js.org/d3-ease/ v1.0.6 Copyright 2019 Mike Bostock
+},{}],29:[function(require,module,exports){
+// https://d3js.org/d3-ease/ v1.0.7 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -6291,7 +6710,7 @@ var pi = Math.PI,
     halfPi = pi / 2;
 
 function sinIn(t) {
-  return 1 - Math.cos(t * halfPi);
+  return (+t === 1) ? 1 : 1 - Math.cos(t * halfPi);
 }
 
 function sinOut(t) {
@@ -6302,16 +6721,21 @@ function sinInOut(t) {
   return (1 - Math.cos(pi * t)) / 2;
 }
 
+// tpmt is two power minus ten times t scaled to [0,1]
+function tpmt(x) {
+  return (Math.pow(2, -10 * x) - 0.0009765625) * 1.0009775171065494;
+}
+
 function expIn(t) {
-  return Math.pow(2, 10 * t - 10);
+  return tpmt(1 - +t);
 }
 
 function expOut(t) {
-  return 1 - Math.pow(2, -10 * t);
+  return 1 - tpmt(t);
 }
 
 function expInOut(t) {
-  return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
+  return ((t *= 2) <= 1 ? tpmt(1 - t) : 2 - tpmt(t - 1)) / 2;
 }
 
 function circleIn(t) {
@@ -6355,7 +6779,7 @@ var backIn = (function custom(s) {
   s = +s;
 
   function backIn(t) {
-    return t * t * ((s + 1) * t - s);
+    return (t = +t) * t * (s * (t - 1) + t);
   }
 
   backIn.overshoot = custom;
@@ -6367,7 +6791,7 @@ var backOut = (function custom(s) {
   s = +s;
 
   function backOut(t) {
-    return --t * t * ((s + 1) * t + s) + 1;
+    return --t * t * ((t + 1) * s + t) + 1;
   }
 
   backOut.overshoot = custom;
@@ -6395,7 +6819,7 @@ var elasticIn = (function custom(a, p) {
   var s = Math.asin(1 / (a = Math.max(1, a))) * (p /= tau);
 
   function elasticIn(t) {
-    return a * Math.pow(2, 10 * --t) * Math.sin((s - t) / p);
+    return a * tpmt(-(--t)) * Math.sin((s - t) / p);
   }
 
   elasticIn.amplitude = function(a) { return custom(a, p * tau); };
@@ -6408,7 +6832,7 @@ var elasticOut = (function custom(a, p) {
   var s = Math.asin(1 / (a = Math.max(1, a))) * (p /= tau);
 
   function elasticOut(t) {
-    return 1 - a * Math.pow(2, -10 * (t = +t)) * Math.sin((t + s) / p);
+    return 1 - a * tpmt(t = +t) * Math.sin((t + s) / p);
   }
 
   elasticOut.amplitude = function(a) { return custom(a, p * tau); };
@@ -6422,8 +6846,8 @@ var elasticInOut = (function custom(a, p) {
 
   function elasticInOut(t) {
     return ((t = t * 2 - 1) < 0
-        ? a * Math.pow(2, 10 * t) * Math.sin((s - t) / p)
-        : 2 - a * Math.pow(2, -10 * t) * Math.sin((s + t) / p)) / 2;
+        ? a * tpmt(-t) * Math.sin((s - t) / p)
+        : 2 - a * tpmt(t) * Math.sin((s + t) / p)) / 2;
   }
 
   elasticInOut.amplitude = function(a) { return custom(a, p * tau); };
@@ -6474,13 +6898,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],19:[function(require,module,exports){
-// https://d3js.org/d3-fetch/ v1.1.2 Copyright 2018 Mike Bostock
+},{}],30:[function(require,module,exports){
+// https://d3js.org/d3-fetch/ v1.2.0 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dsv')) :
 typeof define === 'function' && define.amd ? define(['exports', 'd3-dsv'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
-}(this, (function (exports,d3Dsv) { 'use strict';
+(global = global || self, factory(global.d3 = global.d3 || {}, global.d3));
+}(this, function (exports, d3Dsv) { 'use strict';
 
 function responseBlob(response) {
   if (!response.ok) throw new Error(response.status + " " + response.statusText);
@@ -6541,6 +6965,7 @@ function image(input, init) {
 
 function responseJson(response) {
   if (!response.ok) throw new Error(response.status + " " + response.statusText);
+  if (response.status === 204 || response.status === 205) return;
   return response.json();
 }
 
@@ -6550,8 +6975,8 @@ function json(input, init) {
 
 function parser(type) {
   return function(input, init)  {
-    return text(input, init).then(function(text$$1) {
-      return (new DOMParser).parseFromString(text$$1, type);
+    return text(input, init).then(function(text) {
+      return (new DOMParser).parseFromString(text, type);
     });
   };
 }
@@ -6564,21 +6989,21 @@ var svg = parser("image/svg+xml");
 
 exports.blob = blob;
 exports.buffer = buffer;
-exports.dsv = dsv;
 exports.csv = csv;
-exports.tsv = tsv;
+exports.dsv = dsv;
+exports.html = html;
 exports.image = image;
 exports.json = json;
-exports.text = text;
-exports.xml = xml;
-exports.html = html;
 exports.svg = svg;
+exports.text = text;
+exports.tsv = tsv;
+exports.xml = xml;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
 
-},{"d3-dsv":17}],20:[function(require,module,exports){
+},{"d3-dsv":28}],31:[function(require,module,exports){
 // https://d3js.org/d3-force/ v1.2.1 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-quadtree'), require('d3-collection'), require('d3-dispatch'), require('d3-timer')) :
@@ -7248,18 +7673,24 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-collection":12,"d3-dispatch":15,"d3-quadtree":27,"d3-timer":35}],21:[function(require,module,exports){
-// https://d3js.org/d3-format/ v1.4.3 Copyright 2019 Mike Bostock
+},{"d3-collection":23,"d3-dispatch":26,"d3-quadtree":38,"d3-timer":46}],32:[function(require,module,exports){
+// https://d3js.org/d3-format/ v1.4.5 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(global = global || self, factory(global.d3 = global.d3 || {}));
-}(this, function (exports) { 'use strict';
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.d3 = global.d3 || {}));
+}(this, (function (exports) { 'use strict';
+
+function formatDecimal(x) {
+  return Math.abs(x = Math.round(x)) >= 1e21
+      ? x.toLocaleString("en").replace(/,/g, "")
+      : x.toString(10);
+}
 
 // Computes the decimal coefficient and exponent of the specified number x with
 // significant digits p, where x is positive and p is in [1, 21] or undefined.
-// For example, formatDecimal(1.23) returns ["123", 0].
-function formatDecimal(x, p) {
+// For example, formatDecimalParts(1.23) returns ["123", 0].
+function formatDecimalParts(x, p) {
   if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
   var i, coefficient = x.slice(0, i);
 
@@ -7272,7 +7703,7 @@ function formatDecimal(x, p) {
 }
 
 function exponent(x) {
-  return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
+  return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
 }
 
 function formatGroup(grouping, thousands) {
@@ -7365,7 +7796,7 @@ function formatTrim(s) {
 var prefixExponent;
 
 function formatPrefixAuto(x, p) {
-  var d = formatDecimal(x, p);
+  var d = formatDecimalParts(x, p);
   if (!d) return x + "";
   var coefficient = d[0],
       exponent = d[1],
@@ -7374,11 +7805,11 @@ function formatPrefixAuto(x, p) {
   return i === n ? coefficient
       : i > n ? coefficient + new Array(i - n + 1).join("0")
       : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-      : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+      : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
 }
 
 function formatRounded(x, p) {
-  var d = formatDecimal(x, p);
+  var d = formatDecimalParts(x, p);
   if (!d) return x + "";
   var coefficient = d[0],
       exponent = d[1];
@@ -7391,7 +7822,7 @@ var formatTypes = {
   "%": function(x, p) { return (x * 100).toFixed(p); },
   "b": function(x) { return Math.round(x).toString(2); },
   "c": function(x) { return x + ""; },
-  "d": function(x) { return Math.round(x).toString(10); },
+  "d": formatDecimal,
   "e": function(x, p) { return x.toExponential(p); },
   "f": function(x, p) { return x.toFixed(p); },
   "g": function(x, p) { return x.toPrecision(p); },
@@ -7473,19 +7904,20 @@ function formatLocale(locale) {
       } else {
         value = +value;
 
+        // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+        var valueNegative = value < 0 || 1 / value < 0;
+
         // Perform the initial formatting.
-        var valueNegative = value < 0;
         value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
 
         // Trim insignificant zeros.
         if (trim) value = formatTrim(value);
 
-        // If a negative value rounds to zero during formatting, treat as positive.
-        if (valueNegative && +value === 0) valueNegative = false;
+        // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+        if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
 
         // Compute the prefix and suffix.
         valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-
         valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
 
         // Break the formatted value into the integer “value” part that can be
@@ -7586,15 +8018,15 @@ exports.precisionRound = precisionRound;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
 
-},{}],22:[function(require,module,exports){
-// https://d3js.org/d3-geo/ v1.11.9 Copyright 2019 Mike Bostock
+},{}],33:[function(require,module,exports){
+// https://d3js.org/d3-geo/ v1.12.1 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
 typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
 (global = global || self, factory(global.d3 = global.d3 || {}, global.d3));
-}(this, function (exports, d3Array) { 'use strict';
+}(this, (function (exports, d3Array) { 'use strict';
 
 // Adds floating point numbers with twice the normal precision.
 // Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
@@ -8322,8 +8754,8 @@ function clipBuffer() {
   var lines = [],
       line;
   return {
-    point: function(x, y) {
-      line.push([x, y]);
+    point: function(x, y, m) {
+      line.push([x, y, m]);
     },
     lineStart: function() {
       lines.push(line = []);
@@ -8367,14 +8799,15 @@ function clipRejoin(segments, compareIntersection, startInside, interpolate, str
     if ((n = segment.length - 1) <= 0) return;
     var n, p0 = segment[0], p1 = segment[n], x;
 
-    // If the first and last points of a segment are coincident, then treat as a
-    // closed ring. TODO if all rings are closed, then the winding order of the
-    // exterior ring should be checked.
     if (pointEqual(p0, p1)) {
-      stream.lineStart();
-      for (i = 0; i < n; ++i) stream.point((p0 = segment[i])[0], p0[1]);
-      stream.lineEnd();
-      return;
+      if (!p0[2] && !p1[2]) {
+        stream.lineStart();
+        for (i = 0; i < n; ++i) stream.point((p0 = segment[i])[0], p0[1]);
+        stream.lineEnd();
+        return;
+      }
+      // handle degenerate cases by moving the point
+      p1[0] += 2 * epsilon;
     }
 
     subject.push(x = new Intersection(p0, segment, null, true));
@@ -8774,15 +9207,10 @@ function clipCircle(radius) {
               ? v ? 0 : code(lambda, phi)
               : v ? code(lambda + (lambda < 0 ? pi : -pi), phi) : 0;
         if (!point0 && (v00 = v0 = v)) stream.lineStart();
-        // Handle degeneracies.
-        // TODO ignore if not clipping polygons.
         if (v !== v0) {
           point2 = intersect(point0, point1);
-          if (!point2 || pointEqual(point0, point2) || pointEqual(point1, point2)) {
-            point1[0] += epsilon;
-            point1[1] += epsilon;
-            v = visible(point1[0], point1[1]);
-          }
+          if (!point2 || pointEqual(point0, point2) || pointEqual(point1, point2))
+            point1[2] = 1;
         }
         if (v !== v0) {
           clean = 0;
@@ -8794,7 +9222,7 @@ function clipCircle(radius) {
           } else {
             // inside going out
             point2 = intersect(point0, point1);
-            stream.point(point2[0], point2[1]);
+            stream.point(point2[0], point2[1], 2);
             stream.lineEnd();
           }
           point0 = point2;
@@ -8813,7 +9241,7 @@ function clipCircle(radius) {
               stream.point(t[1][0], t[1][1]);
               stream.lineEnd();
               stream.lineStart();
-              stream.point(t[0][0], t[0][1]);
+              stream.point(t[0][0], t[0][1], 3);
             }
           }
         }
@@ -9999,17 +10427,18 @@ function transformRotate(rotate) {
   });
 }
 
-function scaleTranslate(k, dx, dy) {
+function scaleTranslate(k, dx, dy, sx, sy) {
   function transform(x, y) {
+    x *= sx; y *= sy;
     return [dx + k * x, dy - k * y];
   }
   transform.invert = function(x, y) {
-    return [(x - dx) / k, (dy - y) / k];
+    return [(x - dx) / k * sx, (dy - y) / k * sy];
   };
   return transform;
 }
 
-function scaleTranslateRotate(k, dx, dy, alpha) {
+function scaleTranslateRotate(k, dx, dy, sx, sy, alpha) {
   var cosAlpha = cos(alpha),
       sinAlpha = sin(alpha),
       a = cosAlpha * k,
@@ -10019,10 +10448,11 @@ function scaleTranslateRotate(k, dx, dy, alpha) {
       ci = (sinAlpha * dy - cosAlpha * dx) / k,
       fi = (sinAlpha * dx + cosAlpha * dy) / k;
   function transform(x, y) {
+    x *= sx; y *= sy;
     return [a * x - b * y + dx, dy - b * x - a * y];
   }
   transform.invert = function(x, y) {
-    return [ai * x - bi * y + ci, fi - bi * x - ai * y];
+    return [sx * (ai * x - bi * y + ci), sy * (fi - bi * x - ai * y)];
   };
   return transform;
 }
@@ -10037,7 +10467,9 @@ function projectionMutator(projectAt) {
       x = 480, y = 250, // translate
       lambda = 0, phi = 0, // center
       deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, // pre-rotate
-      alpha = 0, // post-rotate
+      alpha = 0, // post-rotate angle
+      sx = 1, // reflectX
+      sy = 1, // reflectX
       theta = null, preclip = clipAntimeridian, // pre-clip angle
       x0 = null, y0, x1, y1, postclip = identity, // post-clip extent
       delta2 = 0.5, // precision
@@ -10096,6 +10528,14 @@ function projectionMutator(projectAt) {
     return arguments.length ? (alpha = _ % 360 * radians, recenter()) : alpha * degrees;
   };
 
+  projection.reflectX = function(_) {
+    return arguments.length ? (sx = _ ? -1 : 1, recenter()) : sx < 0;
+  };
+
+  projection.reflectY = function(_) {
+    return arguments.length ? (sy = _ ? -1 : 1, recenter()) : sy < 0;
+  };
+
   projection.precision = function(_) {
     return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
   };
@@ -10117,8 +10557,8 @@ function projectionMutator(projectAt) {
   };
 
   function recenter() {
-    var center = scaleTranslateRotate(k, 0, 0, alpha).apply(null, project(lambda, phi)),
-        transform = (alpha ? scaleTranslateRotate : scaleTranslate)(k, x - center[0], y - center[1], alpha);
+    var center = scaleTranslateRotate(k, 0, 0, sx, sy, alpha).apply(null, project(lambda, phi)),
+        transform = (alpha ? scaleTranslateRotate : scaleTranslate)(k, x - center[0], y - center[1], sx, sy, alpha);
     rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma);
     projectTransform = compose(project, transform);
     projectRotateTransform = compose(rotate, projectTransform);
@@ -10179,8 +10619,11 @@ function conicEqualAreaRaw(y0, y1) {
   }
 
   project.invert = function(x, y) {
-    var r0y = r0 - y;
-    return [atan2(x, abs(r0y)) / n * sign(r0y), asin((c - (x * x + r0y * r0y) * n * n) / (2 * n))];
+    var r0y = r0 - y,
+        l = atan2(x, abs(r0y)) * sign(r0y);
+    if (r0y * n < 0)
+      l -= pi * sign(x) * sign(r0y);
+    return [l / n, asin((c - (x * x + r0y * r0y) * n * n) / (2 * n))];
   };
 
   return project;
@@ -10429,8 +10872,11 @@ function conicConformalRaw(y0, y1) {
   }
 
   project.invert = function(x, y) {
-    var fy = f - y, r = sign(n) * sqrt(x * x + fy * fy);
-    return [atan2(x, abs(fy)) / n * sign(fy), 2 * atan(pow(f / r, 1 / n)) - halfPi];
+    var fy = f - y, r = sign(n) * sqrt(x * x + fy * fy),
+      l = atan2(x, abs(fy)) * sign(fy);
+    if (fy * n < 0)
+      l -= pi * sign(x) * sign(fy);
+    return [l / n, 2 * atan(pow(f / r, 1 / n)) - halfPi];
   };
 
   return project;
@@ -10466,8 +10912,11 @@ function conicEquidistantRaw(y0, y1) {
   }
 
   project.invert = function(x, y) {
-    var gy = g - y;
-    return [atan2(x, abs(gy)) / n * sign(gy), g - sign(n) * sqrt(x * x + gy * gy)];
+    var gy = g - y,
+        l = atan2(x, abs(gy)) * sign(gy);
+    if (gy * n < 0)
+      l -= pi * sign(x) * sign(gy);
+    return [l / n, g - sign(n) * sqrt(x * x + gy * gy)];
   };
 
   return project;
@@ -10526,62 +10975,84 @@ function gnomonic() {
       .clipAngle(60);
 }
 
-function scaleTranslate$1(kx, ky, tx, ty) {
-  return kx === 1 && ky === 1 && tx === 0 && ty === 0 ? identity : transformer({
-    point: function(x, y) {
-      this.stream.point(x * kx + tx, y * ky + ty);
-    }
-  });
-}
-
 function identity$1() {
-  var k = 1, tx = 0, ty = 0, sx = 1, sy = 1, transform = identity, // scale, translate and reflect
+  var k = 1, tx = 0, ty = 0, sx = 1, sy = 1, // scale, translate and reflect
+      alpha = 0, ca, sa, // angle
       x0 = null, y0, x1, y1, // clip extent
+      kx = 1, ky = 1,
+      transform = transformer({
+        point: function(x, y) {
+          var p = projection([x, y]);
+          this.stream.point(p[0], p[1]);
+        }
+      }),
       postclip = identity,
       cache,
-      cacheStream,
-      projection;
+      cacheStream;
 
   function reset() {
+    kx = k * sx;
+    ky = k * sy;
     cache = cacheStream = null;
     return projection;
   }
 
-  return projection = {
-    stream: function(stream) {
-      return cache && cacheStream === stream ? cache : cache = transform(postclip(cacheStream = stream));
-    },
-    postclip: function(_) {
-      return arguments.length ? (postclip = _, x0 = y0 = x1 = y1 = null, reset()) : postclip;
-    },
-    clipExtent: function(_) {
-      return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
-    },
-    scale: function(_) {
-      return arguments.length ? (transform = scaleTranslate$1((k = +_) * sx, k * sy, tx, ty), reset()) : k;
-    },
-    translate: function(_) {
-      return arguments.length ? (transform = scaleTranslate$1(k * sx, k * sy, tx = +_[0], ty = +_[1]), reset()) : [tx, ty];
-    },
-    reflectX: function(_) {
-      return arguments.length ? (transform = scaleTranslate$1(k * (sx = _ ? -1 : 1), k * sy, tx, ty), reset()) : sx < 0;
-    },
-    reflectY: function(_) {
-      return arguments.length ? (transform = scaleTranslate$1(k * sx, k * (sy = _ ? -1 : 1), tx, ty), reset()) : sy < 0;
-    },
-    fitExtent: function(extent, object) {
-      return fitExtent(projection, extent, object);
-    },
-    fitSize: function(size, object) {
-      return fitSize(projection, size, object);
-    },
-    fitWidth: function(width, object) {
-      return fitWidth(projection, width, object);
-    },
-    fitHeight: function(height, object) {
-      return fitHeight(projection, height, object);
+  function projection (p) {
+    var x = p[0] * kx, y = p[1] * ky;
+    if (alpha) {
+      var t = y * ca - x * sa;
+      x = x * ca + y * sa;
+      y = t;
+    }    
+    return [x + tx, y + ty];
+  }
+  projection.invert = function(p) {
+    var x = p[0] - tx, y = p[1] - ty;
+    if (alpha) {
+      var t = y * ca + x * sa;
+      x = x * ca - y * sa;
+      y = t;
     }
+    return [x / kx, y / ky];
   };
+  projection.stream = function(stream) {
+    return cache && cacheStream === stream ? cache : cache = transform(postclip(cacheStream = stream));
+  };
+  projection.postclip = function(_) {
+    return arguments.length ? (postclip = _, x0 = y0 = x1 = y1 = null, reset()) : postclip;
+  };
+  projection.clipExtent = function(_) {
+    return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+  };
+  projection.scale = function(_) {
+    return arguments.length ? (k = +_, reset()) : k;
+  };
+  projection.translate = function(_) {
+    return arguments.length ? (tx = +_[0], ty = +_[1], reset()) : [tx, ty];
+  };
+  projection.angle = function(_) {
+    return arguments.length ? (alpha = _ % 360 * radians, sa = sin(alpha), ca = cos(alpha), reset()) : alpha * degrees;
+  };
+  projection.reflectX = function(_) {
+    return arguments.length ? (sx = _ ? -1 : 1, reset()) : sx < 0;
+  };
+  projection.reflectY = function(_) {
+    return arguments.length ? (sy = _ ? -1 : 1, reset()) : sy < 0;
+  };
+  projection.fitExtent = function(extent, object) {
+    return fitExtent(projection, extent, object);
+  };
+  projection.fitSize = function(size, object) {
+    return fitSize(projection, size, object);
+  };
+  projection.fitWidth = function(width, object) {
+    return fitWidth(projection, width, object);
+  };
+  projection.fitHeight = function(height, object) {
+    return fitHeight(projection, height, object);
+  };
+
+  return projection;
 }
 
 function naturalEarth1Raw(lambda, phi) {
@@ -10714,9 +11185,9 @@ exports.geoTransverseMercatorRaw = transverseMercatorRaw;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
 
-},{"d3-array":8}],23:[function(require,module,exports){
+},{"d3-array":19}],34:[function(require,module,exports){
 // https://d3js.org/d3-hierarchy/ v1.1.9 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -12008,7 +12479,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],24:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // https://d3js.org/d3-interpolate/ v1.4.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-color')) :
@@ -12603,7 +13074,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-color":13}],25:[function(require,module,exports){
+},{"d3-color":24}],36:[function(require,module,exports){
 // https://d3js.org/d3-path/ v1.0.9 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -12746,7 +13217,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],26:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 // https://d3js.org/d3-polygon/ v1.0.6 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -12898,7 +13369,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],27:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // https://d3js.org/d3-quadtree/ v1.0.7 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -13319,7 +13790,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],28:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 // https://d3js.org/d3-random/ v1.1.2 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -13436,7 +13907,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],29:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // https://d3js.org/d3-scale-chromatic/ v1.5.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-interpolate'), require('d3-color')) :
@@ -13959,7 +14430,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-color":13,"d3-interpolate":24}],30:[function(require,module,exports){
+},{"d3-color":24,"d3-interpolate":35}],41:[function(require,module,exports){
 // https://d3js.org/d3-scale/ v2.2.2 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-collection'), require('d3-array'), require('d3-interpolate'), require('d3-format'), require('d3-time'), require('d3-time-format')) :
@@ -15126,8 +15597,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-array":8,"d3-collection":12,"d3-format":21,"d3-interpolate":24,"d3-time":34,"d3-time-format":33}],31:[function(require,module,exports){
-// https://d3js.org/d3-selection/ v1.4.1 Copyright 2019 Mike Bostock
+},{"d3-array":19,"d3-collection":23,"d3-format":32,"d3-interpolate":35,"d3-time":45,"d3-time-format":44}],42:[function(require,module,exports){
+// https://d3js.org/d3-selection/ v1.4.2 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -16117,7 +16588,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],32:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // https://d3js.org/d3-shape/ v1.3.7 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-path')) :
@@ -18068,8 +18539,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-path":25}],33:[function(require,module,exports){
-// https://d3js.org/d3-time-format/ v2.2.3 Copyright 2019 Mike Bostock
+},{"d3-path":36}],44:[function(require,module,exports){
+// https://d3js.org/d3-time-format/ v2.3.0 Copyright 2020 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-time')) :
 typeof define === 'function' && define.amd ? define(['exports', 'd3-time'], factory) :
@@ -18128,6 +18599,8 @@ function formatLocale(locale) {
     "d": formatDayOfMonth,
     "e": formatDayOfMonth,
     "f": formatMicroseconds,
+    "g": formatYearISO,
+    "G": formatFullYearISO,
     "H": formatHour24,
     "I": formatHour12,
     "j": formatDayOfYear,
@@ -18161,6 +18634,8 @@ function formatLocale(locale) {
     "d": formatUTCDayOfMonth,
     "e": formatUTCDayOfMonth,
     "f": formatUTCMicroseconds,
+    "g": formatUTCYearISO,
+    "G": formatUTCFullYearISO,
     "H": formatUTCHour24,
     "I": formatUTCHour12,
     "j": formatUTCDayOfYear,
@@ -18194,6 +18669,8 @@ function formatLocale(locale) {
     "d": parseDayOfMonth,
     "e": parseDayOfMonth,
     "f": parseMicroseconds,
+    "g": parseYear,
+    "G": parseFullYear,
     "H": parseHour24,
     "I": parseHour24,
     "j": parseDayOfYear,
@@ -18615,9 +19092,13 @@ function formatWeekNumberSunday(d, p) {
   return pad(d3Time.timeSunday.count(d3Time.timeYear(d) - 1, d), p, 2);
 }
 
-function formatWeekNumberISO(d, p) {
+function dISO(d) {
   var day = d.getDay();
-  d = (day >= 4 || day === 0) ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+  return (day >= 4 || day === 0) ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+}
+
+function formatWeekNumberISO(d, p) {
+  d = dISO(d);
   return pad(d3Time.timeThursday.count(d3Time.timeYear(d), d) + (d3Time.timeYear(d).getDay() === 4), p, 2);
 }
 
@@ -18633,7 +19114,18 @@ function formatYear(d, p) {
   return pad(d.getFullYear() % 100, p, 2);
 }
 
+function formatYearISO(d, p) {
+  d = dISO(d);
+  return pad(d.getFullYear() % 100, p, 2);
+}
+
 function formatFullYear(d, p) {
+  return pad(d.getFullYear() % 10000, p, 4);
+}
+
+function formatFullYearISO(d, p) {
+  var day = d.getDay();
+  d = (day >= 4 || day === 0) ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
   return pad(d.getFullYear() % 10000, p, 4);
 }
 
@@ -18689,9 +19181,13 @@ function formatUTCWeekNumberSunday(d, p) {
   return pad(d3Time.utcSunday.count(d3Time.utcYear(d) - 1, d), p, 2);
 }
 
-function formatUTCWeekNumberISO(d, p) {
+function UTCdISO(d) {
   var day = d.getUTCDay();
-  d = (day >= 4 || day === 0) ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+  return (day >= 4 || day === 0) ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+}
+
+function formatUTCWeekNumberISO(d, p) {
+  d = UTCdISO(d);
   return pad(d3Time.utcThursday.count(d3Time.utcYear(d), d) + (d3Time.utcYear(d).getUTCDay() === 4), p, 2);
 }
 
@@ -18707,7 +19203,18 @@ function formatUTCYear(d, p) {
   return pad(d.getUTCFullYear() % 100, p, 2);
 }
 
+function formatUTCYearISO(d, p) {
+  d = UTCdISO(d);
+  return pad(d.getUTCFullYear() % 100, p, 2);
+}
+
 function formatUTCFullYear(d, p) {
+  return pad(d.getUTCFullYear() % 10000, p, 4);
+}
+
+function formatUTCFullYearISO(d, p) {
+  var day = d.getUTCDay();
+  d = (day >= 4 || day === 0) ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
   return pad(d.getUTCFullYear() % 10000, p, 4);
 }
 
@@ -18777,7 +19284,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-time":34}],34:[function(require,module,exports){
+},{"d3-time":45}],45:[function(require,module,exports){
 // https://d3js.org/d3-time/ v1.1.0 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -19152,7 +19659,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],35:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // https://d3js.org/d3-timer/ v1.0.10 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -19303,7 +19810,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{}],36:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 // https://d3js.org/d3-transition/ v1.3.2 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-dispatch'), require('d3-timer'), require('d3-interpolate'), require('d3-color'), require('d3-ease')) :
@@ -20185,7 +20692,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-color":13,"d3-dispatch":15,"d3-ease":18,"d3-interpolate":24,"d3-selection":31,"d3-timer":35}],37:[function(require,module,exports){
+},{"d3-color":24,"d3-dispatch":26,"d3-ease":29,"d3-interpolate":35,"d3-selection":42,"d3-timer":46}],48:[function(require,module,exports){
 // https://d3js.org/d3-voronoi/ v1.1.4 Copyright 2018 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -21186,7 +21693,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],38:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // https://d3js.org/d3-zoom/ v1.8.3 Copyright 2019 Mike Bostock
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
@@ -21685,7 +22192,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 
-},{"d3-dispatch":15,"d3-drag":16,"d3-interpolate":24,"d3-selection":31,"d3-transition":36}],39:[function(require,module,exports){
+},{"d3-dispatch":26,"d3-drag":27,"d3-interpolate":35,"d3-selection":42,"d3-transition":47}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -21722,7 +22229,7 @@ var d3Transition = require('d3-transition');
 var d3Voronoi = require('d3-voronoi');
 var d3Zoom = require('d3-zoom');
 
-var version = "5.15.0";
+var version = "5.16.0";
 
 Object.keys(d3Array).forEach(function (k) {
 	if (k !== 'default') Object.defineProperty(exports, k, {
@@ -21974,372 +22481,723 @@ Object.keys(d3Zoom).forEach(function (k) {
 });
 exports.version = version;
 
-},{"d3-array":8,"d3-axis":9,"d3-brush":10,"d3-chord":11,"d3-collection":12,"d3-color":13,"d3-contour":14,"d3-dispatch":15,"d3-drag":16,"d3-dsv":17,"d3-ease":18,"d3-fetch":19,"d3-force":20,"d3-format":21,"d3-geo":22,"d3-hierarchy":23,"d3-interpolate":24,"d3-path":25,"d3-polygon":26,"d3-quadtree":27,"d3-random":28,"d3-scale":30,"d3-scale-chromatic":29,"d3-selection":31,"d3-shape":32,"d3-time":34,"d3-time-format":33,"d3-timer":35,"d3-transition":36,"d3-voronoi":37,"d3-zoom":38}],40:[function(require,module,exports){
-(function (process,global){
-!function(e){"object"==typeof exports?module.exports=e():"function"==typeof define&&define.amd?define(e):"undefined"!=typeof window?window.commonJsModule=e():"undefined"!=typeof global?global.commonJsModule=e():"undefined"!=typeof self&&(self.commonJsModule=e())}(function(){var define,module,exports;module={exports:(exports={})};
+},{"d3-array":19,"d3-axis":20,"d3-brush":21,"d3-chord":22,"d3-collection":23,"d3-color":24,"d3-contour":25,"d3-dispatch":26,"d3-drag":27,"d3-dsv":28,"d3-ease":29,"d3-fetch":30,"d3-force":31,"d3-format":32,"d3-geo":33,"d3-hierarchy":34,"d3-interpolate":35,"d3-path":36,"d3-polygon":37,"d3-quadtree":38,"d3-random":39,"d3-scale":41,"d3-scale-chromatic":40,"d3-selection":42,"d3-shape":43,"d3-time":45,"d3-time-format":44,"d3-timer":46,"d3-transition":47,"d3-voronoi":48,"d3-zoom":49}],51:[function(require,module,exports){
+(function (process,global){(function (){
+// These are rules for eslint, which is used to check style and other problems
+/* eslint-disable guard-for-in */
+/* eslint-disable no-console */
+/* eslint-disable global-require */
+/* eslint-disable prefer-object-spread */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
+/* eslint-disable camelcase */
+/* eslint-disable comma-dangle */
+/* eslint-disable object-curly-spacing */
+/* eslint-disable object-curly-newline */
+/* eslint-disable object-shorthand */
+/* eslint-disable func-names */
+!function (e){"object"==typeof exports?module.exports=e():"function"==typeof define&&define.amd?define(e):"undefined"!=typeof window?window.commonJsModule=e():"undefined"!=typeof global?global.commonJsModule=e():"undefined"!=typeof self&&(self.commonJsModule=e())}(function(){var define,module,exports;module={exports:(exports={})}; // eslint-disable-line
 
-// var fs = require('fs');
+  module.exports = {
 
-module.exports = {
-
-  // Read and transform Lasio Json files to Wellio.js json data format
-
-/**
- * File reading utility function.
- * @param {string} : file_to_read - The file to open.
- *
- * @returns {string} : The file's contents as a string.
+    /**
+ * A helper function that takes no input arugments and returns a string with some basic
+ * information about wellio.
+ * @returns {string} A predetermined string message to the user about wellio.
+ * @example wellio.help() >>> Wellio has the following functions: 'help',
+ * 'returnThing', 'loadLAS', 'las2json', 'read_lasio_json_file', and 'lasio_obj_2_wellio_obj'.
+ * You'll probably want to do well_string = wellio.loadLAS and then
+ * well_as_json = las2json(well_string)."
  */
-  read_lasio_json_file: function(file_to_read) {
-    // Configure fs if running from node
-    let fs = '';
+    help: function () {
+      const answer = "Wellio has the following functions: 'help', 'returnThing', 'loadLAS', 'las2json', 'read_lasio_json_file', and 'lasio_obj_2_wellio_obj'. You'll probably want to do well_string = wellio.loadLAS and then well_as_json = las2json(well_string).";
+      return answer;
+    },
 
-    if (process !== 'undefined' && process.versions != null && process.versions.node != null) {
-       fs = require('fs');
-    }
+    /**
+ * A helper function that proves wellio,js was installed correctly. It merely returns the
+ * argument provided to it. For example, "test" as input would return "test".
+ * @param {string} aTestString Any string
+ * @returns {string} Returns the input that was given as an argument. This is just for
+ * testing that wellio was installed correctly.
+ * @example wellio.returnThing("test") >>> "test"
+ */
+    returnThing: function (aTestString) {
+      return aTestString;
+    },
 
-    return fs.readFileSync(file_to_read, 'utf8');
-  },
+    // Read and transform Lasio Json files to Wellio.js json data format
 
-/**
-* The lasio_obj_2_wellio_obj function transforms lasio JSON strings into wellio.js JSON data format in memory and returns it.
-* @param {object} lasio_json - A JavaScript object representation of lasio well log format
-*
-* @example
-* let wellio = require('wellio')
-* let lasio_json_str = wellio.read_lasio_json_file('lasio.json');
-* let lasio_obj = JSON.parse(lasio_json_str);
-* let wellio_obj = wellio.lasio_obj_2_wellio_obj(lasio_obj);
-*
-* @returns {object} A wellio style JSON object
+    /**
+* Loads a LAS 2.0 file from local files. Takes one argument `wellLog` and returns
+a string representation of the contents of the well log file.
+* @param {string} wellLog A string reprepresentatiion of filename of well log to be
+loaded into memory
+* @returns {string} A string representation of the contents of that well log file.
+ It is a single string.
 */
-  lasio_obj_2_wellio_obj: function(lasio_obj) {
-
-    let std_headers = {
-      'Version': 'VERSION INFORMATION',
-      'Well': 'WELL INFORMATION BLOCK',
-      'Curves': 'CURVE INFORMATION BLOCK', 
-      'Parameter': 'PARAMETER INFORMATION'
-    };
-
-    let lasjson = {};
-		lasjson["VERSION INFORMATION"] = {};
-		lasjson["WELL INFORMATION BLOCK"] = {};
-		lasjson["CURVE INFORMATION BLOCK"] = {};
-		lasjson["PARAMETER INFORMATION"] = {};
-		lasjson["CURVES"] = lasio_obj.data;
-
-    // Example code for adding non-standard headers
-    for (let item in lasio_obj.metadata) {
-      if ( !(item in std_headers) ) {
-        lasjson[item.toUpperCase()] = lasio_obj.metadata[item];
+    loadLAS: function (wellLog) {
+      const file = wellLog;
+      let fs = '';
+      if (process.env.NODE_ENV === 'development') {
+        // dev code for react development server use that then deploys to client app in production
+        let fs = '';
+        return file.toString();
+      }
+      else if (process !== 'undefined' && process.versions != null && process.versions.node != null) {
+        // eslint-disable-next-line global-require
+        fs = require('fs');
+        // var contents = fs.readFileSync('test.LAS', 'utf8');
+        const contents = fs.readFileSync(file).toString();
+        return contents;
       }
       else {
-        for (let mnemonic in lasio_obj.metadata[item]) {
-          section = std_headers[item];      
-          lasjson[section][mnemonic] = {
-            MNEM: mnemonic,
-            UNIT: '',
-            DATA: lasio_obj.metadata[item][mnemonic],
-            'DESCRIPTION OF MNEMONIC 1': '',
-            'DESCRIPTION OF MNEMONIC 2': ''
-          };
+        return file.toString()
+      }
+    },
+    /**
+     * las2json function converts a LAS 2.0 file already loaded into memory as a string
+     * into a wellio-style JSON object
+     * @param {string} onelas A string representation of a LAS 2.0 well log file.
+     *  Typically from the result of the loadLAS function.
+     * @param {boolean} print A true or false boolean. If true, intermediate products
+     *  are sent to console.warn() to help withe debugging.
+     * @returns {Object} A JSON object that represents the information that was in the
+     *  LAS 2.0 well log file but in JSON wellio style format.
+     * */
+    las2json: function (onelas, print = true) {
+      // var lasjson establishes a blank json for holding las 2.0 data.
+      // It will look like the example below:
+      const lasjson = {
+        'VERSION INFORMATION': {
+          'VERS': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''},
+          'WRAP': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''}
+        },
+        'WELL INFORMATION BLOCK': {
+          'GENERATED': '',
+          'MNEM_0': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''},
+          'MNEM_1': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''},
+          'MNEM_2': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''}
+        },
+        'CURVE INFORMATION BLOCK': {
+          'MNEM_0': {'MNEM': '', 'UNIT': '', 'ERCB CURVE CODE': '', 'CURVE DESCRIPTION 1': '', 'CURVE DESCRIPTION 2': ''},
+          'MNEM_1': {'MNEM': '', 'UNIT': '', 'ERCB CURVE CODE': '', 'CURVE DESCRIPTION 1': '', 'CURVE DESCRIPTION 2': ''}
+        },
+        'PARAMETER INFORMATION': {
+          'MNEM_0': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''},
+          'MNEM_1': {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''}
+        },
+        'CURVES': {
+          'Curve_NAME_ONE': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+          'Curve_NAME_TWO': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        }
+      };
+      // Some objects in the json were partially populated in the example above
+      // to make understanding the format easier.
+      // We'll empty them as a first step
+      lasjson['VERSION INFORMATION'] = {};
+      lasjson['WELL INFORMATION BLOCK'] = {};
+      lasjson['CURVE INFORMATION BLOCK'] = {};
+      lasjson['PARAMETER INFORMATION'] = {};
+      lasjson['CURVES'] = {};
+      // Within the "blocks" ["CURVE INFORMATION BLOCK","PARAMETER INFORMATION", etc.]
+      // there are other objects with repeating keys.
+      // The variables below will be the building blocks for each of those objects {}.
+      // They are initially populated with empty strings as the values.
+      const ver_info_obj = {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''};
+      const well_info_obj = {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''};
+      const curve_info_obj = {'MNEM': '', 'UNIT': '', 'ERCB CURVE CODE': '', 'CURVE DESCRIPTION 1': '', 'CURVE DESCRIPTION 2': ''};
+      const param_info_obj = {'MNEM': '', 'UNIT': '', 'DATA': '', 'DESCRIPTION OF MNEMONIC 1': '', 'DESCRIPTION OF MNEMONIC 2': ''};
+
+      if (print === true) {
+        console.warn('onelas = ', onelas);
+      }
+
+      // The las file is read as a txt file. It will first be split into
+      // seperate section data structures. readSections() is a sub-function
+      // of las2json.
+      let las_data = readSections(onelas);
+      const {header_idx, sections} = las_data;
+
+//// CAN DELETE THIS SECTION IF NOTHING BREAKS AFTER MERGE CONFLICTING PULL REQUESTS
+//       // Split in to las sections that start with a tilde: ~.
+//       const split1 = onelas.split(/(~[^~]+)/);
+//       if (print === true) {
+//         console.warn('split1 = ', split1);
+//       }
+
+//       // As the 'OTHER' block may or may not be present, we have to split by '~' and
+//       // then look for a substring to make sure we have the right block before we put
+//       // each into a variable.
+//       if (print === true) {
+//         console.warn('split1.lengths = ', split1.length);
+//         console.warn('split1 = ', split1);
+//       }
+//       for (let i = 0; i < split1.length; i++) {
+//         // Skip blank entries in the split1 array.
+//         if (split1[i].length === 0) {
+//           // eslint-disable-next-line no-continue
+//           continue;
+//         }
+//         if (split1[i].includes('~V')) {
+//           vers_str = split1[i];
+//         }
+//         else if (split1[i].includes('~W')) {
+//           well_info_str = split1[i];
+//         }
+//         else if (split1[i].includes('~C')) {
+//           curve_info_str = split1[i];
+//         }
+//         else if (split1[i].includes('~P')) {
+//           param_info_str = split1[i];
+//         }
+//         else if (split1[i].includes('~O')) {
+//           // note 'other' is never used! This should be fixed in future!
+//           // eslint-disable-next-line no-unused-vars
+//           other = split1[i];
+//         }
+//         else if (split1[i].includes('~A')) {
+//           curve_str = split1[i];
+//         }
+//         else if (print === true) {
+//           console.warn(`WARNING: In wellio.js the las2json() function: split1[${i}] is not a recognized las section`);
+//           console.warn(`elem: [${split1[i]}]`);
+//         }
+//       }
+
+//       // Regular expression for splitting las file into lines
+//       const eol_regex = /\r\n|\r|\n/;
+
+      // Working with version block first by splitting it by newline and places each
+      // item into an array
+      // and taking items of array 1 and 2 for vers and wrap
+      
+      const vers_line = sections[header_idx.V].rows[0];
+      const wrap_line = sections[header_idx.V].rows[1] === undefined 
+        ? ""
+        : sections[header_idx.V].rows[1];
+      
+//// MAY DELETE CODE BELOW IF NOTHING BREAKS AFTER MERGE PULL REQUESTS
+//       const vers_line = vers_str.split(eol_regex)[1];
+//       const wrap_line = vers_str.split(eol_regex)[2];
+//       // As version information, well information, and parameter information blocks
+//       // contain objects with the same keys, we can process them using a loop.
+//       // function to process objects for ver_info_obj, well_inf_obj, and param_info_obj
+//       // The splitLineofType1() function takes as argument the prototypical object
+//       // building block and the array of strings for that block
+//       // eslint-disable-next-line no-shadow
+//       function splitLineofType1(ver_info_obj, arrayString) {
+//         // splits string (should be a single line from the LAS text) by ":",
+//         // takes the first item of the resulting array, and then replaces any " "
+//         // with "".
+//         const as_array = arrayString.split(':');
+//         const vers_line_1half = as_array[0].replace(' ', '');
+//         // splits the previous string variable by "." into an array of strings.
+//         const vers_line_1half_array = vers_line_1half.split('.');
+//         // trimming this so I get "UWI" instead of "UWI    "
+//         // eslint-disable-next-line no-param-reassign
+//         ver_info_obj['MNEM'] = vers_line_1half_array[0].trim();
+//         const unit_and_data = vers_line_1half_array.slice(1, vers_line_1half_array.length);
+//         let unit_and_data_str = '                        ';
+//         if (unit_and_data.length > 1) {
+//           // eslint-disable-next-line prefer-template
+//           unit_and_data_str = unit_and_data[0].toString() + '.' + unit_and_data[1].toString();
+//         }
+//         // This is an empty ver_info_obj, print a warning and return
+//         else if (ver_info_obj['MNEM'] === '' && unit_and_data.length === 0) {
+//           if (print === true) {
+//             console.warn('WARNING: Metatdata line has no data: ', vers_line_1half_array);
+//           }
+//           return ver_info_obj;
+//         }
+//         else {
+//           unit_and_data_str = unit_and_data.toString();
+//         }
+
+//         // Sometimes the unit_and_data_str are less that 5 chars
+//         let last_idx = 5;
+//         if ((unit_and_data_str.length - 1) < 5) {
+//           last_idx = unit_and_data_str.length - 1;
+//         }
+//         // eslint-disable-next-line no-sequences
+//         const unit = unit_and_data_str[0, last_idx].trim();
+//         const data = unit_and_data_str.substring(5, unit_and_data_str.length).trim();
+//         ver_info_obj['DATA'] = data;
+//         ver_info_obj['UNIT'] = unit;
+
+
+      lasjson['VERSION INFORMATION']['WRAP'] = splitLineofType1(Object.assign({}, ver_info_obj), wrap_line);
+      lasjson['VERSION INFORMATION']['VERS'] = splitLineofType1(Object.assign({}, ver_info_obj), vers_line);
+
+      // Working with PARAMETER INFORMATION block
+      const param_line_array = sections[header_idx.P].rows;
+      for (let i = 0; i < param_line_array.length; i++) {
+        // create one object for parameter line
+        if (param_line_array[i] !== '') {
+          const param_obj_inst = splitLineofType1(
+            Object.assign({}, param_info_obj), param_line_array[i]
+          );
+          if (param_obj_inst.MNEM) {
+            lasjson['PARAMETER INFORMATION'][param_obj_inst['MNEM']] = param_obj_inst;
+          }
         }
       }
+
+      // Working with CURVE INFORMATION BLOCK
+      const curve_line_array = sections[header_idx.C].rows;
+      for (let i = 0; i < curve_line_array.length; i++) {
+        // create one object for parameter line
+        if (curve_line_array[i] !== '') {
+          const curve_obj_inst = splitLineofType1(
+            Object.assign({}, curve_info_obj), curve_line_array[i]
+          );
+          if (curve_obj_inst.MNEM) {
+            lasjson['CURVE INFORMATION BLOCK'][curve_obj_inst['MNEM']] = curve_obj_inst;
+          }
+        }
+      }
+
+      // Working with WELL INFORMATION BLOCK 
+      const well_line_array = sections[header_idx.W].rows;
+      for (let i = 0; i < well_line_array.length; i++) {
+        if (well_line_array[i].includes('Generated')) {
+          lasjson['WELL INFORMATION BLOCK']['GENERATED'] = well_line_array[i].replace('\t', ' ').replace('#', '');
+        }
+        // create one object for parameter line
+        else if (well_line_array[i] !== '') {
+          const well_obj_inst = splitLineofType1(
+            Object.assign({}, well_info_obj), well_line_array[i]
+          );
+          if (well_obj_inst.MNEM) {
+            lasjson['WELL INFORMATION BLOCK'][well_obj_inst['MNEM']] = well_obj_inst;
+          }
+        }
+        else if (print === true) {
+          console.warn(`INFO: in else for well_line: ${i}`);
+          console.warn(`elem: [${well_line_array[i]}]`);
+        }
+      }
+
+      // Work with CURVES section by splitting it by newline into an array,
+      // Iterate through the array items populate arrays for each key
+      const curve_str_array = sections[header_idx.A].rows;
+
+      // Get the curve column names from the curve names in the curve information block
+      //
+      // Per LAS_20_Update_Jan2014.pdf section 5.5 specs for ~C(Curve Information)
+      // - This section is manditory.
+      // - It describes the curves and its units in the order they appear in the ~ASCII
+      // log data section of the file.
+      // - The channels described in this section must be present in the data set.
+      const curve_names_array_holder = [];
+      const curve_info = Object.keys(lasjson['CURVE INFORMATION BLOCK']);
+
+      if (curve_info.length > 0) {
+        for (let k = 0; k < curve_info.length; k++) {
+          const col_name = curve_info[k];
+          curve_names_array_holder.push(col_name);
+          lasjson.CURVES[col_name] = [];
+        }
+      }
+
+      let curve_data_line_array = [];
+
+      for (let j = 0; j < curve_str_array.length; j++) {
+        // Skip empty rows.
+        if (curve_str_array[j].length === 0) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
+        const temp_data_array = curve_str_array[j].split(/\s+/);
+        // Split can leave an empty element at the beginning, remove it.
+        if (temp_data_array[0].length === 0) {
+          temp_data_array.shift();
+        }
+
+        // If data is wrapped continue to accumulate data from rows till
+        // we have a data element for each data column
+        let idx = curve_data_line_array.length;
+        curve_data_line_array.length = idx + temp_data_array.length;
+        for (let i = 0; i < temp_data_array.length; i++, idx++) {
+          curve_data_line_array[idx] = temp_data_array[i];
+        }
+
+        if (
+          lasjson['VERSION INFORMATION'].WRAP.DATA === 'YES'
+          && curve_data_line_array.length < curve_names_array_holder.length
+        ) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
+        let counter_of_curve_names = 0;
+
+        const last_curv_data_line_position = curve_data_line_array.length - 1;
+
+        while (curve_names_array_holder.length < curve_data_line_array.length) {
+          // Data has more columns than the names array.  To fix:
+          // - add addtional generic columns to the previous lasjson['CURVES']
+          //   the row count is in varible 'j'
+          //   popluate the previous rows for the new column with zeros.
+          let col_num = curve_names_array_holder.length + 1
+          let col_name = 'UNKNOWN' + col_num;
+          curve_names_array_holder.push(col_name);
+          lasjson['CURVES'][col_name] = new Array(j).fill('0');
+        }
+
+        // Add row items to CURVES data structure
+        for (let idx in curve_names_array_holder) {
+          if (curve_data_line_array[idx] && curve_data_line_array[idx] !== '') {
+            lasjson['CURVES'][curve_names_array_holder[idx]].push(curve_data_line_array[idx]);
+          }
+          else {
+            // If the item doesn't exist fill its entry with a '0' zero string character
+            lasjson['CURVES'][curve_names_array_holder[idx]].push('0');
+
+// MAY GET RID OF CODE BELOW IF NOTHING BREAKS 
+//         if (print === true) {
+//           console.warn('curve_data_line_array.length = ', curve_data_line_array.length);
+//           console.warn('curve_data_line_array = ', curve_data_line_array);
+//         }
+
+//         const last_curv_data_line_position = curve_data_line_array.length - 1;
+//         if (print === true) {
+//           console.warn('curve_data_line_array[last_curv_data_line_position] = ', curve_data_line_array[last_curv_data_line_position]);
+//         }
+//         curve_data_line_array[last_curv_data_line_position] = curve_data_line_array[last_curv_data_line_position].replace('\r', '');
+//         if (print === true) {
+//           console.warn('curve_data_line_array[last_curv_data_line_position] = ', curve_data_line_array[last_curv_data_line_position]);
+//         }
+//         for (let k = 0; k < curve_data_line_array.length; k++) {
+//           if (curve_data_line_array[k] !== '') {
+//             lasjson['CURVES'][curve_names_array_holder[counter_of_curve_names]].push(curve_data_line_array[k]);
+            counter_of_curve_names += 1;
+
+          }
+        }
+        // Zero out curve_data_line_array for next set of data
+        curve_data_line_array = [];
+      }
+          
+      // ----------------------------------------------------------------------
+      // SUB-FUNCTION: READ SECTIONS for las2json
+      // parse data string into las_data data structures:
+      // ----------------------------------------------------------------------
+      function readSections(data) {
+        const eol_regex = /\r\n|\r|\n/;
+
+        // LAS2 UNIQUE SECTIONS: VERSION, WELL, CURVES, PARAMETERS, OTHER, ASCII
+        const uniq_headers = 'VWCPOA'; 
+
+        // Object to return data in.  This will be loaded with data just be for the
+        // function return.
+        const las_data = {
+          header_idx: {},
+          sections: [],
+        };
+        
+        let header_idx = {};
+        let sections = [];
+
+        // 'Prolog' is a made-up name for any lines before the standard las sections
+        let section = {
+          header: 'Prolog', 
+          rows: [],
+          comments: [],
+        };
+
+        // Incase we ever want to report the duplicate headers...
+        let duplicate_headers = [];
+
+        let section_idx = 0;
+        let section_name = '';
+
+        const arr = data.split(eol_regex);
+        
+        for (let line of arr) {
+          let row = {};
+          line = line.trim();
+
+          // Example : '~VER ....'
+          if (line.startsWith('~')) {
+            // Usually  one of 'VWCPOA', Example 'W' in '~WELL INFORMATION...`
+            section_name = line[1];
+            
+            if (!header_idx.hasOwnProperty(section_name) && uniq_headers.includes(section_name)) {
+              // --------------------------------------------------------------------
+              // If we get to more than one header then save the previous header's
+              // section in the sections array with the same index number as the
+              // previous header's index number in the header array.
+              // Then clear the section array for use with the new section header.
+              // --------------------------------------------------------------------
+              sections.push(section);
+              section = {
+                header: '',
+                rows: [],
+                comments: [],
+              };
+              // get the first letter of the header
+              // Example: V from ~Version
+              section.header = section_name;
+              
+              section_idx += 1
+              header_idx[section_name] = section_idx;
+              // console.log(section.header);
+              // console.log(header_idx);
+            } else if ( uniq_headers.includes(section_name) ) {
+              duplicate_headers.push(line);
+            } else {
+              sections.push(section);
+              section = {
+                header: '',
+                rows: [],
+                comments: [],
+              };
+              section.header = section_name;
+              section_idx += 1
+              header_idx[section_name] = section_idx;
+            }
+          } else if (line.startsWith('#')) {
+            section.comments.push(line);
+          } else if (line !== '') {
+            section.rows.push(line);
+          }
+        };
+        // save the last section's data
+        sections.push(section);
+
+        // Add empty sections for any of the uniq_headers that were not found
+        // in the las-file string
+        for (let idx in uniq_headers) {
+          section_name = uniq_headers[idx];
+          if (! header_idx.hasOwnProperty(section_name)) {
+            section = {
+              header: section_name,
+              rows: [],
+              comments: [],
+            };
+            sections.push(section);
+            header_idx[section_name] = sections.length;
+          }
+        }
+
+        las_data.header_idx = header_idx;
+        las_data.sections = sections
+        return las_data;
+      }
+      // ----------------------------------------------------------------------
+
+      // ----------------------------------------------------------------------
+      // SUB-FUNCTION: Split Line of Type 1 for las2json
+      // ----------------------------------------------------------------------
+
+      // As version information, well information, and parameter information blocks
+      // contain objects with the same keys, we can process them using a loop.
+      // function to process objects for ver_info_obj, well_inf_obj, and param_info_obj
+      // The splitLineofType1() function takes as argument the prototypical object
+      // building block and the array of strings for that block
+      // eslint-disable-next-line no-shadow
+      function splitLineofType1(ver_info_obj, arrayString) {
+        // splits string (should be a single line from the LAS text) by ":",
+        // takes the first item of the resulting array, and then replaces any " "
+        // with "".
+        const as_array = arrayString.split(':');
+        const vers_line_1half = as_array[0].replace(' ', '');
+        // splits the previous string variable by "." into an array of strings.
+        const vers_line_1half_array = vers_line_1half.split('.');
+        // trimming this so I get "UWI" instead of "UWI    "
+        // eslint-disable-next-line no-param-reassign
+        ver_info_obj['MNEM'] = vers_line_1half_array[0].trim();
+        const unit_and_data = vers_line_1half_array.slice(1, vers_line_1half_array.length);
+        let unit_and_data_str = '                        ';
+        if (unit_and_data.length > 1) {
+          // eslint-disable-next-line prefer-template
+          unit_and_data_str = unit_and_data[0].toString() + '.' + unit_and_data[1].toString();
+        }
+        // This is an empty ver_info_obj, print a warning and return
+        else if (ver_info_obj['MNEM'] === '' && unit_and_data.length === 0) {
+          console.warn('WARNING: Metatdata line has no data: ', vers_line_1half_array);
+          return ver_info_obj;
+        }
+        else {
+          unit_and_data_str = unit_and_data.toString();
+        }
+
+        // Sometimes the unit_and_data_str are less that 5 chars
+        let last_idx = 5;
+        if ((unit_and_data_str.length - 1) < 5) {
+          last_idx = unit_and_data_str.length - 1;
+        }
+        // eslint-disable-next-line no-sequences
+        const unit = unit_and_data_str[0, last_idx].trim();
+        const data = unit_and_data_str.substring(5, unit_and_data_str.length).trim();
+        ver_info_obj['DATA'] = data;
+        ver_info_obj['UNIT'] = unit;
+
+        if (as_array[1] && as_array[1].indexOf('-') !== -1) {
+          ver_info_obj['DESCRIPTION OF MNEMONIC 1'] = as_array[1].split('-')[0].trim();
+          ver_info_obj['DESCRIPTION OF MNEMONIC 2'] = as_array[1].split('-')[1].trim();
+        }
+        else if (as_array[1]) {
+          ver_info_obj['DESCRIPTION OF MNEMONIC 1'] = as_array[1].trim();
+          ver_info_obj['DESCRIPTION OF MNEMONIC 2'] = '';
+        }
+        return ver_info_obj;
+      }
+      // ----------------------------------------------------------------------
+
+      if (print === true) {
+        console.warn(' test: lasjson', lasjson);
+      }
+      return (lasjson);
+    },
+
+    // Given a well already converted into json, returns the available curves
+    /**
+     * Given a well already converted into wellio-style json in memory,
+     * the CurveNames function returns the available curves in that well.
+     * @param {object} well_json A wellio-style json in memory, typically resulting
+     * from the wellio.las2json() function.
+     * @returns {Array} An array of strings representing the curve names in the well.
+     */
+    CurveNames: function (well_json) {
+      const curveNames = Object.keys(well_json['CURVES']);
+      return curveNames;
+    },
+
+    /**
+     * Given a well already converted into wellio-style json in memory, the VER_block
+     * function returns the entire version block of the original LAS file as a string.
+     * @param {object} well_json A wellio-style json in memory, typically resulting from
+     * the wellio.las2json() function.
+     * @returns {string} An array of strings representing the entire version block of the
+     *  original LAS file as a string.
+     */
+    VER_block: function (well_json) {
+      return well_json['VERSION INFORMATION'];
+    },
+    // Given a well already converted into json, returns the well UWI
+    /**
+     * Given a well already converted into wellio-style json in memory, the UWI function
+     *  attempts to return the UWI field of the original LAS file as a string. Pleaes note
+     * that this doesn't exist in every well log and will therefore fail sometimes!
+     * @param {object} well_json A wellio-style json in memory, typically resulting from
+     *  the wellio.las2json() function.
+     * @returns {string} An a string representing the UWI field of the original LAS file.
+     */
+    UWI: function (well_json) {
+      return well_json['WELL INFORMATION BLOCK']['UWI']['DATA'];
+    },
+    // Given a well already converted into json, returns a given curve name in string format
+    /**
+     * Given a well already converted into wellio-style json in memory, the wellio.getCurve()
+     *  function attempts to return the curve data of a given well log. If it doesn't
+     *  exist, the message "that curve does not exist! see console.warn" is outputted to
+     *  console.warn and returned by the function.
+     * @param {object} well_json A wellio-style json in memory, typically resulting from the
+     *  wellio.las2json() function.
+     * @param {string} curve A string representation of a particular curve name.
+     * @returns {array} An array of integers or floats representing the data for a particular
+      *  curve in a given well log.
+     */
+    getCurve(well_json, curve) {
+      if (!well_json['CURVES'][curve]) {
+        console.warn('in getCurve function, that curve does not exist! =', curve);
+        return 'that curve does not exist! see console.warn';
+      }
+      // eslint-disable-next-line no-else-return
+      else {
+        return well_json['CURVES'][curve];
+      }
+    },
+
+    /**
+     * File reading utility function for a JSON file that contains what was a LAS 2.0 well
+     *  log already converted into JSON by the Python package Lasio.
+     * Lasio is also used by Welly.
+     * This function will read the file and keep it in memory.
+     * After running this function, You'll likely want to use the `lasio_obj_2_wellio_obj`
+     *  function to convert the lasio-style JSON in memory to wellio-style JSON in memory.
+     * @param {string} file_to_read : file_to_read - The file to open.s
+     * @returns {string} : The file's contents as a string.
+     */
+     read_lasio_json_file: function (file_to_read) {
+        // Configure fs if running from node
+        let fs = '';
+        if (process.env.NODE_ENV === 'development') {
+          // dev code for react development server use that then deploys to client app in production
+          let fs = '';
+          console.log("failed attempting to read file using fs module meant for server side not client side.")
+        }
+        else if (process !== 'undefined' && process.versions != null && process.versions.node != null) {
+          // eslint-disable-next-line global-require
+          fs = require('fs');
+        return fs.readFileSync(file_to_read, 'utf8');
+        }
+      },
+    /**
+    * The lasio_obj_2_wellio_obj function transforms lasio-style JSON strings into wellio-style
+    * JSON data format in memory and returns it.
+    * If you're working with a JSON file created by lasio, you'll want to load it into memory
+    * first using the `read_lasio_json_file` function.
+    * @param {object} lasio_json - A JavaScript object representation of lasio well log format
+    *
+    * @example
+    * This is an example of a full sequence of calls that also uses this function.
+    * let wellio = require('wellio')
+    * let lasio_json_str = wellio.read_lasio_json_file('lasio.json');
+    * let lasio_obj = JSON.parse(lasio_json_str);
+    * let wellio_obj = wellio.lasio_obj_2_wellio_obj(lasio_obj);
+    *
+    * @returns {object} A wellio style JSON object
+    */
+    lasio_obj_2_wellio_obj: function (lasio_obj) {
+      const std_headers = {
+        'Version': 'VERSION INFORMATION',
+        'Well': 'WELL INFORMATION BLOCK',
+        'Curves': 'CURVE INFORMATION BLOCK',
+        'Parameter': 'PARAMETER INFORMATION'
+      };
+
+      const lasjson = {};
+      lasjson['VERSION INFORMATION'] = {};
+      lasjson['WELL INFORMATION BLOCK'] = {};
+      lasjson['CURVE INFORMATION BLOCK'] = {};
+      lasjson['PARAMETER INFORMATION'] = {};
+      lasjson['CURVES'] = lasio_obj.data;
+
+      // Example code for adding non-standard headers
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item in lasio_obj.metadata) {
+        if (!(item in std_headers)) {
+          lasjson[item.toUpperCase()] = lasio_obj.metadata[item];
+        }
+        else {
+          // eslint-disable-next-line guard-for-in
+          // eslint-disable-next-line no-restricted-syntax
+          for (const mnemonic in lasio_obj.metadata[item]) {
+            // eslint-disable-next-line no-undef
+            section = std_headers[item];
+            // eslint-disable-next-line no-undef
+            lasjson[section][mnemonic] = {
+              'MNEM': mnemonic,
+              'UNIT': '',
+              'DATA': lasio_obj.metadata[item][mnemonic],
+              'DESCRIPTION OF MNEMONIC 1': '',
+              'DESCRIPTION OF MNEMONIC 2': ''
+            };
+          }
+        }
+      }
+
+      return lasjson;
     }
 
-    return lasjson;
-  },
+  };
 
+  return module.exports;
+});
 
-/**
- * A helper function that proves wellio,js was installed correctly. It merely returns the argument provided to it. For example, "test" as input would return "test".
- * @param {*} onelas anything
- * @returns Returns the input that was givne as an argument. This is just for testing that wellio was installed correctly.
- * @example wellio.returnThing("test") = "test"
- */
-	returnThing: function(onelas){
-		return onelas
-	},
-
-
-/**
-* Loads a LAS 2.0 file from local files
-* @param {string} well_log A string reprepresentatiion of filename of well log to be loaded into memory
-* @returns {string} A string representation of the contents of that well log file. It is a single string.
-*/
-	loadLAS:function(well_log){
-		var file = well_log
-    var fs = '';
-
-    if (process !== 'undefined' && process.versions != null && process.versions.node != null) {
-       fs = require('fs');
-    }
-    var contents = fs.readFileSync(file).toString();
-    // var contents = fs.readFileSync('test.LAS', 'utf8');
-    return contents
-	},
-	//// Converts a LAS 2.0 file already loaded into memory into a json format
-	/**
-	 * las2jso function converts a LAS 2.0 file already loaded into memory as a string into a JSON object
-	 * @param {string} onelas A string representation of a LAS 2.0 well log file. Typically from the result of the loadLAS function.
-	 * @returns {Object} A JSON object that represents the information that was in the LAS 2.0 well log file but in JSON wellio style format.
-	 */
-	las2json: function(onelas){
-		//// var lasjson establishes a blank json for holding las 2.0 data. It will look like the example below:
-		var lasjson = {
-				"VERSION INFORMATION":{
-					"VERS":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""},
-					"WRAP":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""}
-				}
-				,
-				"WELL INFORMATION BLOCK":{
-						"GENERATED":"",
-						"MNEM_0":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""},
-						"MNEM_1":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""},
-						"MNEM_2":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""}
-					}
-				,
-				"CURVE INFORMATION BLOCK":{
-						"MNEM_0":{"MNEM":"","UNIT":"","ERCB CURVE CODE":"","CURVE DESCRIPTION 1":"","CURVE DESCRIPTION 2":""}, 
-						"MNEM_0":{"MNEM":"","UNIT":"","ERCB CURVE CODE":"","CURVE DESCRIPTION 1":"","CURVE DESCRIPTION 2":""}
-					}	
-				,
-				"PARAMETER INFORMATION":{
-						"MNEM_0":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""}, 
-						"MNEM_1":{"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""}
-					}
-				,
-				"CURVES":{
-						"Curve_NAME_ONE" :[1,2,3,4,5,6,7,8,9,10,11],
-						"Curve_NAME_ONE" :[1,2,3,4,5,6,7,8,9,10,11],
-					}
-			}
-		//// Some objects in the json were partially populated in the example above to make understanding the format easier.
-		//// We'll empty them as a first step 
-		lasjson["VERSION INFORMATION"] = {};
-		lasjson["WELL INFORMATION BLOCK"] = {};
-		lasjson["CURVE INFORMATION BLOCK"] = {};
-		lasjson["PARAMETER INFORMATION"] = {};
-		lasjson["CURVES"] = {};
-		//// Within the "blocks" ["CURVE INFORMATION BLOCK","PARAMETER INFORMATION", etc.] there are other objects with repeating keys.
-		//// The variables below will be the building blocks for each of those objects {}. They are initially populated with empty strings as the values.
-		var ver_info_obj = {"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""};
-		var well_info_obj = {"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""};
-		var curve_info_obj = {"MNEM":"","UNIT":"","ERCB CURVE CODE":"","CURVE DESCRIPTION 1":"","CURVE DESCRIPTION 2":""};
-		var param_info_obj = {"MNEM":"","UNIT":"","DATA":"","DESCRIPTION OF MNEMONIC 1":"","DESCRIPTION OF MNEMONIC 2":""};
-		//// The las file is read as a txt file. It will first be split into seperate strings based on "~" character which occurs at the top of each "block"
-		console.log("onelas = ",onelas)
-		//// Split in to las sections that start with a tilde: ~.
-		var split1 = onelas.split(/(~[^~]+)/);
-		console.log("split1 = ",split1)
-		var vers_str = "";
-		var well_info_str = "";
-		var curve_info_str = "";
-		var param_info_str = "";
-		var other = "";
-		var curve_str = "";
-
-		//// As the 'OTHER' block may or may not be present, we have to split by '~' and then look for a substring to make sure we have the right block before we put each into a variable.
-		for(i = 0; i < split1.length; i++){
-			//// Skip blank entries in the split1 array.
-			if (split1[i].length === 0) {
-				continue;
-			}
-			if(split1[i].includes("~V")){var vers_str = split1[i]}
-			else if (split1[i].includes("~W")){well_info_str = split1[i]}
-			else if (split1[i].includes("~C")){curve_info_str = split1[i]}
-			else if (split1[i].includes("~P")){param_info_str = split1[i]}
-			else if (split1[i].includes("~O")){other = split1[i]}
-			else if (split1[i].includes("~A")){curve_str = split1[i]}
-			else{
-				console.log("WARNING: In wellio.js the las2json() function: split1[" + i + "] is not a recognized las section" )
-				console.log("elem: [" + split1[i] + "]"); 
-			}
-		}
-
-
-		//// Working with version block first by splitting it by newline and places each item into an array
-		//// and taking items of array 1 and 2 for vers and wrap
-		var vers_line = vers_str.split("\n")[1];
-		var wrap_line = vers_str.split("\n")[2];
-		//// As version information, well information, and parameter information blocks contain objects with the same keys, we can process them using a loop.
-		//// function to process objects for ver_info_obj, well_inf_obj, and param_info_obj
-		//// The splitLineofType1() function takes as argument the prototypical object building block and the array of strings for that block
-		function splitLineofType1(ver_info_obj,arrayString){
-			//// splits string (should be a single line from the LAS text) by ":", takes the first item of the resulting array, and then replaces any " " with "".
-			var vers_line_1half = arrayString.split(":")[0].replace(" ","");
-			//// splits the previous string variable by "." into an array of strings.
-			var vers_line_1half_array = vers_line_1half.split(".")
-			//// trimming this so I get "UWI" instead of "UWI    "
-			ver_info_obj["MNEM"] = vers_line_1half_array[0].trim()
-			var unit_and_data = vers_line_1half_array.slice(1,vers_line_1half_array.length);
-			var unit_and_data_str = "                        ";
-			if (unit_and_data.length > 1){
-				unit_and_data_str = unit_and_data[0].toString()+"."+unit_and_data[1].toString();
-			}
-			else{
-				unit_and_data_str = unit_and_data.toString()
-			}
-			var unit = unit_and_data_str[0,5].trim();
-			var data = unit_and_data_str.substring(5,unit_and_data_str.length).trim();
-			ver_info_obj["DATA"] = data
-			ver_info_obj["UNIT"] = unit
-			//// 
-			if(arrayString.split(":")[1].indexOf("-") !== -1){
-				ver_info_obj["DESCRIPTION OF MNEMONIC 1"] = arrayString.split(":")[1].split("-")[0].trim()
-				ver_info_obj["DESCRIPTION OF MNEMONIC 2"] = arrayString.split(":")[1].split("-")[1].replace("\r","").trim()
-			}
-			else{
-				ver_info_obj["DESCRIPTION OF MNEMONIC 1"] = arrayString.split(":")[1].replace("\r","").trim()
-				ver_info_obj["DESCRIPTION OF MNEMONIC 2"] = ""
-			}
-			return ver_info_obj
-		};
-		lasjson["VERSION INFORMATION"]["WRAP"] = splitLineofType1(Object.assign({}, ver_info_obj),wrap_line);
-		lasjson["VERSION INFORMATION"]["VERS"] = splitLineofType1(Object.assign({}, ver_info_obj),vers_line);
-		//// Working with PARAMETER INFORMATION block second by splitting it by newline into an array.
-		//// This skips the line with the section's title.
-		var param_line_array = param_info_str.split("\n").slice(1,);
-		for(i = 0; i < param_line_array.length; i++){
-			//// create one object for parameter line
-			//// Skip empty elements and comment elements that start with '#'.
-			if(param_line_array[i] != "" && param_line_array[i][0] !== '#'){
-				var param_obj_inst = splitLineofType1(Object.assign({}, param_info_obj),param_line_array[i]);
-				lasjson["PARAMETER INFORMATION"][param_obj_inst["MNEM"]] = param_obj_inst
-			}
-		}
-		//// Working with CURVE INFORMATION BLOCK second by splitting it by newline into an array.
-		//// This skips the line with the section's title.
-		var curve_line_array = curve_info_str.split("\n").slice(1,);
-		for(i = 0; i < curve_line_array.length; i++){
-			//// create one object for parameter line
-			//// Skip empty elements and comment elements that start with '#'.
-			if(curve_line_array[i] != "" && curve_line_array[i][0] !== '#'){
-				var curve_obj_inst = splitLineofType1(Object.assign({}, curve_info_obj),curve_line_array[i]);
-				lasjson["CURVE INFORMATION BLOCK"][curve_obj_inst["MNEM"]] = curve_obj_inst
-			}
-		}
-		//// Working with WELL INFORMATION BLOCK second by splitting it by newline into an array.
-		//// This skips the line with the section's title.
-		var well_line_array = well_info_str.split("\n").slice(1,);
-		for(i = 0; i < well_line_array.length; i++){
-			if(well_line_array[i].includes("Generated")){
-				lasjson["WELL INFORMATION BLOCK"]["GENERATED"] = well_line_array[i].replace("\r","").replace("\t"," ").replace("#","")
-			}
-			//// create one object for parameter line
-			//// Skip empty elements and comment elements that start with '#'.
-			if(well_line_array[i] != "" && well_line_array[i][0] !== '#'){
-				var well_obj_inst = splitLineofType1(Object.assign({}, well_info_obj),well_line_array[i]);
-				lasjson["WELL INFORMATION BLOCK"][well_obj_inst["MNEM"]] = well_obj_inst
-			}
-			else{
-				console.log("INFO: in else for well_line: " + i)
-				console.log("elem: [" + well_line_array[i] + "]");
-			}
-		}
-		//// Work with CURVES section by splitting it by newline into an array,
-		//// Iterate through the array items populate arrays for each key
-		var curve_str_array = curve_str.split("\n");
-
-		//// Get the curve column names from the curve names in the curve information block
-		////
-		//// Per LAS_20_Update_Jan2014.pdf section 5.5 specs for ~C(Curve Information)
-		//// - This section is manditory.
-		//// - It desribes the curves and its units in the order they appear in the ~ASCII
-		////	 log data section of the file.
-		//// - The channels described in this section must be present in the data set.
-		var curve_names_array_holder = [];
-		var curve_info = Object.keys(lasjson['CURVE INFORMATION BLOCK']);
-
-		if (curve_info.length > 0){
-			for(k = 0; k < curve_info.length; k++){
-				col_name = curve_info[k];
-				curve_names_array_holder.push(col_name);
-				lasjson.CURVES[col_name] = [];
-			}
-		}
-
-		var curve_data_line_array = [];
-
-		//// start at position 1 instead of 0 is to avoid the curve names
-		for(j = 1; j < curve_str_array.length; j++){
-			//// Skip empty rows.
-			if (curve_str_array[j].length === 0) {
-				continue;
-			}
-
-			var temp_data_array = curve_str_array[j].split(/\s+/);
-			//// Split can leave an empty element at the beginning, remove it.
-			if (temp_data_array[0].length === 0){
-				temp_data_array.shift();
-			}
-
-			//// If data is wrapped continue to accumulate data from rows till
-			//// we have a data element for each data column
-			var idx = curve_data_line_array.length;
-			curve_data_line_array.length = idx + temp_data_array.length;
-			for (var i = 0; i < temp_data_array.length; i++, idx++) {
-				curve_data_line_array[idx] = temp_data_array[i];
-			}
-
-			if (
-				lasjson["VERSION INFORMATION"].WRAP.DATA == 'YES'
-				&& curve_data_line_array.length < curve_names_array_holder.length)
-			{
-				continue;
-			}
-
-			var counter_of_curve_names = 0;
-			console.log("curve_data_line_array.length = ",curve_data_line_array.length)
-			console.log("curve_data_line_array = ",curve_data_line_array)
-
-
-			var last_curv_data_line_position = curve_data_line_array.length - 1;
-			console.log("curve_data_line_array[last_curv_data_line_position] = ",curve_data_line_array[last_curv_data_line_position])
-			curve_data_line_array[last_curv_data_line_position] = curve_data_line_array[last_curv_data_line_position].replace("\r","")
-			console.log("curve_data_line_array[last_curv_data_line_position] = ",curve_data_line_array[last_curv_data_line_position])
-			for(k = 0; k < curve_data_line_array.length; k++){
-				if(curve_data_line_array[k] !== ""){				
-					lasjson["CURVES"][curve_names_array_holder[counter_of_curve_names]].push(curve_data_line_array[k])
-					counter_of_curve_names += 1;
-				}
-			}
-			//// Zero out curve_data_line_array for next set of data
-			curve_data_line_array = [];
-		}
-		console.log(" test: lasjson",lasjson);
-		return(lasjson)
-	},
-	
-	//// Given a well already converted into json, returns the available curves
-	CurveNames: function(well_json){
-		var curveNames = Object.keys(well_json["CURVES"]);
-		return curveNames
-	},
-	//// 
-	VER_block: function(well_json){
-		return well_json["VERSION INFORMATION"]
-	},
-	//// Given a well already converted into json, returns the well UWI
-	UWI: function(well_json){
-		return well_json["WELL INFORMATION BLOCK"]["UWI"]["DATA"]
-	},
-	//// Given a well already converted into json, returns a given curve name in string format
-	getCurve(well_json,curve){
-		if (!well_json["CURVES"][curve]){
-			console.log("in getCurve function, that curve does not exist! =",curve)
-			return "that curve does not exist! see console.log"
-
-		} else {
-			return well_json["CURVES"][curve]
-		}
-	}
-}
-
-
-
-return module.exports;});
-
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":2,"fs":1}]},{},[4,6,5,7]);
+}).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"_process":2,"fs":1}]},{},[15,17,16,18]);
